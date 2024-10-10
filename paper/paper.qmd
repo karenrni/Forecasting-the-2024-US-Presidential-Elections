@@ -1,9 +1,11 @@
 ---
-title: "MarriageLicense"
+title: "temp"
 subtitle: "My subtitle if needed"
 author: 
   - Mariko Lee
-thanks: "Code and data are available at: LINK."
+  - Karen Riani
+  - Cristina Su Lam
+thanks: "Code and data are available at: https://projects.fivethirtyeight.com/polls/president-general/2024/national/"
 date: today
 date-format: long
 abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
