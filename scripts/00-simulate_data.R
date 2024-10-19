@@ -1,8 +1,7 @@
 #### Preamble ####
 # Purpose: Simulates Data
-# Author: Mariko Lee
-# Date: 19 September 2024
-# Contact: mariko.lee@mail.utoronto.ca =
+# Author: Cristina Su Lam, Karen Riani, Mariko Lee
+# Date: 10 October 2024 
 # License: MIT
 # Pre-requisites: None
 # Any other information needed? None

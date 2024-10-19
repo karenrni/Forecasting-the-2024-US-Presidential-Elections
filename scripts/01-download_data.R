@@ -7,6 +7,7 @@
 # Any other information needed? None
 
 # Load necessary libraries
+library(tidyverse)
 library(readr)
 
 # Define the path to the data
@@ -17,3 +18,4 @@ polls_data <- read_csv(data_path)
 
 # Display the first few rows of the data
 head(polls_data)
+
