@@ -3,4 +3,6 @@
 ## Overview
 
 
+## LLM Usage
+This project utilized a language model (ChatGPT) to assist with:
 
