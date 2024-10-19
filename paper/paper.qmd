@@ -1,6 +1,6 @@
 ---
-title: "temp"
-subtitle: "My subtitle if needed"
+title: "2024 US Presidential Election Forecasting"
+subtitle: "subtitle"
 author: 
   - Mariko Lee
   - Karen Riani
@@ -84,7 +84,48 @@ Weaknesses and next steps should also be included.
 # Appendix {-}
 
 
-# Additional data details
+# Methodology Analysis of The Washington Post Polling
+With an evaluation of sampling methodology, recruitment, handling non-response, and questionnaire design, this appendix offers an analysis of the polling methodology used by The Washington Post in collaboration with ABC News. The objective is to analyze these approaches’ strengths and weaknesses and determine how they affect polling accuracy. 
+
+## Population, Frame, and Sample
+The Washington Post, in partnership with ABC News, employs a combination of text-to-web polls and random digit dialing (RDD) for landlines and mobile phones to reach a large and representative sample of American adults and registered voters [@WashPost2024_ABCMethodology]. 
+
+The Washington Post's polling averages use only national and state-level polls that comply with strict quality and transparency criteria. These surveys were chosen because they employ suitable stratification and weighting strategies in addition to random sample approaches [@WashPost2024_PollingAverages]. To represent critical demographics such as age, race, gender, and education, the samples are meticulously weighted [@WashPost2024_ABCMethodology] [@WashPost2024_PollingAverages].
+
+## Sample Recruitment
+Live phone interviews and text-to-web surveys collect samples for The Washington Post polls, focusing on ensuring comprehensive demographic coverage. In a typical 2024 poll, text-to-web invites reached 21% of respondents, landlines reached 15%, and mobile phones reached 64% of respondents [@WashPost2024_ABCMethodology]. Younger and minority voters, who might not be well represented in conventional landline-based surveys, can be efficiently reached by pollsters using this technique. 
+
+By using address-based sampling from the Delivery Sequence File of the US Postal Service, ABC News also leverages probability-based recruiting through the Ipos KnowledgePanel. Since internet connections and equipment are offered at no cost, this guarantees that even households without internet connections or digital devices are involved [@ABCNews2024_Methodology]. 
+
+## Sampling Approaches and Trade-offs
+Using stratified random sampling, The Washington Post ensures that important demographic groups are represented proportionately to their voter base. By using stratified sampling, the polls are more likely to represent the diversity of the voting population accurately. To account for over- or under-representation of particular groups, samples are further weighted [@WashPost2024_ABCMethodology] [@WashPost2024_PollingAverages].
+
+Particularly in situations where state-level polling data is scarce, The Washington Post’s polling averages consider the state’s voting record in the last two presidential elections [@WashPost2024_PollingAverages]. This adjustment offers a more accurate representation of voters' preferences in states with fewer high-quality polls. However, there may be a trade-off since, depending solely on historical data, we may miss recent shifts in voter sentiment [@WashPost2024_ABCMethodology].
+
+## Non-response Handling
+The Washington Post uses response weighting, which modifies the results according to demographic variables such as age, race, and education, in order to address non-response bias. In spite of variations in response rates among demographic groupings, this ensures that the final sample more accurately represents the population [@WashPost2023_Standard].
+
+ABC News also addressed non-response bias by applying post-stratification adjustments and sending email reminders to non-respondents. In addition, The Washington Post and ABC News both ensure that their samples are weighted to account for any anomalies in non-response [@ABCNews2024_Methodology] [@WashPost2023_Standards].
+
+Despite these initiatives, non-response bias is still a concern, especially for populations that are less inclined to take part in surveys, including younger or less politically active people [@WashPost2023_Standards].
+
+## Questionnaire Design
+To prevent respondents from being guided toward predetermined responses, The Washington Post creates its surveys with neutrality and clarity in mind. The questions are randomized, and respondents are given multiple choices, including “No Opinion,” to avoid pressuring answers [@WashPost2024_ABCMethodology]. Question order bias can affect how respondents understand and respond to follow-up questions. Therefore, rotation helps mitigate this effect [@WashPost2023_Standards].
+
+Similar ideas are utilized by ABC News, which offers surveys in both Spanish and English to reach a more representative sample of the general public. Leading questions are purposefully omitted from the questionnaires to ensure that the information gathered accurately reflects public opinion [@ABCNews2024_Methodology].
+
+## Strengths and Weaknesses of the Methodology
+**Strength:**
+**Comprehensive Sampling Method:** The Washington Post can reach a broad demographic, including younger and more difficult-to-reach voters, by combining RDD, text-to-web polls, and live phone interviews [@WashPost2024_ABCMethodology] [@WashPost2023_Standards].
+**Post-stratification Weighting:** To account for demographic imbalances and increase the accuracy of their polls, The Washington Post and ABC News both use strong post-stratification weighting [@WashPost2024_ABCMethodology] [@ABCNews2024_Methodology].
+**Transparent Approach:** The Washington Post’s polling data is more credible since they only employ high-quality polls in their averages and is transparent about their methodology [@WashPost2023_Standards] [@WashPost2024_PollingAverages].
+**Weaknesses:**
+**Non-response Bias:** Even if both organizations use weighting adjustments, non-response bias still remains a challenge, particularly when it comes to groups that are less likely to respond to surveys [@WashPost2023_Standards] [@WashPost2024_ABCMethodology].
+**Dependency on Historical Data:** In states with fewer polls, The Washington Post relies on historical data (the last two presidential elections), which raises the possibility that the polling averages might not accurately reflect current changes in voters preferences [@WashPost2024_PollingAverages].
+
+## Conclusion
+The polling methodologies used by The Washington Post and ABC News offer a strict framework for gauging popular sentiment in the 2024 US presidential election. Their surveys often represent the electorate since they employ various sampling strategies, stratification, and weighting methodologies. However, obstacles such as non-response bias and the use of historical data in some states must be addressed appropriately to protect the accuracy and reliability of their polling averages. 
+
 
 
 
