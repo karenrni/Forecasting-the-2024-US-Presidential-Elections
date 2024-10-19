@@ -43,9 +43,9 @@ Some of our data is of marriage license (@fig-marriage), from @TorontoOpenData
 #| fig-cap: Marriage License
 #| echo: false
 
-data |> 
-  ggplot(aes(x = date, y = marriage_licenses)) +
-  geom_point()
+# data |> 
+#   ggplot(aes(x = date, y = marriage_licenses)) +
+#   geom_point()
 
 ```
 
