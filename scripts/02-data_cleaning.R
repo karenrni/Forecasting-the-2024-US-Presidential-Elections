@@ -8,16 +8,34 @@
 
 #### Workspace setup ####
 library(tidyverse)
+library(arrow)
 
 #### Clean data ####
-poll_data <- read_csv("data/raw_data/raw_president_polls.csv")
+high_quality_harris <- read_csv("data/raw_data/raw_president_polls.csv") |>
+  clean_names()
 
-polls_data <- polls_data %>%
-  janitor::clean_names()
+# Binary for state or national polls
+high_quality_harris <- high_quality_harris %>%
+  mutate(is_state = as.numeric(!is.na(state)),
+  end_date = mdy(end_date))
 
-# Handle missing values (example: remove incomplete rows)
-poll_data <- poll_data %>%
-  drop_na()
+# Categorize pct for Harris into High and Low Support
+high_quality_harris <- high_quality_harris %>%
+  mutate(pct = as.factor(ifelse(pct > 50, "High", "Low")))
+
+# Filter for high quality pollsters and state-specific Harris polls
+high_quality_harris %>%
+  filter(
+    numeric_grade >= 3.0, 
+    candidate_name == "Kamala Harris"
+  ) |>
+  filter(end_date >= as.Date("2024-07-21")) |> # When Harris declared
+  mutate(
+    num_harris = round((pct / 100) * sample_size, 0) # Need number not percent for some models
+  )
+
 
 #### Save data ####
-write_csv(analysis_data, "data/analysis_data/analysis_data.csv")
+write_parquet(high_quality_harris, "data/analysis_data/high_quality_harris.parquet")
+
+# delete analysis data csv 
