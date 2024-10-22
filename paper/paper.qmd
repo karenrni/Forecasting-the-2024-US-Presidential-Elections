@@ -21,7 +21,7 @@ bibliography: references.bib
 
 library(tidyverse)
 
-data <- read_csv(here::here("data/raw_data/raw_data.csv"))
+data <- read_csv(here::here("data/01-raw_data/raw_president_polls.csv"))
 
 ```
 
@@ -115,19 +115,138 @@ To prevent respondents from being guided toward predetermined responses, The Was
 Similar ideas are utilized by ABC News, which offers surveys in both Spanish and English to reach a more representative sample of the general public. Leading questions are purposefully omitted from the questionnaires to ensure that the information gathered accurately reflects public opinion [@ABCNews2024_Methodology].
 
 ## Strengths and Weaknesses of the Methodology
-**Strength:**
-**Comprehensive Sampling Method:** The Washington Post can reach a broad demographic, including younger and more difficult-to-reach voters, by combining RDD, text-to-web polls, and live phone interviews [@WashPost2024_ABCMethodology] [@WashPost2023_Standards].
-**Post-stratification Weighting:** To account for demographic imbalances and increase the accuracy of their polls, The Washington Post and ABC News both use strong post-stratification weighting [@WashPost2024_ABCMethodology] [@ABCNews2024_Methodology].
-**Transparent Approach:** The Washington Post’s polling data is more credible since they only employ high-quality polls in their averages and is transparent about their methodology [@WashPost2023_Standards] [@WashPost2024_PollingAverages].
-**Weaknesses:**
-**Non-response Bias:** Even if both organizations use weighting adjustments, non-response bias still remains a challenge, particularly when it comes to groups that are less likely to respond to surveys [@WashPost2023_Standards] [@WashPost2024_ABCMethodology].
-**Dependency on Historical Data:** In states with fewer polls, The Washington Post relies on historical data (the last two presidential elections), which raises the possibility that the polling averages might not accurately reflect current changes in voters preferences [@WashPost2024_PollingAverages].
+**Strength:** \
+**Comprehensive Sampling Method:** The Washington Post can reach a broad demographic, including younger and more difficult-to-reach voters, by combining RDD, text-to-web polls, and live phone interviews [@WashPost2024_ABCMethodology] [@WashPost2023_Standards].\
+**Post-stratification Weighting:** To account for demographic imbalances and increase the accuracy of their polls, The Washington Post and ABC News both use strong post-stratification weighting [@WashPost2024_ABCMethodology] [@ABCNews2024_Methodology].\
+**Transparent Approach:** The Washington Post’s polling data is more credible since they only employ high-quality polls in their averages and is transparent about their methodology [@WashPost2023_Standards] [@WashPost2024_PollingAverages]. \
+
+**Weaknesses:** \
+**Non-response Bias:** Even if both organizations use weighting adjustments, non-response bias still remains a challenge, particularly when it comes to groups that are less likely to respond to surveys [@WashPost2023_Standards] [@WashPost2024_ABCMethodology]. \
+**Dependency on Historical Data:** In states with fewer polls, The Washington Post relies on historical data (the last two presidential elections), which raises the possibility that the polling averages might not accurately reflect current changes in voters preferences [@WashPost2024_PollingAverages]. \
 
 ## Conclusion
 The polling methodologies used by The Washington Post and ABC News offer a strict framework for gauging popular sentiment in the 2024 US presidential election. Their surveys often represent the electorate since they employ various sampling strategies, stratification, and weighting methodologies. However, obstacles such as non-response bias and the use of historical data in some states must be addressed appropriately to protect the accuracy and reliability of their polling averages. 
 
+# Idealized Survey & Methodology - $100K Budget
 
+## Overview
+Using a $100K budget, this appendix outlines a carefully designed survey methodology for predicting the 2024 US Presidential Election. The objective is to collect representative, high-quality data using recruiting, poll aggregation, and selective sample methods. Through rigorous validation, this approach ensures data accuracy and reduces common survey research errors. 
 
+## Sampling Approach
+We will implement stratified random sampling to ensure that key demographic and geographic subgroups are fairly represented. This approach reduces bias and offers more reliable insights into voter preference. 
+
+**Stratification Criteria:**  
+- Age Groups  
+- Gender  
+- Education Levels  
+- Geographic Representation  
+- Political Affiliation
+
+**Sample Size Goal:** 10,000 respondents across states and demographics to achieve **high statistical power** with a margin of error below ±1%
+
+**Trade-offs:**  
+- Although stratified sampling increases representativeness, it necessitates accurate demographic information and may raise operating expenses.  
+- **Missing Data:** It’s possible that some demographics (e.g. men) may be less likely to respond. Post-stratification weighting and data imputation will be used to address this issue. 
+
+## Recruitment Strategy
+Outline outreach and telephone surveys will be combined in our recruitment strategy to ensure widespread participation from various demographic groups. 
+
+**Online Recruitment:**  
+- Target ads on Google, Facebook, and Twitter to engage younger voters and urban populations.  
+- Budget Allocation: $25,000
+
+**Random-Digit Dialing (RDD):**  
+- Phone outreach to reach older, rural voters with poor internet connection. 
+- Budget Allocation: $30,000
+
+**Incentives:**  
+- Participants are offered $5 gift cards to increase response rates. 
+- Budget Allocation: $20,000
+
+**Non-Response Handling:**  
+- Increase recruitment incentives for underrepresented groups and use numerous follow-up reminders. 
+
+## Data Validation
+To ensure the accuracy and reliability of responses, we will implement several data validation techniques: 
+
+**Survey Logic Check:**  
+- Recognize and flag responses contradicting one another (e.g., reporting under 18 but registered to vote).  
+**Attention Check:**  
+- Utilize questions to confirm respondents are actively engaged (e.g., “Select ‘Confirm’ to start questionnaire”)  
+**Post-Stratification Weighting: **  
+- Adjusting for over- and under-enumeration and weighting the sample to reflect the demographic of the US population.  
+
+**Mode and Measurement Errors:**   
+- We mitigate the impact of using mixed modes (online and telephones) by training enumerators and reducing enumerator bias. Misreporting will be reduced through straightforward questions.  
+
+## Poll Aggregation Methodology
+We will employ a poll-of-polls aggregation method to reduce bias and smooth fluctuation across individual polls. 
+
+**Weighting Criteria:**  
+**Sample Size:** larger samples receive more weight to mirror greater reliability. 
+
+**Recency:** More recent polls are given higher weight to capture modern voter sentiment. 
+
+**Pollster Rating:** Polls from highly rated pollsters receive higher weights to reduce the impact of bias. 
+
+## Survey Implementation 
+Google Forms was used to create and implement the survey, allowing for efficient data collection and safe storage. The main section and sample questions are listed below. 
+
+Access the survey: [Google Form](https://forms.gle/F1v3gswDjra8YLP79)
+
+**Survey Overview** \
+**Title:** 2024 US Presidential Election Poll \
+**Purpose:** To gather public sentiment and predict election outcomes. \
+**Estimated Time:** Less than 5 minutes \
+**Confidentiality:** All responses are anonymous and used only for research purposes. 
+
+1. What is your age?
+- Under 18
+- 18-24
+- 25-34
+- 35-44
+- 45-54
+- 55-64
+- 65+
+
+2. What is your gender?
+- Male
+- Female
+- Non-binary / Prefer not to say
+
+3. What is the highest level of education you have completed?
+- Less than high school
+- High school diploma or GED
+- Some college
+- Bachelor’s degree
+- Master’s degree or higher
+
+4. Are you registered to vote?
+- Yes
+- No
+
+5. Who do you intend to vote for in the upcoming presidential election?
+- Donald Trump (Republican)
+- Kamala Harris (Democrat)
+- Other
+- Undecided
+
+6. How likely are you to vote in the upcoming election?
+- Very Likely
+- Somewhat Likely
+- Not Likely
+
+## Budget Breakdown
+- **Online Recruitment** : $25,000
+- **RDD Recruitment**: $30,000
+- **Incentives for Participants**: $20,000
+- **Data Processing & Validation**: $15,000
+- **Miscellaneous Expenses**: $10,000
+
+**Total**: $100,000
+
+## Conclusion
+This survey methodology uses stratified sampling, multi-channel recruitment, and rigorous data validation procedures to ensure accurate forecasting of the 2024 US Presidential Election. We provide a more stable and reliable prediction through poll-polls aggregation, smoothing out fluctuations across polls. This design balances accuracy, inclusivity, and efficiency with a carefully considered $100K budget, ensuring the poll gathers meaningful insights into voter sentiment and behavior. 
 
 
 
