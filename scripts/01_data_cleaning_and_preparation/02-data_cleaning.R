@@ -48,17 +48,20 @@ clean_president_polls <- read_csv("data/raw_data/raw_president_polls.csv",
 # Create binary variable for state or national polls
 clean_president_polls <- clean_president_polls %>%
   mutate(
+    state = str_replace(state, "Maine CD-[12]", "Maine"),
+    state = str_replace(state, "Nebraska CD-2", "Nebraska"),
     is_state = as.numeric(!is.na(state)),
     end_date = mdy(end_date),
     start_date = mdy(start_date),
     is_harris = ifelse(candidate_name == "Kamala Harris", 1, 0))
 
+
 # Filter for high quality pollsters and state-specific Harris and Trump polls
 clean_president_polls <- clean_president_polls %>%
-  filter(numeric_grade >= 3.0,
-         candidate_name %in% c("Kamala Harris", "Donald Trump"),
-         start_date >= as.Date("2024-07-21")
+  filter(
+         candidate_name %in% c("Kamala Harris", "Donald Trump")
          ) 
+
 
 #### Save data ####
 write_parquet(clean_president_polls, "data/analysis_data/clean_president_polls.parquet")
