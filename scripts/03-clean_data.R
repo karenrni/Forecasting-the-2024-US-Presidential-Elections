@@ -53,8 +53,9 @@ clean_president_polls <- clean_president_polls %>%
     is_state = as.numeric(!is.na(state)),
     end_date = mdy(end_date),
     start_date = mdy(start_date),
-    is_harris = ifelse(candidate_name == "Kamala Harris", 1, 0))
-
+    is_harris = ifelse(candidate_name == "Kamala Harris", 1, 0)) %>%
+  drop_na(sample_size) %>% 
+  drop_na(numeric_grade)
 
 # Filter for high quality pollsters and state-specific Harris and Trump polls
 clean_president_polls <- clean_president_polls %>%
