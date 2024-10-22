@@ -1,52 +1,65 @@
 #### Preamble ####
-# Purpose: Simulates a dataset of Australian electoral divisions, including the 
-  #state and party that won each division.
-# Author: Rohan Alexander
-# Date: 26 September 2024
-# Contact: rohan.alexander@utoronto.ca
+# Purpose: Simulates Data
+# Author: Cristina Su Lam, Karen Riani, Mariko Lee
+# Date: 10 October 2024 
 # License: MIT
-# Pre-requisites: The `tidyverse` package must be installed
-# Any other information needed? Make sure you are in the `starter_folder` rproj
-
+# Pre-requisites: None
+# Any other information needed? None
 
 #### Workspace setup ####
 library(tidyverse)
-set.seed(853)
-
+set.seed(123)
 
 #### Simulate data ####
-# State names
-states <- c(
-  "New South Wales",
-  "Victoria",
-  "Queensland",
-  "South Australia",
-  "Western Australia",
-  "Tasmania",
-  "Northern Territory",
-  "Australian Capital Territory"
+# Defining the states and candidates
+states <- state.name  # U.S. state names
+candidates <- c("Trump", "Harris")  # Presidential candidates
+
+# Define a list of pollsters
+pollsters <- c("YouGov", "Siena/NYT", "The Washington Post", "Ipsos", "Quinnipiac")
+
+# Number of simulated polls per state
+num_polls <- 10  # Simulating 10 polls per state
+
+# Simulate sample sizes for each poll (between 500 and 2000 voters)
+sample_sizes <- sample(500:2000, num_polls * length(states), replace = TRUE)
+
+# Simulate percentage of support (pct) for each candidate (between 40% and 60%)
+pct_support <- runif(num_polls * length(states), min = 40, max = 60)
+
+# Create the simulated data frame
+simulated_data <- tibble(
+  state = rep(states, each = num_polls),  # Repeat each state for the number of polls
+  pollster = sample(pollsters, num_polls * length(states), replace = TRUE),  # Random pollsters for each poll
+  candidate_preference = sample(candidates, num_polls * length(states), replace = TRUE, prob = c(0.5, 0.5)),  # Equal chance for each candidate
+  pct = pct_support,  # Simulated percentage support
+  sample_size = sample_sizes  # Simulated sample sizes
 )
 
-# Political parties
-parties <- c("Labor", "Liberal", "Greens", "National", "Other")
+# Plot 1: Pollster Frequencies (Number of Polls per Pollster)
+ggplot(simulated_data, aes(y = pollster)) +
+  geom_bar(fill = "lightblue") +
+  labs(title = "Number of Polls Conducted by Pollster", 
+       x = "Count", 
+       y = "Pollster") +
+  theme_minimal()
 
-# Create a dataset by randomly assigning states and parties to divisions
-analysis_data <- tibble(
-  division = paste("Division", 1:151),  # Add "Division" to make it a character
-  state = sample(
-    states,
-    size = 151,
-    replace = TRUE,
-    prob = c(0.25, 0.25, 0.15, 0.1, 0.1, 0.1, 0.025, 0.025) # Rough state population distribution
-  ),
-  party = sample(
-    parties,
-    size = 151,
-    replace = TRUE,
-    prob = c(0.40, 0.40, 0.05, 0.1, 0.05) # Rough party distribution
-  )
-)
+# Plot 2: Bar Graph of Percentage Support (Average Support by Candidate)
+ggplot(simulated_data, aes(x = candidate_preference, y = pct)) +
+  stat_summary(fun = mean, geom = "bar", fill = "lightgreen") +
+  labs(title = "Average Support by Candidate", 
+       x = "Candidate", 
+       y = "Average Percentage Support") +
+  theme_minimal()
 
+# Plot 3: Sample Size Distribution Across States
+ggplot(simulated_data, aes(x = state, y = sample_size)) +
+  geom_boxplot(fill = "lightcoral") +
+  labs(title = "Distribution of Sample Sizes Across States", 
+       x = "State", 
+       y = "Sample Size") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 #### Save data ####
-write_csv(analysis_data, "data/00-simulated_data/simulated_data.csv")
+write_csv(simulated_data, "data/00-simulated_data/simulated_data.csv")
