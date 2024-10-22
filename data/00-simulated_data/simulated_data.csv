@@ -1,152 +1,501 @@
-division,state,party
-Division 1,Victoria,Liberal
-Division 2,New South Wales,Liberal
-Division 3,Tasmania,Liberal
-Division 4,New South Wales,Liberal
-Division 5,Queensland,Liberal
-Division 6,New South Wales,Labor
-Division 7,Victoria,Liberal
-Division 8,Western Australia,Labor
-Division 9,Western Australia,Greens
-Division 10,Queensland,Labor
-Division 11,Queensland,Labor
-Division 12,Northern Territory,Liberal
-Division 13,New South Wales,Labor
-Division 14,Western Australia,Labor
-Division 15,Western Australia,National
-Division 16,Victoria,Liberal
-Division 17,South Australia,Liberal
-Division 18,Victoria,Liberal
-Division 19,Western Australia,Labor
-Division 20,South Australia,Labor
-Division 21,New South Wales,Liberal
-Division 22,Queensland,Greens
-Division 23,New South Wales,Liberal
-Division 24,New South Wales,Liberal
-Division 25,Queensland,Labor
-Division 26,Victoria,National
-Division 27,New South Wales,Liberal
-Division 28,Queensland,Liberal
-Division 29,Tasmania,Liberal
-Division 30,South Australia,Liberal
-Division 31,New South Wales,Liberal
-Division 32,Victoria,Labor
-Division 33,Tasmania,Liberal
-Division 34,New South Wales,Liberal
-Division 35,Western Australia,Labor
-Division 36,New South Wales,Liberal
-Division 37,Tasmania,Greens
-Division 38,Tasmania,Labor
-Division 39,Victoria,Greens
-Division 40,South Australia,Labor
-Division 41,New South Wales,Other
-Division 42,New South Wales,Other
-Division 43,Tasmania,Labor
-Division 44,Tasmania,National
-Division 45,Queensland,Liberal
-Division 46,Australian Capital Territory,Other
-Division 47,Queensland,Labor
-Division 48,Queensland,Other
-Division 49,South Australia,Liberal
-Division 50,Victoria,National
-Division 51,South Australia,Liberal
-Division 52,Victoria,Labor
-Division 53,South Australia,National
-Division 54,Queensland,Liberal
-Division 55,Queensland,Labor
-Division 56,South Australia,Liberal
-Division 57,New South Wales,Other
-Division 58,Northern Territory,Liberal
-Division 59,New South Wales,Labor
-Division 60,Western Australia,Labor
-Division 61,New South Wales,Liberal
-Division 62,South Australia,Liberal
-Division 63,Queensland,Labor
-Division 64,Tasmania,Labor
-Division 65,South Australia,Labor
-Division 66,Victoria,Labor
-Division 67,Queensland,Liberal
-Division 68,Queensland,Liberal
-Division 69,Tasmania,Labor
-Division 70,South Australia,National
-Division 71,Australian Capital Territory,Labor
-Division 72,Western Australia,Labor
-Division 73,Queensland,National
-Division 74,Victoria,Labor
-Division 75,Western Australia,Labor
-Division 76,Tasmania,Labor
-Division 77,Queensland,Liberal
-Division 78,Western Australia,Liberal
-Division 79,Queensland,Labor
-Division 80,Queensland,Liberal
-Division 81,Victoria,Labor
-Division 82,New South Wales,Liberal
-Division 83,Victoria,Liberal
-Division 84,Queensland,National
-Division 85,Western Australia,Liberal
-Division 86,New South Wales,Labor
-Division 87,Queensland,Liberal
-Division 88,New South Wales,Liberal
-Division 89,Tasmania,Liberal
-Division 90,South Australia,Labor
-Division 91,Victoria,Liberal
-Division 92,New South Wales,Labor
-Division 93,Tasmania,Labor
-Division 94,South Australia,Labor
-Division 95,Victoria,Liberal
-Division 96,Victoria,Labor
-Division 97,Western Australia,Liberal
-Division 98,Queensland,Liberal
-Division 99,South Australia,Liberal
-Division 100,New South Wales,Labor
-Division 101,South Australia,Labor
-Division 102,New South Wales,Labor
-Division 103,Victoria,Labor
-Division 104,Victoria,Labor
-Division 105,South Australia,Other
-Division 106,Western Australia,Labor
-Division 107,Tasmania,Liberal
-Division 108,Victoria,Labor
-Division 109,Queensland,Liberal
-Division 110,Victoria,Labor
-Division 111,Australian Capital Territory,Labor
-Division 112,Victoria,Liberal
-Division 113,Victoria,Liberal
-Division 114,Victoria,Liberal
-Division 115,Tasmania,Labor
-Division 116,Victoria,Labor
-Division 117,New South Wales,Labor
-Division 118,Victoria,Labor
-Division 119,Victoria,Greens
-Division 120,Northern Territory,Labor
-Division 121,South Australia,Liberal
-Division 122,New South Wales,Liberal
-Division 123,New South Wales,Labor
-Division 124,New South Wales,Liberal
-Division 125,New South Wales,National
-Division 126,New South Wales,Labor
-Division 127,Queensland,Labor
-Division 128,New South Wales,Other
-Division 129,Queensland,Labor
-Division 130,Australian Capital Territory,Liberal
-Division 131,Tasmania,Greens
-Division 132,New South Wales,National
-Division 133,New South Wales,Labor
-Division 134,Northern Territory,Labor
-Division 135,South Australia,National
-Division 136,Victoria,Labor
-Division 137,Tasmania,National
-Division 138,South Australia,Liberal
-Division 139,New South Wales,Labor
-Division 140,Victoria,Other
-Division 141,Queensland,Greens
-Division 142,Victoria,National
-Division 143,Western Australia,Labor
-Division 144,Victoria,Labor
-Division 145,Queensland,Liberal
-Division 146,Tasmania,Liberal
-Division 147,South Australia,Liberal
-Division 148,Victoria,Labor
-Division 149,New South Wales,National
-Division 150,New South Wales,Labor
-Division 151,Victoria,Liberal
+state,pollster,candidate_preference,pct,sample_size
+Alabama,Siena/NYT,Harris,52.94114700052887,914
+Alabama,Ipsos,Trump,43.470354923047125,962
+Alabama,Siena/NYT,Harris,40.401480183936656,678
+Alabama,Siena/NYT,Harris,50.426276926882565,1025
+Alabama,YouGov,Harris,41.725557865574956,694
+Alabama,YouGov,Trump,45.66004692111164,1437
+Alabama,The Washington Post,Harris,48.408698020502925,1641
+Alabama,Quinnipiac,Harris,51.74556248355657,1822
+Alabama,Quinnipiac,Trump,56.13388859201223,1752
+Alabama,YouGov,Harris,44.03990417718887,1767
+Alaska,Ipsos,Trump,49.18849343433976,1537
+Alaska,Siena/NYT,Harris,48.962862277403474,1897
+Alaska,The Washington Post,Harris,54.67495516408235,1164
+Alaska,The Washington Post,Harris,54.29509621113539,1101
+Alaska,Siena/NYT,Harris,56.62443957757205,1208
+Alaska,Quinnipiac,Harris,57.73132241796702,1510
+Alaska,Ipsos,Trump,59.05289147980511,1614
+Alaska,YouGov,Harris,51.01233443710953,1452
+Alaska,Ipsos,Trump,50.44671532232314,847
+Alaska,The Washington Post,Harris,43.41396510601044,1516
+Arizona,Quinnipiac,Harris,49.585431199520826,1878
+Arizona,Quinnipiac,Harris,45.07641592994332,1339
+Arizona,Ipsos,Harris,40.7956127403304,525
+Arizona,Quinnipiac,Trump,52.69601019565016,1018
+Arizona,YouGov,Harris,50.791218280792236,1949
+Arizona,Quinnipiac,Trump,42.802070998586714,710
+Arizona,Ipsos,Trump,45.67423553671688,1431
+Arizona,Quinnipiac,Trump,51.66061190422624,1092
+Arizona,Quinnipiac,Harris,43.30051784403622,1054
+Arizona,Quinnipiac,Trump,41.9260222138837,872
+Arkansas,The Washington Post,Harris,48.57226182706654,1343
+Arkansas,Ipsos,Harris,47.11523131467402,1666
+Arkansas,Quinnipiac,Harris,56.898670797236264,1043
+Arkansas,Quinnipiac,Trump,45.20264947321266,989
+Arkansas,Ipsos,Harris,40.46288984362036,1404
+Arkansas,Ipsos,Trump,57.247990793548524,1436
+Arkansas,The Washington Post,Harris,46.69175922404975,1546
+Arkansas,The Washington Post,Harris,52.63577743433416,1422
+Arkansas,Ipsos,Harris,50.928525174967945,1455
+Arkansas,YouGov,Trump,47.52888986375183,808
+California,Ipsos,Trump,43.717460301704705,1658
+California,Siena/NYT,Harris,48.578811823390424,1747
+California,Siena/NYT,Trump,52.61547197122127,665
+California,Ipsos,Trump,50.41684702504426,716
+California,YouGov,Trump,53.19242674391717,1813
+California,YouGov,Trump,54.58721862640232,1080
+California,Siena/NYT,Harris,49.73645746707916,571
+California,Ipsos,Harris,47.689132313244045,1087
+California,Quinnipiac,Trump,40.13667017687112,640
+California,The Washington Post,Trump,40.073684551753104,1221
+Colorado,YouGov,Trump,59.89872880280018,1358
+Colorado,The Washington Post,Trump,42.15773760341108,652
+Colorado,The Washington Post,Trump,48.37338316719979,793
+Colorado,Siena/NYT,Harris,54.35769093222916,776
+Colorado,Ipsos,Harris,54.85078264493495,1986
+Colorado,YouGov,Harris,57.439976474270225,540
+Colorado,The Washington Post,Trump,52.15735922101885,930
+Colorado,Quinnipiac,Trump,55.12406702619046,589
+Colorado,Quinnipiac,Trump,56.94482596125454,815
+Colorado,Quinnipiac,Trump,52.25559297949076,1746
+Connecticut,Siena/NYT,Harris,55.86448335554451,1027
+Connecticut,Quinnipiac,Harris,40.457093669101596,1639
+Connecticut,Quinnipiac,Harris,48.33829099312425,1273
+Connecticut,YouGov,Trump,57.49764774926007,1246
+Connecticut,Quinnipiac,Harris,52.94694031123072,955
+Connecticut,YouGov,Trump,58.48957973532379,1097
+Connecticut,Siena/NYT,Harris,43.444501920603216,1562
+Connecticut,YouGov,Trump,46.31625578273088,1682
+Connecticut,YouGov,Harris,56.085125585086644,1251
+Connecticut,Siena/NYT,Trump,59.779268223792315,1732
+Delaware,Ipsos,Trump,46.44771103747189,873
+Delaware,Quinnipiac,Trump,40.023832567967474,533
+Delaware,Siena/NYT,Trump,59.843412386253476,1015
+Delaware,Siena/NYT,Harris,42.967047835700214,512
+Delaware,Siena/NYT,Trump,40.98728594370186,568
+Delaware,Ipsos,Trump,51.94706965237856,1254
+Delaware,Quinnipiac,Trump,46.42656886950135,908
+Delaware,Siena/NYT,Harris,50.558580006472766,1831
+Delaware,The Washington Post,Harris,55.90844040736556,1801
+Delaware,YouGov,Harris,41.37865193653852,1612
+Florida,Ipsos,Harris,53.90041394624859,1427
+Florida,The Washington Post,Trump,58.97263014689088,1505
+Florida,The Washington Post,Trump,45.555386347696185,1036
+Florida,The Washington Post,Harris,44.988131704740226,1482
+Florida,Siena/NYT,Trump,43.18870960269123,790
+Florida,Ipsos,Trump,41.43260112032294,1947
+Florida,Ipsos,Harris,51.14875166211277,1809
+Florida,Siena/NYT,Trump,49.79674103204161,1170
+Florida,The Washington Post,Trump,49.88584723789245,620
+Florida,YouGov,Trump,57.76743170339614,1633
+Georgia,Ipsos,Harris,40.734087196178734,1681
+Georgia,YouGov,Trump,44.07487627118826,1587
+Georgia,YouGov,Harris,50.275622783228755,2000
+Georgia,Ipsos,Harris,44.726797780022025,979
+Georgia,The Washington Post,Trump,51.508713397197425,566
+Georgia,Quinnipiac,Trump,49.64515822939575,1513
+Georgia,Siena/NYT,Harris,51.387053774669766,1608
+Georgia,Quinnipiac,Harris,42.8830463020131,664
+Georgia,Siena/NYT,Trump,42.91417525149882,1574
+Georgia,Ipsos,Harris,48.24566225986928,1597
+Hawaii,Siena/NYT,Trump,53.660205649212,1701
+Hawaii,Siena/NYT,Trump,53.06855640839785,1885
+Hawaii,Ipsos,Harris,58.319726660847664,735
+Hawaii,Ipsos,Harris,56.262262649834156,1109
+Hawaii,YouGov,Harris,53.517800024710596,829
+Hawaii,The Washington Post,Harris,56.14998218603432,1225
+Hawaii,YouGov,Harris,42.561288392171264,626
+Hawaii,The Washington Post,Harris,45.01557067967951,711
+Hawaii,The Washington Post,Trump,46.63093983195722,1185
+Hawaii,The Washington Post,Trump,48.14538579899818,1313
+Idaho,Quinnipiac,Harris,52.70735153928399,1833
+Idaho,Siena/NYT,Trump,56.172240898013115,1430
+Idaho,YouGov,Harris,45.17602402716875,1377
+Idaho,Quinnipiac,Trump,56.38934279792011,742
+Idaho,The Washington Post,Harris,40.30955337919295,1346
+Idaho,The Washington Post,Harris,53.08801533188671,1636
+Idaho,The Washington Post,Trump,56.23439168557525,1482
+Idaho,The Washington Post,Trump,49.22737853601575,1118
+Idaho,YouGov,Trump,44.06834203284234,976
+Idaho,The Washington Post,Harris,40.37536434363574,650
+Illinois,The Washington Post,Harris,45.66265394445509,1165
+Illinois,Siena/NYT,Trump,58.305452512577176,1266
+Illinois,Quinnipiac,Trump,58.673930410295725,659
+Illinois,Quinnipiac,Trump,50.85063227452338,1914
+Illinois,Siena/NYT,Harris,44.388450919650495,654
+Illinois,Quinnipiac,Harris,49.78855608031154,925
+Illinois,Siena/NYT,Harris,56.022974723018706,1528
+Illinois,The Washington Post,Trump,48.152613155543804,825
+Illinois,YouGov,Harris,42.07423133775592,1803
+Illinois,The Washington Post,Trump,45.61130349524319,1288
+Indiana,The Washington Post,Harris,47.22932441160083,1761
+Indiana,Quinnipiac,Trump,45.184896821156144,1862
+Indiana,Quinnipiac,Trump,49.41363667137921,1484
+Indiana,Siena/NYT,Trump,47.316909465007484,538
+Indiana,Ipsos,Trump,42.425441085360944,1321
+Indiana,The Washington Post,Harris,40.93987361062318,1485
+Indiana,Quinnipiac,Harris,45.255926083773375,636
+Indiana,YouGov,Trump,59.37282335944474,954
+Indiana,YouGov,Harris,49.76990964729339,1088
+Indiana,Quinnipiac,Trump,49.5564405946061,1606
+Iowa,The Washington Post,Trump,54.97585762292147,538
+Iowa,Siena/NYT,Harris,53.352804626338184,695
+Iowa,Quinnipiac,Trump,40.98831193521619,1179
+Iowa,Ipsos,Harris,53.90210488811135,1809
+Iowa,YouGov,Harris,47.26523133460432,999
+Iowa,Quinnipiac,Harris,57.682672147639096,1484
+Iowa,Quinnipiac,Harris,55.50594459287822,843
+Iowa,YouGov,Trump,42.784072826616466,1833
+Iowa,YouGov,Trump,45.90018542483449,958
+Iowa,Quinnipiac,Harris,42.52165570855141,1443
+Kansas,Ipsos,Trump,51.79803247563541,1543
+Kansas,Quinnipiac,Trump,51.23351217713207,1371
+Kansas,Ipsos,Trump,53.774422402493656,694
+Kansas,Quinnipiac,Trump,46.22541618067771,1687
+Kansas,Quinnipiac,Harris,52.11173682939261,1575
+Kansas,YouGov,Harris,59.82068637851626,1375
+Kansas,Siena/NYT,Harris,54.86409830395132,1033
+Kansas,Quinnipiac,Harris,41.51714260689914,676
+Kansas,YouGov,Harris,49.02337812818587,1053
+Kansas,Quinnipiac,Harris,41.07073869090527,1326
+Kentucky,Ipsos,Harris,46.791110280901194,583
+Kentucky,The Washington Post,Trump,54.67904297634959,1132
+Kentucky,Ipsos,Trump,40.082138809375465,1915
+Kentucky,The Washington Post,Harris,55.43818964622915,1825
+Kentucky,YouGov,Trump,49.259504224173725,1096
+Kentucky,YouGov,Trump,54.416807000525296,1205
+Kentucky,YouGov,Harris,53.33011434413493,1118
+Kentucky,Quinnipiac,Harris,51.44147441256791,1953
+Kentucky,YouGov,Harris,54.07625900115818,1209
+Kentucky,Ipsos,Harris,53.144421209581196,1211
+Louisiana,Quinnipiac,Trump,45.787042900919914,1951
+Louisiana,Siena/NYT,Harris,41.94478911347687,1171
+Louisiana,YouGov,Harris,59.248426421545446,1773
+Louisiana,Ipsos,Trump,54.726680582389235,1952
+Louisiana,Quinnipiac,Harris,52.25446937140077,1520
+Louisiana,The Washington Post,Trump,42.39857761655003,897
+Louisiana,YouGov,Trump,51.00518092978746,1512
+Louisiana,Ipsos,Trump,45.25512555614114,1027
+Louisiana,Ipsos,Trump,57.967216623947024,880
+Louisiana,YouGov,Harris,40.18359891604632,539
+Maine,YouGov,Trump,44.72469871863723,1021
+Maine,The Washington Post,Trump,42.600891906768084,972
+Maine,Ipsos,Harris,46.52466293424368,699
+Maine,Quinnipiac,Harris,54.5279777655378,1648
+Maine,YouGov,Harris,59.834904707968235,764
+Maine,YouGov,Harris,54.30267055518925,1274
+Maine,Quinnipiac,Harris,50.08879621978849,685
+Maine,The Washington Post,Trump,48.72095343656838,1775
+Maine,Ipsos,Harris,58.97650501225144,957
+Maine,The Washington Post,Harris,42.40362975280732,1675
+Maryland,Siena/NYT,Trump,41.502903532236814,1330
+Maryland,Siena/NYT,Harris,57.780429855920374,1577
+Maryland,Ipsos,Trump,48.48904190119356,1418
+Maryland,The Washington Post,Trump,40.84721357561648,734
+Maryland,Siena/NYT,Trump,52.9488428728655,1812
+Maryland,Ipsos,Harris,49.372383248992264,684
+Maryland,Ipsos,Harris,52.358522466383874,912
+Maryland,Quinnipiac,Trump,45.41630865074694,1126
+Maryland,Quinnipiac,Harris,43.14590573310852,1021
+Maryland,YouGov,Trump,42.28508540429175,1832
+Massachusetts,Quinnipiac,Trump,50.15365726314485,1577
+Massachusetts,The Washington Post,Harris,50.960645750164986,704
+Massachusetts,Siena/NYT,Trump,42.81292378902435,1278
+Massachusetts,YouGov,Trump,43.395381001755595,1063
+Massachusetts,YouGov,Harris,55.23970646318048,1293
+Massachusetts,The Washington Post,Trump,50.5478988122195,1914
+Massachusetts,Siena/NYT,Trump,57.21978715155274,908
+Massachusetts,Siena/NYT,Trump,53.4710997575894,1869
+Massachusetts,The Washington Post,Trump,40.26082059368491,659
+Massachusetts,Quinnipiac,Trump,53.8639780273661,967
+Michigan,Quinnipiac,Trump,57.8342746431008,1419
+Michigan,Quinnipiac,Harris,52.6370035065338,1580
+Michigan,Ipsos,Harris,42.14589309878647,956
+Michigan,YouGov,Trump,58.42130407691002,1116
+Michigan,Siena/NYT,Trump,53.50724762305617,856
+Michigan,Ipsos,Trump,42.97187425196171,778
+Michigan,Quinnipiac,Harris,54.90683684591204,769
+Michigan,Siena/NYT,Harris,58.85197723750025,1377
+Michigan,Ipsos,Trump,48.41566751245409,1145
+Michigan,YouGov,Harris,45.95446156337857,846
+Minnesota,Quinnipiac,Trump,45.188533402979374,1652
+Minnesota,Ipsos,Trump,44.457626338116825,717
+Minnesota,Quinnipiac,Harris,51.313086869195104,1117
+Minnesota,Siena/NYT,Harris,55.13300265651196,1197
+Minnesota,Quinnipiac,Trump,53.39207091834396,836
+Minnesota,Ipsos,Harris,50.93045588582754,1296
+Minnesota,YouGov,Harris,56.22927315533161,525
+Minnesota,Siena/NYT,Trump,55.18333604093641,1038
+Minnesota,Siena/NYT,Harris,40.401369323953986,1480
+Minnesota,Siena/NYT,Harris,47.61807400267571,1455
+Mississippi,Quinnipiac,Trump,41.017602272331715,1223
+Mississippi,Quinnipiac,Trump,55.95805874560028,1913
+Mississippi,The Washington Post,Harris,58.47398426383734,1745
+Mississippi,Siena/NYT,Harris,50.85196740925312,1170
+Mississippi,Siena/NYT,Trump,57.047292003408074,1360
+Mississippi,The Washington Post,Trump,51.67125726584345,1156
+Mississippi,The Washington Post,Harris,53.366472870111465,1459
+Mississippi,The Washington Post,Trump,50.22629193030298,1944
+Mississippi,Ipsos,Harris,55.25501178577542,1580
+Mississippi,YouGov,Harris,58.0672457581386,1159
+Missouri,Quinnipiac,Harris,56.409490243531764,662
+Missouri,Siena/NYT,Trump,41.42863699235022,737
+Missouri,YouGov,Harris,40.07792686112225,1077
+Missouri,YouGov,Trump,41.043972317129374,829
+Missouri,YouGov,Trump,57.33120359480381,1748
+Missouri,Quinnipiac,Harris,51.52490337844938,1912
+Missouri,YouGov,Trump,46.276851440779865,616
+Missouri,Siena/NYT,Harris,59.189315675757825,1147
+Missouri,Ipsos,Harris,51.82387514039874,1578
+Missouri,Siena/NYT,Trump,50.62818671576679,1740
+Montana,Quinnipiac,Harris,47.67873343080282,1096
+Montana,Siena/NYT,Harris,46.391064589843154,1056
+Montana,Siena/NYT,Trump,56.16772510576993,914
+Montana,Quinnipiac,Harris,40.838389969430864,1657
+Montana,Ipsos,Trump,47.27485389448702,1456
+Montana,The Washington Post,Harris,57.13193933945149,1372
+Montana,Quinnipiac,Trump,53.95893156994134,1187
+Montana,The Washington Post,Trump,53.68972945958376,1256
+Montana,Ipsos,Trump,46.960301054641604,1487
+Montana,YouGov,Harris,51.093636588193476,946
+Nebraska,Ipsos,Trump,42.74487235117704,1627
+Nebraska,Siena/NYT,Harris,55.69863112643361,1320
+Nebraska,YouGov,Harris,57.737251431681216,1330
+Nebraska,Quinnipiac,Trump,44.0819176658988,1210
+Nebraska,The Washington Post,Trump,55.41245922911912,1991
+Nebraska,Ipsos,Harris,51.927259215153754,1733
+Nebraska,Ipsos,Trump,59.15339484810829,848
+Nebraska,YouGov,Harris,43.173767952248454,1924
+Nebraska,Ipsos,Harris,50.51948548294604,1781
+Nebraska,Ipsos,Trump,57.463027350604534,676
+Nevada,The Washington Post,Harris,57.39412140566856,885
+Nevada,YouGov,Harris,40.47377286478877,1664
+Nevada,Quinnipiac,Trump,59.5177938695997,523
+Nevada,Ipsos,Trump,49.80448396410793,1444
+Nevada,The Washington Post,Trump,47.783406460657716,1522
+Nevada,Ipsos,Harris,48.351099197752774,1989
+Nevada,Ipsos,Harris,41.85851640999317,1653
+Nevada,Ipsos,Trump,43.236184203997254,664
+Nevada,The Washington Post,Harris,48.10832990333438,1900
+Nevada,The Washington Post,Harris,46.83628888335079,669
+New Hampshire,The Washington Post,Trump,48.3051490643993,1968
+New Hampshire,Ipsos,Harris,46.08104938175529,1209
+New Hampshire,The Washington Post,Harris,51.205610749311745,1757
+New Hampshire,The Washington Post,Harris,43.11748301144689,921
+New Hampshire,Siena/NYT,Harris,59.1315952828154,1007
+New Hampshire,Ipsos,Harris,40.879332507029176,563
+New Hampshire,Ipsos,Harris,47.44315485469997,579
+New Hampshire,Siena/NYT,Trump,59.25230682827532,1047
+New Hampshire,Ipsos,Trump,52.908550314605236,1486
+New Hampshire,Quinnipiac,Trump,41.22525228653103,974
+New Jersey,Ipsos,Harris,48.19891856983304,790
+New Jersey,YouGov,Harris,48.51810268126428,1264
+New Jersey,Quinnipiac,Harris,50.16316169407219,1866
+New Jersey,The Washington Post,Harris,48.99199821520597,1846
+New Jersey,The Washington Post,Trump,52.465227670036256,978
+New Jersey,YouGov,Harris,42.799558620899916,1973
+New Jersey,YouGov,Trump,58.15892801620066,1634
+New Jersey,The Washington Post,Trump,51.38886549510062,1290
+New Jersey,Ipsos,Harris,50.965611478313804,1404
+New Jersey,Ipsos,Trump,42.33655245043337,1840
+New Mexico,The Washington Post,Harris,55.240566646680236,1306
+New Mexico,Quinnipiac,Trump,49.56738893408328,1745
+New Mexico,YouGov,Trump,55.639378293417394,1810
+New Mexico,Quinnipiac,Harris,40.92053097207099,791
+New Mexico,YouGov,Trump,56.39689335599542,1749
+New Mexico,YouGov,Harris,45.388168948702514,796
+New Mexico,Ipsos,Harris,45.65700829029083,1359
+New Mexico,The Washington Post,Trump,52.864431189373136,1104
+New Mexico,Ipsos,Harris,58.96237675566226,1136
+New Mexico,The Washington Post,Harris,40.13996908906847,1562
+New York,YouGov,Trump,47.03235344029963,1760
+New York,Siena/NYT,Trump,48.380914498120546,664
+New York,The Washington Post,Trump,49.15753594134003,1118
+New York,The Washington Post,Harris,54.23385158646852,1556
+New York,YouGov,Trump,58.39696115348488,582
+New York,YouGov,Harris,52.54221401177347,1919
+New York,YouGov,Trump,58.043635566718876,1365
+New York,YouGov,Trump,55.146583183668554,776
+New York,Siena/NYT,Harris,42.75716731324792,1732
+New York,Siena/NYT,Trump,43.06509756017476,1522
+North Carolina,YouGov,Trump,43.8262437377125,575
+North Carolina,Siena/NYT,Trump,48.66370281204581,1617
+North Carolina,Ipsos,Harris,41.744386036880314,1553
+North Carolina,YouGov,Trump,44.47560002095997,1740
+North Carolina,The Washington Post,Harris,51.44297359045595,1445
+North Carolina,The Washington Post,Harris,48.00338356755674,1698
+North Carolina,Quinnipiac,Trump,51.309307613410056,873
+North Carolina,Siena/NYT,Trump,56.592477574013174,822
+North Carolina,Ipsos,Trump,52.842276389710605,614
+North Carolina,Ipsos,Harris,47.82997503411025,1900
+North Dakota,Siena/NYT,Trump,54.191597094759345,1349
+North Dakota,YouGov,Harris,42.17648146208376,1107
+North Dakota,Siena/NYT,Trump,45.4724546847865,1988
+North Dakota,Quinnipiac,Trump,51.87733865343034,1881
+North Dakota,Siena/NYT,Trump,43.203696268610656,1181
+North Dakota,Quinnipiac,Harris,57.06860477570444,1947
+North Dakota,YouGov,Trump,56.95478315465152,1437
+North Dakota,The Washington Post,Harris,49.55773625057191,1619
+North Dakota,Ipsos,Harris,55.47384244855493,896
+North Dakota,YouGov,Harris,45.90800161007792,1927
+Ohio,YouGov,Harris,41.31256223656237,1671
+Ohio,Ipsos,Harris,48.81066249683499,1488
+Ohio,Quinnipiac,Trump,49.24197715707123,891
+Ohio,Siena/NYT,Harris,46.818687403574586,1092
+Ohio,YouGov,Harris,43.70280637405813,1970
+Ohio,YouGov,Trump,50.139954537153244,1861
+Ohio,Siena/NYT,Trump,40.38382061291486,1243
+Ohio,Ipsos,Trump,55.47372078988701,742
+Ohio,The Washington Post,Harris,51.1933015845716,605
+Ohio,The Washington Post,Harris,52.82925278414041,510
+Oklahoma,YouGov,Trump,49.368642373010516,1124
+Oklahoma,Siena/NYT,Trump,45.58447621297091,1887
+Oklahoma,Quinnipiac,Trump,49.224331406876445,885
+Oklahoma,The Washington Post,Trump,55.854766834527254,902
+Oklahoma,Siena/NYT,Harris,51.711311526596546,960
+Oklahoma,The Washington Post,Trump,47.89517971687019,640
+Oklahoma,The Washington Post,Trump,56.22474699281156,530
+Oklahoma,Siena/NYT,Harris,46.371261877939105,1638
+Oklahoma,The Washington Post,Harris,51.62894676439464,593
+Oklahoma,Ipsos,Trump,49.109779158607125,515
+Oregon,The Washington Post,Harris,45.37606899626553,1943
+Oregon,The Washington Post,Harris,51.103544095531106,677
+Oregon,Siena/NYT,Harris,44.624617686495185,1940
+Oregon,Quinnipiac,Trump,50.864657959900796,1987
+Oregon,Quinnipiac,Trump,48.95140282344073,1935
+Oregon,Ipsos,Harris,42.60576273780316,676
+Oregon,Ipsos,Trump,52.4345196550712,1023
+Oregon,The Washington Post,Harris,50.95988566521555,1960
+Oregon,YouGov,Harris,42.984884274192154,1423
+Oregon,Quinnipiac,Harris,51.190917384810746,703
+Pennsylvania,Quinnipiac,Harris,48.5377115290612,1698
+Pennsylvania,Quinnipiac,Harris,48.954601967707276,872
+Pennsylvania,Quinnipiac,Harris,56.66589543223381,1145
+Pennsylvania,The Washington Post,Trump,54.3917456548661,1987
+Pennsylvania,Ipsos,Trump,49.13773511070758,883
+Pennsylvania,YouGov,Harris,50.42528525926173,1645
+Pennsylvania,Quinnipiac,Trump,44.849141552113,1922
+Pennsylvania,Siena/NYT,Harris,41.51721669360995,1926
+Pennsylvania,YouGov,Harris,47.825901824980974,814
+Pennsylvania,Quinnipiac,Harris,40.262164319865406,758
+Rhode Island,The Washington Post,Trump,57.34998937230557,993
+Rhode Island,YouGov,Trump,59.852313473820686,1812
+Rhode Island,Siena/NYT,Trump,54.17710776440799,1571
+Rhode Island,Siena/NYT,Trump,56.53430980630219,1854
+Rhode Island,Siena/NYT,Harris,57.83792539034039,1623
+Rhode Island,Quinnipiac,Harris,50.78821465373039,1515
+Rhode Island,Quinnipiac,Harris,51.10627183690667,1631
+Rhode Island,Ipsos,Harris,45.528797674924135,1824
+Rhode Island,The Washington Post,Harris,53.18395851645619,509
+Rhode Island,The Washington Post,Trump,44.86870484892279,669
+South Carolina,YouGov,Harris,45.76532409526408,1803
+South Carolina,The Washington Post,Harris,54.31561917066574,1871
+South Carolina,The Washington Post,Trump,54.55067266244441,901
+South Carolina,YouGov,Harris,43.46086077392101,1732
+South Carolina,Ipsos,Harris,46.126225176267326,1991
+South Carolina,Ipsos,Trump,47.39814553409815,1832
+South Carolina,The Washington Post,Harris,41.55443108640611,1918
+South Carolina,The Washington Post,Trump,54.26300377584994,607
+South Carolina,The Washington Post,Harris,51.0184545814991,507
+South Carolina,YouGov,Trump,42.71730792708695,1125
+South Dakota,Quinnipiac,Trump,59.48327388148755,760
+South Dakota,Ipsos,Harris,51.23926317784935,1040
+South Dakota,The Washington Post,Trump,55.76818763278425,1829
+South Dakota,Quinnipiac,Trump,56.97828168515116,825
+South Dakota,YouGov,Harris,57.56083549465984,1597
+South Dakota,Quinnipiac,Harris,56.00952747743577,781
+South Dakota,YouGov,Harris,52.80296972952783,1790
+South Dakota,YouGov,Trump,52.57855521515012,1785
+South Dakota,The Washington Post,Trump,45.42818009387702,703
+South Dakota,Quinnipiac,Harris,40.59879650827497,1742
+Tennessee,Quinnipiac,Trump,48.39728429913521,1195
+Tennessee,The Washington Post,Trump,47.10869342088699,1875
+Tennessee,Quinnipiac,Trump,47.84662507940084,1166
+Tennessee,Ipsos,Trump,43.43873664736748,1489
+Tennessee,Ipsos,Trump,46.392842386849225,1642
+Tennessee,Ipsos,Harris,48.27110128477216,951
+Tennessee,The Washington Post,Trump,55.1867139339447,1355
+Tennessee,Ipsos,Trump,45.43780410196632,1121
+Tennessee,Quinnipiac,Harris,42.311649140901864,1145
+Tennessee,Ipsos,Harris,40.5867322999984,1559
+Texas,Siena/NYT,Trump,56.137105957604945,1578
+Texas,Ipsos,Trump,49.60252873133868,1763
+Texas,The Washington Post,Harris,56.12495880573988,1390
+Texas,YouGov,Trump,41.5801136335358,1827
+Texas,The Washington Post,Trump,42.30674819089472,1533
+Texas,Quinnipiac,Harris,42.5883257901296,1164
+Texas,Quinnipiac,Harris,54.77497084066272,1945
+Texas,Siena/NYT,Trump,55.141970668919384,1628
+Texas,The Washington Post,Harris,59.84910617116839,1292
+Texas,The Washington Post,Harris,52.491059745661914,1911
+Utah,YouGov,Harris,45.773802171461284,962
+Utah,Siena/NYT,Trump,43.998235487379134,1703
+Utah,Ipsos,Harris,56.01835697423667,777
+Utah,The Washington Post,Trump,54.55525420606136,1896
+Utah,Ipsos,Trump,44.34095949400216,740
+Utah,Siena/NYT,Harris,54.88477010745555,523
+Utah,Ipsos,Harris,57.33307416550815,1178
+Utah,Ipsos,Trump,50.58811512775719,536
+Utah,Siena/NYT,Harris,51.97277093771845,1185
+Utah,YouGov,Harris,58.75264664646238,1065
+Vermont,YouGov,Trump,59.01448196731508,1826
+Vermont,Quinnipiac,Harris,53.21064602583647,518
+Vermont,YouGov,Trump,41.44573161844164,877
+Vermont,Quinnipiac,Trump,56.52663157321513,1048
+Vermont,Ipsos,Harris,49.5908815599978,1767
+Vermont,YouGov,Harris,47.82457566820085,547
+Vermont,YouGov,Trump,45.98245551344007,1711
+Vermont,The Washington Post,Harris,44.88616499118507,963
+Vermont,Quinnipiac,Trump,48.43620263505727,892
+Vermont,Quinnipiac,Harris,58.75540353823453,1662
+Virginia,YouGov,Trump,45.28970233164728,1822
+Virginia,YouGov,Harris,51.37137508019805,1894
+Virginia,The Washington Post,Trump,44.04369135387242,1169
+Virginia,YouGov,Trump,43.856112537905574,1712
+Virginia,YouGov,Harris,54.37223490327597,810
+Virginia,The Washington Post,Harris,46.27035791054368,688
+Virginia,The Washington Post,Harris,42.76780254673213,1941
+Virginia,Siena/NYT,Harris,41.16061395499855,1905
+Virginia,YouGov,Trump,58.6219928227365,537
+Virginia,Quinnipiac,Harris,51.36676024179906,1607
+Washington,Ipsos,Harris,42.35540721099824,818
+Washington,Quinnipiac,Harris,51.29588962998241,1185
+Washington,Siena/NYT,Trump,50.80512365791947,1345
+Washington,Quinnipiac,Trump,56.39365036971867,1925
+Washington,YouGov,Harris,54.059590077959,619
+Washington,The Washington Post,Harris,51.35496747214347,1211
+Washington,YouGov,Trump,54.426185325719416,1854
+Washington,YouGov,Trump,55.04888426978141,940
+Washington,Quinnipiac,Trump,47.62845193501562,1722
+Washington,Siena/NYT,Trump,45.76020562555641,1098
+West Virginia,YouGov,Harris,50.63366654329002,571
+West Virginia,Siena/NYT,Trump,45.192921427078545,1838
+West Virginia,The Washington Post,Harris,56.63580635562539,1213
+West Virginia,YouGov,Harris,48.10727769508958,1176
+West Virginia,Quinnipiac,Trump,41.452638511545956,580
+West Virginia,Siena/NYT,Trump,59.075172492302954,1578
+West Virginia,Siena/NYT,Harris,44.34367565903813,633
+West Virginia,YouGov,Harris,48.11250533442944,923
+West Virginia,The Washington Post,Harris,52.51336630899459,1255
+West Virginia,YouGov,Harris,52.56809607613832,505
+Wisconsin,Ipsos,Harris,46.56477328389883,1651
+Wisconsin,YouGov,Harris,42.77818983886391,1378
+Wisconsin,Ipsos,Harris,58.293143408373,1167
+Wisconsin,Siena/NYT,Harris,51.98231934569776,548
+Wisconsin,The Washington Post,Harris,54.99214191921055,1999
+Wisconsin,The Washington Post,Harris,58.37909490335733,1762
+Wisconsin,Quinnipiac,Trump,50.57530791964382,1863
+Wisconsin,YouGov,Harris,47.43957492057234,692
+Wisconsin,The Washington Post,Harris,41.31616642232984,1208
+Wisconsin,YouGov,Trump,57.0873984741047,958
+Wyoming,Ipsos,Harris,50.20822602789849,802
+Wyoming,The Washington Post,Trump,44.199961172416806,1671
+Wyoming,YouGov,Harris,47.51686873380095,1397
+Wyoming,The Washington Post,Harris,44.14730999618769,689
+Wyoming,YouGov,Harris,49.18481634464115,690
+Wyoming,The Washington Post,Trump,44.83004500158131,945
+Wyoming,Ipsos,Harris,42.37380644772202,618
+Wyoming,YouGov,Trump,41.44938299432397,1582
+Wyoming,YouGov,Harris,53.81979699712247,1316
+Wyoming,Siena/NYT,Harris,45.73915238492191,560
