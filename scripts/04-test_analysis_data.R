@@ -12,23 +12,23 @@ library(tidyverse)
 library(testthat)
 library(arrow)
 
-data <- read_parquet("data/02-analysis_data/clean_president_polls.parquet")
+clean_president_polls <- read_parquet("data/02-analysis_data/clean_president_polls.parquet")
 
 #### Test data ####
 
 # Test 1: Ensure there are no missing values in important columns
-# Since state might be NA for national polls, we don’t include it in this test.
 stopifnot(!any(is.na(clean_president_polls$pollster)))
 stopifnot(!any(is.na(clean_president_polls$numeric_grade)))
 stopifnot(!any(is.na(clean_president_polls$candidate_name)))
 stopifnot(!any(is.na(clean_president_polls$pct)))
 stopifnot(!any(is.na(clean_president_polls$sample_size)))
+stopifnot(!any(is.na(clean_president_polls$state)))
 
 #### Test 2: Ensure numeric_grade values are within the expected range
 stopifnot(all(clean_president_polls$numeric_grade >= 0.5 & clean_president_polls$numeric_grade <= 3.0))
 
 #### Test 3: Ensure state values are either valid U.S. state names or NA (for national polls)
-expected_states <- c(state.name, NA)
+expected_states <- c(state.name)
 stopifnot(all(clean_president_polls$state %in% expected_states))
 
 #### Test 4: Ensure candidate_name contains only "Kamala Harris" and "Donald Trump"

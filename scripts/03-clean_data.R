@@ -15,7 +15,7 @@ library(lubridate)
 library(broom)
 
 #### Clean data ####
-clean_president_polls <- read_csv("data/01-raw_data/raw_president_polls.csv", 
+clean_president_polls <- read_csv("data/01-raw_data/raw_president_polls_oct22.csv", 
                                   col_types = cols(poll_id = col_skip(), 
                                                    pollster_id = col_skip(), sponsor_ids = col_skip(), 
                                                    sponsors = col_skip(), display_name = col_skip(), 
@@ -55,12 +55,14 @@ clean_president_polls <- clean_president_polls %>%
     start_date = mdy(start_date),
     is_harris = ifelse(candidate_name == "Kamala Harris", 1, 0)) %>%
   drop_na(sample_size) %>% 
-  drop_na(numeric_grade)
+  drop_na(numeric_grade) %>%
+  drop_na(state)
 
 # Filter for high quality pollsters and state-specific Harris and Trump polls
 clean_president_polls <- clean_president_polls %>%
   filter(
-    candidate_name %in% c("Kamala Harris", "Donald Trump")
+    candidate_name %in% c("Kamala Harris", "Donald Trump"),
+    start_date >= ymd("2024-07-21")
   ) 
 
 #### Save data ####
