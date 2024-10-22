@@ -27,7 +27,7 @@ stopifnot(!any(is.na(clean_president_polls$state)))
 #### Test 2: Ensure numeric_grade values are within the expected range
 stopifnot(all(clean_president_polls$numeric_grade >= 0.5 & clean_president_polls$numeric_grade <= 3.0))
 
-#### Test 3: Ensure state values are either valid U.S. state names or NA (for national polls)
+#### Test 3: Ensure state values are either valid U.S. state names
 expected_states <- c(state.name)
 stopifnot(all(clean_president_polls$state %in% expected_states))
 

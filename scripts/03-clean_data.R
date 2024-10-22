@@ -50,7 +50,6 @@ clean_president_polls <- clean_president_polls %>%
   mutate(
     state = str_replace(state, "Maine CD-[12]", "Maine"),
     state = str_replace(state, "Nebraska CD-2", "Nebraska"),
-    is_state = as.numeric(!is.na(state)),
     end_date = mdy(end_date),
     start_date = mdy(start_date),
     is_harris = ifelse(candidate_name == "Kamala Harris", 1, 0)) %>%
