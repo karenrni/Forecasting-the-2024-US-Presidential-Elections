@@ -10,7 +10,7 @@
 library(readr)
 
 #### Download/Read Dataset ####
-raw_president_polls <- read_csv("data/raw_data/raw_president_polls.csv")
+raw_president_polls <- read_csv("data/01-raw_data/raw_president_polls.csv")
 
 
 
