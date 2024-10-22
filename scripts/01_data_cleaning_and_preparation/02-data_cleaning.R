@@ -15,7 +15,7 @@ library(lubridate)
 library(broom)
 
 #### Clean data ####
-clean_president_polls <- read_csv("data/raw_data/raw_president_polls.csv", 
+clean_president_polls <- read_csv("data/01-raw_data/raw_president_polls.csv", 
                                 col_types = cols(poll_id = col_skip(), 
                                                  pollster_id = col_skip(), sponsor_ids = col_skip(), 
                                                  sponsors = col_skip(), display_name = col_skip(), 
@@ -62,8 +62,7 @@ clean_president_polls <- clean_president_polls %>%
          candidate_name %in% c("Kamala Harris", "Donald Trump")
          ) 
 
-
 #### Save data ####
-write_parquet(clean_president_polls, "data/analysis_data/clean_president_polls.parquet")
+write_parquet(clean_president_polls, "data/02-analysis_data/clean_president_polls.parquet")
 
 
