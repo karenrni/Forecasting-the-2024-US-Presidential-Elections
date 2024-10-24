@@ -58,6 +58,15 @@ bayesian_model <- stan_glmer(
   adapt_delta = 0.95
 )
 
+# Posterior predictive checks
+pp_check(bayesian_model)
+
+# Summarize the model
+summary(bayesian_model)
+
+# Plot random effects
+plot(bayesian_model, pars = "(Intercept)", prob = 0.95)
+
 #### Save model ####
 saveRDS(
   first_model,
