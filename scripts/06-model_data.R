@@ -1,37 +1,65 @@
 #### Preamble ####
-# Purpose: Models... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Models
+# Author: Cristina Su Lam, Karen Riani, Mariko Lee
+# Date: 23 October 2024
 # License: MIT
 # Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Any other information needed? None
 
 
 #### Workspace setup ####
 library(tidyverse)
+library(arrow)
+library(dplyr)
 library(rstanarm)
 
-#### Read data ####
-analysis_data <- read_csv("data/analysis_data/analysis_data.csv")
+#### Read upcoming presidential election forecast data ####
+clean_president_polls <- read_parquet("data/02-analysis_data/clean_president_polls.parquet")
 
-### Model data ####
-first_model <-
-  stan_glm(
-    formula = flying_time ~ length + width,
-    data = analysis_data,
-    family = gaussian(),
-    prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
-    prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
-    prior_aux = exponential(rate = 1, autoscale = TRUE),
-    seed = 853
-  )
+### Logistic Regression ###
 
+# Normalize weights to a reasonable scale
+clean_president_polls <- clean_president_polls %>%
+  mutate(weight = sample_size / mean(sample_size)) %>%
+  mutate(weight = weight * numeric_grade)
+
+model_logistic <- glm(
+  is_harris ~ pollster + state + sample_size + pct,
+  data = clean_president_polls,
+  family = binomial(link = "logit"),
+  weights = weight
+)
+model_logistic
+
+# Predict the probabilities of Harris winning
+clean_president_polls <- clean_president_polls %>%
+  mutate(predicted_prob_harris = predict(model_logistic, type = "response"))
+clean_president_polls
+
+
+### Bayesian Model ###
+
+# Specify priors 
+priors <- normal(0, 2.5, autoscale = TRUE)
+
+# Model 
+model_formula <- is_harris ~ sample_size + pct + (1 | pollster) + (1 | state)
+
+# Fit the model
+bayesian_model <- stan_glmer(
+  formula = model_formula,
+  data = clean_president_polls,  
+  family = binomial(link = "logit"),
+  prior = priors,
+  prior_intercept = priors,
+  seed = 123,
+  cores = 4,
+  weights = weight,
+  adapt_delta = 0.95
+)
 
 #### Save model ####
 saveRDS(
   first_model,
   file = "models/first_model.rds"
 )
-
-
