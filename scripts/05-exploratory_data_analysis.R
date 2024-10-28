@@ -10,7 +10,6 @@
 library(tidyverse)
 library(rstanarm)
 library(arrow)
-library(dplyr)
 library(maps)
 
 #### Read upcoming presidential election forecast data ####
@@ -96,17 +95,18 @@ state_winners$state <- tolower(state_winners$state)
 # Load USA state map data
 usa_states <- map_data("state")
 
-# Merge the winners with the USA map data
-merged_data <- merge(usa_states, state_winners, by.x = "region", by.y = "state", all.x = TRUE)
+# Merge and sort the winners with the USA map data
+merged_data <- merge(usa_states, state_winners, by.x = "region", by.y = "state", sort = FALSE, all.x = TRUE)
+merged_data <- merged_data[order(merged_data$group, merged_data$order), ]
 
 # Plot the election map
 ggplot(data = merged_data, aes(x = long, y = lat, group = group, fill = winner)) +
-  geom_polygon(color = "black", size = 0.3) +  # Add state borders
+  geom_polygon(color = "black", size = 0.3) + 
+  labs(fill = "Winner") +
   scale_fill_manual(values = c("Kamala Harris" = "blue", "Donald Trump" = "red")) +  # Blue for Harris, Red for Trump
-  coord_fixed(1.3) +  # Fix the aspect ratio for a proper USA map
-  labs(title = "2024 Election Results by State", x = "Longitude", y = "Latitude") +
-  theme_void() +  # Remove gridlines and axes for a cleaner map
-  theme(legend.position = "none")  # Remove the legend if you don't want it
+  coord_fixed(1.3) + 
+  labs(title = "Predicted 2024 Election Results by State", x = "Longitude", y = "Latitude") +
+  theme_void() 
 
 
 
