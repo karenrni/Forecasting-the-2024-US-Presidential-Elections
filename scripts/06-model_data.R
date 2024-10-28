@@ -43,6 +43,35 @@ logistic_model <- glm(
 clean_president_polls <- clean_president_polls %>%
   mutate(predicted_prob_harris = predict(logistic_model, type = "response"))
 
+# Calculate the unweighted average predicted probability for Kamala Harris
+overall_predicted_prob_harris <- mean(clean_president_polls$predicted_prob_harris)
+
+# Convert to percentage
+overall_percentage_harris <- overall_predicted_prob_harris * 100
+overall_percentage_trump <- (1 - overall_predicted_prob_harris) * 100
+
+# Print the results
+cat("Overall Percentage for Kamala Harris:", overall_percentage_harris, "%\n")
+cat("Overall Percentage for Donald Trump:", overall_percentage_trump, "%\n")
+
+
+# Calculate the average predicted probability by state
+state_predictions <- clean_president_polls %>%
+  group_by(state) %>%
+  summarize(avg_predicted_prob_harris = mean(predicted_prob_harris))
+
+# Determine the winner for each state based on the average probability
+state_predictions <- state_predictions %>%
+  mutate(state_winner = ifelse(avg_predicted_prob_harris > 0.5, "Harris", "Trump"))
+
+# Count the number of states won by each candidate
+overall_winner_summary <- state_predictions %>%
+  count(state_winner)
+
+# View results
+state_predictions    
+overall_winner_summary 
+
 ### Step 2: Train/Test Split for Model Validation ###
 
 # Create training and test datasets (70% train, 30% test)
