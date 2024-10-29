@@ -1,16 +1,15 @@
 #### Preamble ####
-# Purpose: Models
+# Purpose: Fitting Model and Making Predictions
 # Author: Cristina Su Lam, Karen Riani, Mariko Lee
 # Date: 23 October 2024
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
+# Pre-requisites: Run 03-clean_data.R script
 # Any other information needed? None
 
 
 #### Workspace setup ####
 library(tidyverse)
 library(arrow)
-library(dplyr)
 library(rstanarm)
 library(pROC)
 
