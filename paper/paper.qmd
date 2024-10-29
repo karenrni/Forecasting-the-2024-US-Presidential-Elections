@@ -8,7 +8,7 @@ author:
 thanks: "Code and data are available at: https://projects.fivethirtyeight.com/polls/president-general/2024/national/"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "We forecast the 2024 U.S. presidential winner using state-level poll averages for Kamala Harris and Donald Trump, weighted by poll quality and sample size. Applying a logistic regression model, we find a slight 0.8% lead for Trump over Harris, using polls taken since the reelection bid on July 21, 2024. Weighting the polls increases the influence of the most reliable data in shaping the forecast—limiting skewed results and showing a clearer voter sentiment amidst a particularly competitive election. These results show who may be leading the elections via polls, giving campaigns the insights they need and reinforcing public trust in the election process."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -28,13 +28,11 @@ data <- read_csv(here::here("data/01-raw_data/raw_president_polls.csv"))
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @talia, @opendatatorotno, and @rohan.
 
-The remainder of this paper is structured as follows. @sec-mydatasection
-
+The following structure of this paper is as follows:  @sec-mydatasection presents the data sources and methodology, then  @sec-myresults followed by  @sec-mydisc, which discusses the results and their implications.  @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research.
 
 
-# Data {#sec-data}
+# Data {#sec-mydatasection}
 
 Some of our data is of marriage license (@fig-marriage), from @TorontoOpenData
 
@@ -43,27 +41,14 @@ Some of our data is of marriage license (@fig-marriage), from @TorontoOpenData
 #| fig-cap: Marriage License
 #| echo: false
 
-# data |> 
-#   ggplot(aes(x = date, y = marriage_licenses)) +
-#   geom_point()
-
 ```
 
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+# Results {#sec-myresults}
 
 
 
 
-
-
-
-
-
-
-
-# Discussion
+# Discussion {#sec-mydisc}
 
 ## First discussion point {#sec-first-point}
 
