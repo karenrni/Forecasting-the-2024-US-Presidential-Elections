@@ -8,7 +8,6 @@
 
 #### Workspace setup ####
 library(readr)
-library(kagglehub)
 
 #### Download/Read Dataset ####
 raw_president_polls <- read_csv("https://projects.fivethirtyeight.com/polls/data/president_polls.csv")

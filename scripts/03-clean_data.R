@@ -15,7 +15,7 @@ library(lubridate)
 library(broom)
 
 #### Clean data ####
-clean_president_polls <- read_csv("data/01-raw_data/raw_president_polls_oct22.csv", 
+clean_president_polls <- read_csv("data/01-raw_data/raw_president_polls.csv", 
                                   col_types = cols(poll_id = col_skip(), 
                                                    pollster_id = col_skip(), sponsor_ids = col_skip(), 
                                                    sponsors = col_skip(), display_name = col_skip(), 
@@ -49,7 +49,9 @@ clean_president_polls <- read_csv("data/01-raw_data/raw_president_polls_oct22.cs
 clean_president_polls <- clean_president_polls %>%
   mutate(
     state = str_replace(state, "Maine CD-[12]", "Maine"),
+    state = str_replace(state, "Nebraska CD-1", "Nebraska"),
     state = str_replace(state, "Nebraska CD-2", "Nebraska"),
+    state = str_replace(state, "Nebraska CD-3", "Nebraska"),
     end_date = mdy(end_date),
     start_date = mdy(start_date),
     is_harris = ifelse(candidate_name == "Kamala Harris", 1, 0)) %>%
