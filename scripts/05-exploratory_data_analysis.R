@@ -78,7 +78,7 @@ ggplot(clean_president_polls, aes(x = sample_size)) +
   scale_x_continuous(labels = scales::comma)
 
 # 5. Plot for is_harris variable
-ggplot(clean_president_polls_filtered, aes(x = factor(is_harris))) +
+ggplot(clean_president_polls, aes(x = factor(is_harris))) +
   geom_bar(fill = "purple", alpha = 0.7) +
   labs(title = "Distribution of Polls by Harris vs Non-Harris", x = "Is Harris", y = "Number of Polls") +
   scale_x_discrete(labels = c("0" = "Trump", "1" = "Harris"))
