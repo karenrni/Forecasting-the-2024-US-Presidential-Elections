@@ -28,7 +28,8 @@ set.seed(123)
 
 # Add weights to the dataset
 clean_president_polls <- clean_president_polls %>%
-  mutate(weight = (sample_size / mean(sample_size)) * numeric_grade)
+  mutate(weight = (numeric_grade * (sample_size / mean(sample_size))))
+
 
 # Fit the initial logistic regression model
 logistic_model <- glm(
@@ -42,7 +43,7 @@ logistic_model <- glm(
 clean_president_polls <- clean_president_polls %>%
   mutate(predicted_prob_harris = predict(logistic_model, type = "response"))
 
-# Calculate the unweighted average predicted probability for Kamala Harris
+# Calculate the weighted average predicted probability for Kamala Harris
 overall_predicted_prob_harris <- mean(clean_president_polls$predicted_prob_harris)
 
 # Convert to percentage
@@ -137,6 +138,34 @@ bayesian_model <- stan_glmer(
   adapt_delta = 0.95
 )
 
+
+
+# Predict probabilities for Harris winning across all posterior draws
+predicted_probs_matrix <- posterior_predict(bayesian_model, type = "response")
+
+# Take the mean across posterior samples for each observation
+# Transpose the matrix to get one mean per observation
+clean_president_polls <- clean_president_polls %>%
+  mutate(predicted_prob_harris = rowMeans(t(predicted_probs_matrix)))
+
+# Calculate the unweighted average predicted probability for Kamala Harris
+overall_predicted_prob_harris <- mean(clean_president_polls$predicted_prob_harris)
+
+# Convert to percentage
+overall_percentage_harris <- overall_predicted_prob_harris * 100
+overall_percentage_trump <- (1 - overall_predicted_prob_harris) * 100
+
+# Print the results
+cat("Overall Percentage for Kamala Harris:", overall_percentage_harris, "%\n")
+cat("Overall Percentage for Donald Trump:", overall_percentage_trump, "%\n")
+
+
+
+
+
+
+
+
 # Posterior predictive checks and plot for the initial model
 pp_check(bayesian_model)
 plot(bayesian_model, pars = "(Intercept)", prob = 0.95)
@@ -173,6 +202,7 @@ test_data <- test_data %>%
 test_data <- test_data %>%
   mutate(prediction = ifelse(predicted_prob_harris > 0.5, 1, 0))
 
+
 ### Step 5: Model Validation ###
 
 # Calculate RMSE between actual outcomes and predicted probabilities
@@ -182,6 +212,7 @@ print(rmse_value)
 # Calculate AUC
 auc_value <- auc(test_data$is_harris, test_data$predicted_prob_harris)
 auc_value
+
 
 
 #### Save model ####
