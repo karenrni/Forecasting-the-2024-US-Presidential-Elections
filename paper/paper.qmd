@@ -1,11 +1,11 @@
 ---
 title: "2024 US Presidential Election Forecasting"
-subtitle: "subtitle"
+subtitle: "Trump forcasted to win popular vote by state over Harris by 0.8%"
 author: 
   - Mariko Lee
   - Karen Riani
   - Cristina Su Lam
-thanks: "Code and data are available at: https://projects.fivethirtyeight.com/polls/president-general/2024/national/"
+thanks: "Code and data are available at: https://github.com/karenrni/Forecasting-the-2024-US-Presidential-Elections"
 date: today
 date-format: long
 abstract: "We forecast the 2024 U.S. presidential winner using state-level poll averages for Kamala Harris and Donald Trump, weighted by poll quality and sample size. Applying a logistic regression model, we find a slight 0.8% lead for Trump over Harris, using polls taken since the reelection bid on July 21, 2024. Weighting the polls increases the influence of the most reliable data in shaping the forecast—limiting skewed results and showing a clearer voter sentiment amidst a particularly competitive election. These results show who may be leading the elections via polls, giving campaigns the insights they need and reinforcing public trust in the election process."
@@ -20,14 +20,21 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
+library(arrow)
 
-data <- read_csv(here::here("data/01-raw_data/raw_president_polls.csv"))
+#data <- read_csv(here::here("data/01-raw_data/raw_president_polls.csv"))
+# cleaned_data <- read_parquet("data/02-analysis_data/clean_president_polls.parquet")
 
 ```
 
 
 # Introduction
 
+Amid the chaotic, high-stakes 2024 U.S. presidential election, forecasting models offer crucial insights into voter sentiment as Americans face a tight race between top candidates Kamala Harris and Donald Trump. With the attempted assassination of Trump, Joe Biden’s endorsement of Harris, and recent crises such as hurricanes disrupting voter access in swing states, public opinion remains volatile [@CBSNews2024_CampaignPromises; @ABCNews2024_HurricaneImpact]. Key events like Trump’s policy proposals on social security and public safety, Harris’s advocacy for reproductive rights, and other rising debates on gun control have further polarized the electorate, making forecasting models essential in offering clarity amid this competitive landscape [@HRW2022_RoeVWade].
+
+This study joins the growing body of forecast models—including media outlets’ own polls-of-polls approaches and various Bayesian methods—by refining the aggregation of poll data with logistic regression, weighted by sample size and pollster rating [@NYTimes2024_ElectionPolls; @AP2024_ElectionForecasts]. In an environment where neither candidate shows a decisive lead, this model aims to add precision by filtering out lower-quality polls, improving forecast reliability for strategic decision-making and public confidence in election projections [@Bloomberg2024_KeyStates].
+
+We estimate a slim 0.8% lead for Trump over Harris in the overall popular vote by aggregating state-level polling data, a close margin that highlights the importance of updated, representative data amidst competing forecasts and fluctuating polls. By using polls weighted by reliability and focusing on data collected after Harris' campaign declaration, this model maintains transparency, offering a robust perspective on public sentiment and helping to clarify perceptions in a highly competitive election.
 
 The following structure of this paper is as follows:  @sec-mydatasection presents the data sources and methodology, then  @sec-myresults followed by  @sec-mydisc, which discusses the results and their implications.  @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research.
 
@@ -58,7 +65,7 @@ If my paper were 10 pages, then should be be at least 2.5 pages. The discussion 
 
 ## Third discussion point
 
-## Weaknesses and next steps
+## Weaknesses and next steps {#sec-mylimits}
 
 Weaknesses and next steps should also be included.
 
@@ -88,7 +95,7 @@ Using stratified random sampling, The Washington Post ensures that important dem
 Particularly in situations where state-level polling data is scarce, The Washington Post’s polling averages consider the state’s voting record in the last two presidential elections [@WashPost2024_PollingAverages]. This adjustment offers a more accurate representation of voters' preferences in states with fewer high-quality polls. However, there may be a trade-off since, depending solely on historical data, we may miss recent shifts in voter sentiment [@WashPost2024_ABCMethodology].
 
 ## Non-response Handling
-The Washington Post uses response weighting, which modifies the results according to demographic variables such as age, race, and education, in order to address non-response bias. In spite of variations in response rates among demographic groupings, this ensures that the final sample more accurately represents the population [@WashPost2023_Standard].
+The Washington Post uses response weighting, which modifies the results according to demographic variables such as age, race, and education, in order to address non-response bias. In spite of variations in response rates among demographic groupings, this ensures that the final sample more accurately represents the population [@WashPost2023_Standards].
 
 ABC News also addressed non-response bias by applying post-stratification adjustments and sending email reminders to non-respondents. In addition, The Washington Post and ABC News both ensure that their samples are weighted to account for any anomalies in non-response [@ABCNews2024_Methodology] [@WashPost2023_Standards].
 
