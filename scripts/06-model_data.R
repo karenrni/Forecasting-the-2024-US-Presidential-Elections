@@ -90,7 +90,7 @@ model_logistic_train <- glm(
 )
 
 # Remove unused levels from the model object
-model_logistic_clean <- model_logistic
+model_logistic_clean <- model_logistic_train
 model_logistic_clean$xlevels$pollster <- intersect(levels(test_data$pollster), levels(train_data$pollster))
 model_logistic_clean$xlevels$state <- intersect(levels(test_data$state), levels(train_data$state))
 
@@ -217,7 +217,7 @@ auc_value
 
 #### Save model ####
 saveRDS(
-  model_logistic,
+  model_logistic_clean,
   file = "models/first_model.rds"
 )
 
