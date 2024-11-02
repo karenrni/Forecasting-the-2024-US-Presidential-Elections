@@ -5,6 +5,14 @@
     url = {https://projects.fivethirtyeight.com/polls/president-general/2024/national/},
 }
 
+@misc{citeTS,
+  title = {Telling Stories with Data},
+  author = {Rohan Alexander},
+  year = {2023},
+  publisher = {Chapman and Hall/CRC},
+  url = {https://tellingstorieswithdata.com/}
+}
+
 @Manual{dplyr_2023,
     title = {Dplyr: A Grammar of Data Manipulation},
     author = {Hadley Wickham and Lionel Henry and Romain François},
@@ -13,13 +21,14 @@
     url = {https://CRAN.R-project.org/package=dplyr},
 }
 
-@Manual{r_core_team_2023,
+ @Manual{citeR,
     title = {R: A Language and Environment for Statistical Computing},
     author = {{R Core Team}},
-    year = {2023},
-    note = {Vienna, Austria: R Foundation for Statistical Computing},
+    organization = {R Foundation for Statistical Computing},
+    address = {Vienna, Austria},
+    year = {2024},
     url = {https://www.R-project.org/},
-}
+  }
 
 @Misc{citeArm,
     title = {rstanarm: {Bayesian} applied regression modeling via {Stan}.},
@@ -38,7 +47,7 @@
 }
 
 @Article{tidyverse_welcome_2019,
-    title = {Welcome to the Tidyverse},
+    title = {Welcome to the {Tidyverse}},
     author = {Hadley Wickham and Mara Averick and Jennifer Bryan and Winston Chang and Lucy D'Agostino McGowan and Romain François and Garrett Grolemund et al.},
     journal = {Journal of Open Source Software},
     volume = {4},
@@ -49,12 +58,70 @@
     url = {https://doi.org/10.21105/joss.01686},
 }
 
-@Manual{knitr_xie_2023,
-    title = {Knitr: A General-Purpose Package for Dynamic Report Generation in R},
-    author = {Yihui Xie},
+  @Manual{janitor,
+    title = {janitor: Simple Tools for Examining and Cleaning Dirty Data},
+    author = {Sam Firke},
     year = {2023},
-    url = {https://yihui.org/knitr/},
+    note = {R package version 2.2.0},
+    url = {https://CRAN.R-project.org/package=janitor},
+  }
+
+  @Manual{arrow,
+    title = {arrow: Integration to 'Apache' 'Arrow'},
+    author = {Neal Richardson and Ian Cook and Nic Crane and Dewey Dunnington and Romain François and Jonathan Keane and Dragoș Moldovan-Grünfeld and Jeroen Ooms and Jacob Wujciak-Jens and {Apache Arrow}},
+    year = {2024},
+    note = {R package version 17.0.0.1},
+    url = {https://CRAN.R-project.org/package=arrow},
+  }
+
+@Manual{readr,
+    title = {Readr: Read Rectangular Text Data},
+    author = {Hadley Wickham and Jim Hester and Romain François},
+    year = {2023},
+    note = {R package version},
+    url = {https://CRAN.R-project.org/package=readr},
 }
+
+@Manual{lubridate,
+    title = {Lubridate: Make Dealing with Dates a Little Easier},
+    author = {Garrett Grolemund and Hadley Wickham},
+    year = {2023},
+    note = {R package version},
+    url = {https://CRAN.R-project.org/package=lubridate},
+}
+
+@Manual{broom,
+    title = {Broom: Convert Statistical Analysis Objects into Tidy Tibbles},
+    author = {David Robinson and Alex Hayes and Max Kuhn},
+    year = {2023},
+    note = {R package version},
+    url = {https://CRAN.R-project.org/package=broom},
+}
+
+@Manual{testthat,
+    title = {Testthat: Unit Testing for R},
+    author = {Hadley Wickham and Jim Hester},
+    year = {2023},
+    note = {R package version},
+    url = {https://CRAN.R-project.org/package=testthat},
+}
+
+@Manual{maps,
+    title = {Maps: Draw Geographical Maps},
+    author = {Original S code by Richard A. Becker and Allan R. Wilks. R version by Ray Brownrigg. Enhancements by Thomas P Minka and Alex Deckmyn.},
+    year = {2023},
+    note = {R package version},
+    url = {https://CRAN.R-project.org/package=maps},
+}
+
+@Manual{pROC,
+    title = {pROC: Display and Analyze ROC Curves},
+    author = {Xavier Robin and Natacha Turck and Alexandre Hainard and Natalia Tiberti and Frédéric Lisacek and Jean-Charles Sanchez and Markus Müller},
+    year = {2023},
+    note = {R package version},
+    url = {https://CRAN.R-project.org/package=pROC},
+}
+
 
 @misc{WashPost2024_ABCMethodology, 
     author = {{The Washington Post}}, 
@@ -65,7 +132,7 @@
 }
 
 @misc{WashPost2023_Standards, 
-    author = {The Washington Post}, 
+    author = {{The Washington Post}}, 
     title = {Polling Methods and Standards (2023)}, 
     year = {2023}, 
     url = {https://www.washingtonpost.com/documents/f409a864-d58c-430a-8adc-ee6a8a344854.pdf?itid=lk_inline_manual_6}, 
@@ -73,7 +140,7 @@
 }
 
 @misc{WashPost2024_PollingAverages, 
-    author = {The Washington Post}, 
+    author = {{The Washington Post}}, 
     title = {Presidential Polling Averages Methodology}, 
     year = {2024}, 
     url = {https://www.washingtonpost.com/elections/2024/06/26/presidential-polling-averages-methodology/}, 
@@ -81,7 +148,7 @@
 }
 
 @misc{ABCNews2024_Methodology, 
-    author = {ABC News}, 
+    author = {{ABC News}}, 
     title = {ABC News Polling Methodology Standards}, 
     year = {2024}, 
     url = {https://abcnews.go.com/US/PollVault/abc-news-polling-methodology-standards/story?id=145373}, 
@@ -89,7 +156,7 @@
 }
 
 @misc{CBSNews2024_CampaignPromises, 
-    author = {CBS News}, 
+    author = {{CBS News}}, 
     title = {Trump-Harris campaign promises in the 2024 election}, 
     year = {2024}, 
     url = {https://www.cbsnews.com/news/trump-harris-campaign-promises-2024-election/}, 
@@ -97,7 +164,7 @@
 }
 
 @misc{ABCNews2024_HurricaneImpact, 
-    author = {ABC News}, 
+    author = {{ABC News}, 
     title = {Hurricanes Helene and Milton impact on 2024 election}, 
     year = {2024}, 
     url = {https://abcnews.go.com/538/hurricanes-helene-milton-affect-2024-election/story?id=114783517}, 
@@ -105,7 +172,7 @@
 }
 
 @misc{HRW2022_RoeVWade,
-    author = {Human Rights Watch},
+    author = {{Human Rights Watch},
     title = {U.S. Supreme Court overturns Roe v. Wade},
     year = {2022},
     url = {https://www.hrw.org/news/2022/06/24/us-supreme-court-topples-roe-v-wade-blow-rights},
@@ -113,7 +180,7 @@
 }
 
 @misc{NYTimes2024_ElectionPolls,
-    author = {The New York Times},
+    author = {{The New York Times}},
     title = {Trump-Harris polls and the tight 2024 election},
     year = {2024},
     url = {https://www.nytimes.com/2024/10/21/upshot/trump-harris-polls-election.html},
@@ -121,7 +188,7 @@
 }
 
 @misc{AP2024_ElectionForecasts,
-    author = {Associated Press},
+    author = {{Associated Press}},
     title = {Election polls and forecasts},
     year = {2024},
     url = {https://apnews.com/article/election-polls-kamala-harris-donald-trump-b497bd1015d35ed563e085c8db075802},
@@ -135,3 +202,11 @@
     url = {https://www.bloomberg.com/news/features/2024-10-23/new-poll-has-trump-harris-tied-in-key-states-just-12-days-to-election},
     note = {Accessed: 2024-10-23}
 }
+
+@article{cambridge_polling_factors_2024, 
+author = {{Cambridge University Press}}, 
+title = {Information, Incentives, and Goals in Election Forecasts}, 
+journal = {Judgment and Decision Making}, 
+year = {2024}, 
+url = {https://www.cambridge.org/core/journals/judgment-and-decision-making/article/information-incentives-and-goals-in-election-forecasts/CDED59D35F6599BF9D31348A79B196F9}, 
+note = {Accessed: 2024-10-31} }
