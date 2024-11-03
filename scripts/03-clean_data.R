@@ -3,7 +3,11 @@
 # Author: Mariko Lee, Karen Riani, Cristina Su Lam
 # Date: 10 October 2024 
 # License: MIT
-# Pre-requisites: Run 01-download_data.R
+# Pre-requisites: 
+#   - Run 02-download_data.R
+#   - The `arrow` package must be installed and loaded
+#   - The `janitor` package must be installed and loaded
+#   - The `lubridate` package must be installed and loaded
 # Any other information needed? None
 
 #### Workspace setup ####
@@ -12,7 +16,7 @@ library(tidyverse)
 library(arrow)
 library(janitor)
 library(lubridate)
-library(broom)
+
 
 #### Clean data ####
 clean_president_polls <- read_csv("data/01-raw_data/raw_president_polls.csv", 

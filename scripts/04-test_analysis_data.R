@@ -1,6 +1,6 @@
 #### Preamble ####
 # Purpose: Some tests for Cleaned Dataset
-# Author: Cristina Su Lam, Karen Riani, Mariko Lee
+# Author: Mariko Lee, Karen Riani, Cristina Su Lam
 # Date: 10 October 2024 
 # License: MIT
 # Pre-requisites: Run 03-clean_data.R script
@@ -9,7 +9,6 @@
 
 #### Workspace setup ####
 library(tidyverse)
-library(testthat)
 library(arrow)
 
 clean_president_polls <- read_parquet("data/02-analysis_data/clean_president_polls.parquet")

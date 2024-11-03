@@ -4,8 +4,8 @@
 # Date: 10 October 2024 
 # License: MIT
 # Pre-requisites: 
-  # - The `tidyverse` package must be installed and loaded
-  # - 00-simulate_data.R must have been run
+#   - 00-simulate_data.R must have been run
+#   - The `tidyverse` package must be installed and loaded
 # Any other information needed? None
 
 
