@@ -1,9 +1,13 @@
 #### Preamble ####
 # Purpose: Cleans the presidential poll data into an analysis data set
-# Author: Cristina Su Lam, Karen Riani, Mariko Lee
+# Author: Mariko Lee, Karen Riani, Cristina Su Lam
 # Date: 10 October 2024 
 # License: MIT
-# Pre-requisites: Run 01-download_data.R
+# Pre-requisites: 
+#   - Run 02-download_data.R
+#   - The `arrow` package must be installed and loaded
+#   - The `janitor` package must be installed and loaded
+#   - The `lubridate` package must be installed and loaded
 # Any other information needed? None
 
 #### Workspace setup ####
@@ -12,7 +16,7 @@ library(tidyverse)
 library(arrow)
 library(janitor)
 library(lubridate)
-library(broom)
+
 
 #### Clean data ####
 clean_president_polls <- read_csv("data/01-raw_data/raw_president_polls.csv", 
@@ -65,6 +69,17 @@ clean_president_polls <- clean_president_polls %>%
     candidate_name %in% c("Kamala Harris", "Donald Trump"),
     start_date >= ymd("2024-07-21")
   ) 
+
+#### Identify, Count, and Drop Duplicates ####
+# Identify duplicates
+duplicates <- clean_president_polls[duplicated(clean_president_polls), ]
+num_duplicates <- nrow(duplicates)
+message("Number of duplicate observations: ", num_duplicates)
+
+# Drop duplicates and keep only unique rows
+clean_president_polls <- clean_president_polls[!duplicated(clean_president_polls), ]
+message("Number of rows after removing duplicates: ", nrow(clean_president_polls))
+
 
 #### Save data ####
 write_parquet(clean_president_polls, "data/02-analysis_data/clean_president_polls.parquet")
