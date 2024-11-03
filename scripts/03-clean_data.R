@@ -1,6 +1,6 @@
 #### Preamble ####
 # Purpose: Cleans the presidential poll data into an analysis data set
-# Author: Cristina Su Lam, Karen Riani, Mariko Lee
+# Author: Mariko Lee, Karen Riani, Cristina Su Lam
 # Date: 10 October 2024 
 # License: MIT
 # Pre-requisites: Run 01-download_data.R
