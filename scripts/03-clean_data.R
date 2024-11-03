@@ -66,5 +66,16 @@ clean_president_polls <- clean_president_polls %>%
     start_date >= ymd("2024-07-21")
   ) 
 
+#### Identify, Count, and Drop Duplicates ####
+# Identify duplicates
+duplicates <- clean_president_polls[duplicated(clean_president_polls), ]
+num_duplicates <- nrow(duplicates)
+message("Number of duplicate observations: ", num_duplicates)
+
+# Drop duplicates and keep only unique rows
+clean_president_polls <- clean_president_polls[!duplicated(clean_president_polls), ]
+message("Number of rows after removing duplicates: ", nrow(clean_president_polls))
+
+
 #### Save data ####
 write_parquet(clean_president_polls, "data/02-analysis_data/clean_president_polls.parquet")
