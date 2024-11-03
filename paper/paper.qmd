@@ -1,14 +1,14 @@
 ---
 title: "2024 US Presidential Election Forecasting"
-subtitle: "subtitle"
+subtitle: "Trump forcasted to win popular vote by state over Harris by 0.8%"
 author: 
   - Mariko Lee
   - Karen Riani
   - Cristina Su Lam
-thanks: "Code and data are available at: https://projects.fivethirtyeight.com/polls/president-general/2024/national/"
+thanks: "Code and data are available at: https://github.com/karenrni/Forecasting-the-2024-US-Presidential-Elections"
 date: today
 date-format: long
-abstract: "We forecast the 2024 U.S. presidential winner using state-level poll averages for Kamala Harris and Donald Trump, weighted by poll quality and sample size. Applying a logistic regression model, we find a slight 0.8% lead for Trump over Harris, using polls taken since the reelection bid on July 21, 2024. Weighting the polls increases the influence of the most reliable data in shaping the forecast—limiting skewed results and showing a clearer voter sentiment amidst a particularly competitive election. These results show who may be leading the elections via polls, giving campaigns the insights they need and reinforcing public trust in the election process."
+abstract: "We forecast the 2024 U.S. presidential winner using state-level poll averages for Kamala Harris and Donald Trump, weighted by poll quality and sample size. Applying a Bayesian  model, we find a slight 0.5% lead for Trump over Harris, using polls taken since the reelection bid on July 21, 2024. Weighting the polls increases the influence of the most reliable data in shaping the forecast—limiting skewed results and showing a clearer voter sentiment amidst a particularly competitive election. These results show who may be leading the elections via polls, giving campaigns the insights they need and reinforcing public trust in the election process."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -20,19 +20,73 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
+library(arrow)
 
-data <- read_csv(here::here("data/01-raw_data/raw_president_polls.csv"))
+#data <- read_csv(here::here("data/01-raw_data/raw_president_polls.csv"))
+# cleaned_data <- read_parquet("data/02-analysis_data/clean_president_polls.parquet")
 
 ```
 
 
 # Introduction
 
+Amid the chaotic, high-stakes 2024 U.S. presidential election, forecasting models offer crucial insights into voter sentiment as Americans face a tight race between top candidates Kamala Harris and Donald Trump. With the attempted assassination of Trump, Joe Biden’s endorsement of Harris, and recent crises such as hurricanes disrupting voter access in swing states, public opinion remains volatile [@CBSNews2024_CampaignPromises; @ABCNews2024_HurricaneImpact]. Key events like Trump’s policy proposals on social security and public safety, Harris’s advocacy for reproductive rights, and other rising debates on gun control have further polarized the electorate, making forecasting models essential in offering clarity amid this competitive landscape [@HRW2022_RoeVWade].
 
-The following structure of this paper is as follows:  @sec-mydatasection presents the data sources and methodology, then  @sec-myresults followed by  @sec-mydisc, which discusses the results and their implications.  @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research.
+This study joins the growing body of forecast models—including media outlets’ own polls-of-polls approaches and various Bayesian methods—by refining the aggregation of poll data with Bayesian regression, weighted by sample size and pollster rating [@NYTimes2024_ElectionPolls; @AP2024_ElectionForecasts]. In an environment where neither candidate shows a decisive lead, this model aims to add precision by emphasizing out higher-quality polls, improving forecast reliability for strategic decision-making and public confidence in election projections [@Bloomberg2024_KeyStates].
+
+We estimate a slim 0.5% lead for Trump over Harris in the overall popular vote by aggregating state-level polling data, a close margin that highlights the importance of updated, representative data amidst competing forecasts and fluctuating polls. By using polls weighted by reliability and focusing on data collected after Harris' campaign declaration, this model maintains transparency, offering a robust perspective on public sentiment and helping to clarify perceptions in a highly competitive election.
+
+The following structure of this paper is as follows:  @sec-mydatasection presents the data sources and methodology, @sec-mymodel presents the forecasting model, then  @sec-myresults followed by  @sec-mydisc, which discusses the results and their implications.  @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research.
 
 
 # Data {#sec-mydatasection}
+
+TODO: PROPER FORMATTING FOR DATA SEC, ADD FINAL DETAILS AND FIGURES
+
+## Overview
+Our study uses state-level polling data from Donald Trump and Kamala Harris to predict the 2024 US presidential election. The polls used were sourced from FiveThirtyEight’s 2024 Presidential Election Forecast Database (FiveThirtyEight 2024), which compiles polling data from multiple organizations and rates each poll’s quality. These ratings assist in identifying and weighing the most reliable polls. The dataset used for this analysis spans polls starting from July 21, 2024, when Kamala Harris announced her reelection bid. 
+
+Our analysis focuses on the following variables: 
+Polling rating (Pollscore): A numerical score reflecting the historical reliability of polling organizations used to weight polls by accuracy. 
+Sample size: The number of respondents per poll, influencing the poll’s margin of error and its weight in the forecast. 
+Percentage support (pct): The proportion of respondents who express support for each candidate. 
+State: The US state where the poll was conducted OR labeled “National” for nationwide polls. 
+Pollster: The organization that conducted the poll, influencing the credibility and weight of our analysis. 
+
+Table X - Sample of the cleaned dataset, highlighting key variables crucial in the analysis. 
+[Table] 
+
+### Measurement and Limitations
+We applied several measurement and limitations considerations to ensure the validity of our dataset:
+Poll Quality: 
+Temporal Dynamics:
+Geographic Coverage:
+Response Bias:
+
+### Outcome Variables
+The Percentage of support (pct) for Donald Trump and Kamala Harris is the main outcome variable. We forecast which candidate is leading by aggregating these results across states. Figure X represents the distribution of support percentages for the two candidates, showing clusters ranging from 40% to 60%, indicating the election’s competitive nature. 
+
+[Figure X: Distribution of Candidate Support]
+
+
+### Predictor Variables
+The following predictor variables were used to build the logistic regression model and refine our prediction:
+Pollscore: Historical reliability score for pollster (range: )
+Numeric Grade: (scale: 0-4) 
+Transparency Score: (scale: 0-10) 
+Sample Size: Number of respondents in each poll (typically between 500-3000) 
+Methodology: Survey method (eg. phone interviews, online panels) 
+State: State-level indicators that capture regional variations in support. 
+
+These selected variables are based on their relevance to polling accuracy and availability across the dataset. The analysis regarding their relationships with the outcome variables (percentage support) is further explored. 
+
+### Cleaning Process and Analysis
+The data cleaning process involved the following steps:
+Filtering for High-Quality Polls: We included only polls with a numeric grade of X or higher to reduce the impact of unreliable data. 
+Standardizing Dates and Locations: 
+Variable Transformation:
+Converted percentages into absolute numbers using sample size 
+Created binary indicators for candidates (Trump = 0, Harris = 1)
 
 Some of our data is of marriage license (@fig-marriage), from @TorontoOpenData
 
@@ -42,13 +96,48 @@ Some of our data is of marriage license (@fig-marriage), from @TorontoOpenData
 #| echo: false
 
 ```
+# Model {#sec-mymodel}
+
+TODO: FINALIZE MODEL SECTION
+- VALIDATION
+- ALTERNATIVES
+- JUSTIFICATION
+- UPDATE MODEL BELOW
+
+$$
+\begin{aligned}
+\text{logit}(\mu_i) &= \beta_0 + \beta_1 \times \text{Pollster}_i + \beta_2 \times \text{State}_i + \beta_3 \times \text{Sample Size}_i + \beta_4 \times \text{Pct}_i
+\end{aligned}
+$$
+- $y_i$ is the dependent variable, representing the count of respondents who support Harris in a given poll, modeled as a binomial outcome.
+- $\beta_0$ is the intercept term, indicating the baseline log-odds of Harris support when all predictors are zero.
+- $\beta_1$, $\beta_2$, $\beta_3$, and $\beta_4$ are the coefficients for the predictor variables **Pollster**, **State**, **Sample Size**, and **Pct** (the percentage of support for Harris in a poll), respectively:
+  - $\beta_1$ represents the adjustment in log-odds based on the specific pollster conducting the survey.
+  - $\beta_2$ accounts for the impact of the state in which the poll is conducted.
+  - $\beta_3$ adjusts for the influence of the poll's sample size.
+  - $\beta_4$ represents the effect of the poll's percentage support for Harris on the log-odds.
+- The function $\text{logit}(\mu_i)$ transforms the linear combination of predictors into probabilities, providing the estimated probability of support for Harris.
+
+
 
 # Results {#sec-myresults}
 
+TODO: FINISH RESULTS INCLUDING GRAPHS, TABLES, SUMMARY STATS
 
+Overall Percentage for Kamala Harris: 49.72895 %
+Overall Percentage for Donald Trump: 50.27105 %
+...
+  state_winner     n
+  <chr>        <int>
+1 Harris          19
+2 Trump           23
 
 
 # Discussion {#sec-mydisc}
+
+TO DO:
+
+FINISH DISCUSSION, EDIT CURRENT BITS
 
 ## First discussion point {#sec-first-point}
 
@@ -58,9 +147,30 @@ If my paper were 10 pages, then should be be at least 2.5 pages. The discussion 
 
 ## Third discussion point
 
-## Weaknesses and next steps
+## Weaknesses and next steps 
 
-Weaknesses and next steps should also be included.
+What are some weaknesses of what was done? + implications 
+
+Environmental and Societal Factors in Surveys, contributing to the – bias 
+
+Recent envoronmental disasters have disruoted life in major swing states 
+
+Didnt account for partisian pollsters and the potential bias , 
+
+Weaknesses in  forecasting itself, 
+How trump could lose despite pollster estimates
+
+Lack of data, could introduce bias, not entirely representative, uncertainty due to declaration for Kamala, 
+This can cause
+
+# Limitations {#sec-mylimits}
+
+What is left to learn or how should we proceed in the future?
+
+Future models could benefit from more complex models which account for other potentially influential factors such as poll methodology (i.e. online vs in-person surveying) and partisanship or respondents’ political affiliations [@cambridge_polling_factors_2024]. Models using polls-of-polls approaches which use multi-level regression and post stratification tend to do particularly well in forecasting elections (REF tab 2), and increasing complexity to account for more influential factors like those mentioned above. They historically perform /…. Better estimation .  and accounts for uncertainty propagation, which is particularly relevant in this quarter’s election. (Reference in tab)
+Furthermore, using training data based on historical polls regarding democratic and republican election results and polling data would allow for a more robust model. This is especially because of Biden’s late declaration for Harris, thus substituting fot prior state poll behaviour will help account for a lack of polling data. Although many forecasting models aim to estimate the national popular vote, 
+Our model similarly could benefit from estimations for electoral vote 
+
 
 \newpage
 
@@ -88,7 +198,7 @@ Using stratified random sampling, The Washington Post ensures that important dem
 Particularly in situations where state-level polling data is scarce, The Washington Post’s polling averages consider the state’s voting record in the last two presidential elections [@WashPost2024_PollingAverages]. This adjustment offers a more accurate representation of voters' preferences in states with fewer high-quality polls. However, there may be a trade-off since, depending solely on historical data, we may miss recent shifts in voter sentiment [@WashPost2024_ABCMethodology].
 
 ## Non-response Handling
-The Washington Post uses response weighting, which modifies the results according to demographic variables such as age, race, and education, in order to address non-response bias. In spite of variations in response rates among demographic groupings, this ensures that the final sample more accurately represents the population [@WashPost2023_Standard].
+The Washington Post uses response weighting, which modifies the results according to demographic variables such as age, race, and education, in order to address non-response bias. In spite of variations in response rates among demographic groupings, this ensures that the final sample more accurately represents the population [@WashPost2023_Standards].
 
 ABC News also addressed non-response bias by applying post-stratification adjustments and sending email reminders to non-respondents. In addition, The Washington Post and ABC News both ensure that their samples are weighted to account for any anomalies in non-response [@ABCNews2024_Methodology] [@WashPost2023_Standards].
 
