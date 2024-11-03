@@ -1,9 +1,9 @@
 #### Preamble ####
-# Purpose: Simulates Data
+# Purpose: Simulates Data about US 2024 Elections.
 # Author: Mariko Lee, Karen Riani, Cristina Su Lam
 # Date: 10 October 2024 
 # License: MIT
-# Pre-requisites: None
+# Pre-requisites: The `tidyverse` package must be installed and loaded
 # Any other information needed? None
 
 #### Workspace setup ####
