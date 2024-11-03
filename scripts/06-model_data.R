@@ -138,8 +138,6 @@ bayesian_model <- stan_glmer(
   adapt_delta = 0.95
 )
 
-
-
 # Predict probabilities for Harris winning across all posterior draws
 predicted_probs_matrix <- posterior_predict(bayesian_model, type = "response")
 
