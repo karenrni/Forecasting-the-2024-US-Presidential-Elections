@@ -40,11 +40,11 @@ logistic_model <- glm(
 )
 
 # Predict the probabilities of Harris winning for the entire dataset
-clean_president_polls <- clean_president_polls %>%
+clean_president_polls_log <- clean_president_polls %>%
   mutate(predicted_prob_harris = predict(logistic_model, type = "response"))
 
 # Calculate the weighted average predicted probability for Kamala Harris
-overall_predicted_prob_harris <- mean(clean_president_polls$predicted_prob_harris)
+overall_predicted_prob_harris <- mean(clean_president_polls_log$predicted_prob_harris)
 
 # Convert to percentage
 overall_percentage_harris <- overall_predicted_prob_harris * 100
@@ -56,7 +56,7 @@ cat("Overall Percentage for Donald Trump:", overall_percentage_trump, "%\n")
 
 
 # Calculate the average predicted probability by state
-state_predictions <- clean_president_polls %>%
+state_predictions <- clean_president_polls_log %>%
   group_by(state) %>%
   summarize(avg_predicted_prob_harris = mean(predicted_prob_harris))
 
@@ -107,12 +107,12 @@ test_data <- test_data %>%
 ### Step 5: Model Evaluation ###
 
 # Calculate RMSE between actual outcomes and predicted probabilities
-rmse_value <- sqrt(mean((test_data$is_harris - test_data$predicted_prob_harris)^2))
-rmse_value
+rmse_value1 <- sqrt(mean((test_data$is_harris - test_data$predicted_prob_harris)^2))
+rmse_value1
 
 # Calculate AUC 
-auc_value <- auc(test_data$is_harris, test_data$predicted_prob_harris)
-auc_value
+auc_value1 <- auc(test_data$is_harris, test_data$predicted_prob_harris)
+auc_value1
 
 
 ### Bayesian Model ###
@@ -138,18 +138,16 @@ bayesian_model <- stan_glmer(
   adapt_delta = 0.95
 )
 
-
-
 # Predict probabilities for Harris winning across all posterior draws
 predicted_probs_matrix <- posterior_predict(bayesian_model, type = "response")
 
 # Take the mean across posterior samples for each observation
 # Transpose the matrix to get one mean per observation
-clean_president_polls <- clean_president_polls %>%
+clean_president_polls_bay <- clean_president_polls %>%
   mutate(predicted_prob_harris = rowMeans(t(predicted_probs_matrix)))
 
 # Calculate the unweighted average predicted probability for Kamala Harris
-overall_predicted_prob_harris <- mean(clean_president_polls$predicted_prob_harris)
+overall_predicted_prob_harris <- mean(clean_president_polls_bay$predicted_prob_harris)
 
 # Convert to percentage
 overall_percentage_harris <- overall_predicted_prob_harris * 100
@@ -159,7 +157,28 @@ overall_percentage_trump <- (1 - overall_predicted_prob_harris) * 100
 cat("Overall Percentage for Kamala Harris:", overall_percentage_harris, "%\n")
 cat("Overall Percentage for Donald Trump:", overall_percentage_trump, "%\n")
 
+# Calculate the average predicted probability by state for Harris
+state_predictions <- clean_president_polls_bay %>%
+  group_by(state) %>%
+  summarize(
+    avg_predicted_prob_harris = mean(predicted_prob_harris)
+  )
 
+# Determine the winner for each state based on the average probability
+state_predictions <- state_predictions %>%
+  mutate(
+    state_winner = ifelse(avg_predicted_prob_harris > 0.5, "Harris", "Trump")
+  )
+
+# Count the number of states won by each candidate
+overall_winner_summary <- state_predictions %>%
+  count(state_winner)
+
+# View the state-level predictions
+print(state_predictions)
+
+# View the summary of states won by each candidate
+print(overall_winner_summary)
 
 
 
@@ -206,14 +225,12 @@ test_data <- test_data %>%
 ### Step 5: Model Validation ###
 
 # Calculate RMSE between actual outcomes and predicted probabilities
-rmse_value <- sqrt(mean((test_data$is_harris - test_data$predicted_prob_harris)^2))
-print(rmse_value)
+rmse_value2 <- sqrt(mean((test_data$is_harris - test_data$predicted_prob_harris)^2))
+print(rmse_value2)
 
 # Calculate AUC
-auc_value <- auc(test_data$is_harris, test_data$predicted_prob_harris)
-auc_value
-
-
+auc_value2 <- auc(test_data$is_harris, test_data$predicted_prob_harris)
+auc_value2
 
 #### Save model ####
 saveRDS(
