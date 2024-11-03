@@ -1,9 +1,9 @@
 #### Preamble ####
-# Purpose: Download the presidential poll data 
-# Author: Cristina Su Lam, Karen Riani, Mariko Lee
+# Purpose: Download the presidential poll data from website.
+# Author: Mariko Lee, Karen Riani, Cristina Su Lam
 # Date: 10 October 2024 
 # License: MIT
-# Pre-requisites: None
+# Pre-requisites: The `readr` package must be installed and loaded
 # Any other information needed? None
 
 #### Workspace setup ####
