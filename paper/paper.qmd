@@ -21,119 +21,228 @@ bibliography: references.bib
 
 library(tidyverse)
 library(arrow)
-
-#data <- read_csv(here::here("data/01-raw_data/raw_president_polls.csv"))
-# cleaned_data <- read_parquet("data/02-analysis_data/clean_president_polls.parquet")
-
+library(dplyr)
+library(kableExtra)
 ```
-
 
 # Introduction
 
-Amid the chaotic, high-stakes 2024 U.S. presidential election, forecasting models offer crucial insights into voter sentiment as Americans face a tight race between top candidates Donald Trump and Kamala Harris. With the attempted assassination of Trump, Joe Biden’s endorsement of Harris, and recent crises such as hurricanes disrupting voter access in swing states, public opinion remains volatile [ @ABCNews2024_HurricaneImpact]. Key events like Trump’s policy proposals on social security and public safety, Harris’s advocacy for reproductive rights, and other rising debates on gun control have further polarized the electorate, making forecasting models essential in offering clarity amid this competitive landscape [@CBSNews2024_CampaignPromises; @HRW2022_RoeVWade].
+Amid the chaotic, high-stakes 2024 U.S. presidential election, forecasting models offer crucial insights into voter sentiment as Americans face a tight race between top candidates Donald Trump and Kamala Harris. With the attempted assassination of Trump, Joe Biden's endorsement of Harris, and recent crises such as hurricanes disrupting voter access in swing states, public opinion remains volatile [@ABCNews2024_HurricaneImpact]. Key events like Trump's policy proposals on social security and public safety, Harris's advocacy for reproductive rights, and other rising debates on gun control have further polarized the electorate, making forecasting models essential in offering clarity amid this competitive landscape [@CBSNews2024_CampaignPromises; @HRW2022_RoeVWade].
 
-Using presidential polling data from FiveThirtyEight, our Bayesian model’s estimand is the probability of support for Kamala Harris, weighted by pollster rating and sample size to improve the reliability of aggregated polling data. By refining the aggregation of polls through logistic regression, weighted by sample size and pollster rating, this study contributes to the growing body of forecast models—including media outlets’ own polls-of-polls and various Bayesian methods. Our model estimates only a slim 0.8% lead for Harris over Trump in the overall popular vote—a close margin that highlights the high uncertainty in public sentiment. In line with other forecasts that struggle to declare a clear frontrunner, this narrow lead reflects the volatility of the race and the importance of updated, representative polling data [@NYTimes2024_ElectionPolls].
+Using presidential polling data from FiveThirtyEight, our Bayesian model's estimand is the probability of support for Kamala Harris, weighted by pollster rating and sample size to improve the reliability of aggregated polling data. By refining the aggregation of polls through logistic regression, weighted by sample size and pollster rating, this study contributes to the growing body of forecast models---including media outlets' own polls-of-polls and various Bayesian methods. Our model estimates only a slim 0.8% lead for Harris over Trump in the overall popular vote---a close margin that highlights the high uncertainty in public sentiment. In line with other forecasts that struggle to declare a clear frontrunner, this narrow lead reflects the volatility of the race and the importance of updated, representative polling data [@NYTimes2024_ElectionPolls].
 
-This uncertainty emphasizes the significance of swing states in election forecasts—particularly states with nearly equal support for each party and a history of alternating between Democratic and Republican candidates in recent elections [@Bloomberg2024_KeyStates]. Existing research identifies seven critical swing states, with Pennsylvania standing out as a tipping point in more than 1 in 5 simulations [@AP2024_ElectionForecasts]. With 19 electoral votes, Pennsylvania could prove decisive in the event of a close race. The competitive nature of these swing states shows the need for continued data updates to maintain forecast accuracy in a closely contested race.
+This uncertainty emphasizes the significance of swing states in election forecasts---particularly states with nearly equal support for each party and a history of alternating between Democratic and Republican candidates in recent elections [@Bloomberg2024_KeyStates]. Existing research identifies seven critical swing states, with Pennsylvania standing out as a tipping point in more than 1 in 5 simulations [@AP2024_ElectionForecasts]. With 19 electoral votes, Pennsylvania could prove decisive in the event of a close race. The competitive nature of these swing states shows the need for continued data updates to maintain forecast accuracy in a closely contested race.
 
-By prioritizing higher-quality polls and focusing on data collected after Harris’s campaign announcement, the model seeks to mitigate biases and improve forecast reliability by using a polls-of-polls method over individual pollster data. This approach not only clarifies voter sentiment amid competing forecasts but also demonstrates the value of weighting variables such as pollster rating and sample size in enhancing prediction accuracy. While some states lack sufficient polling data—introducing potential limitations that could be improved with more data and model complexity—the overall findings provide strategic insights for decision-makers and reinforce public confidence in an election where no candidate holds a decisive lead. Appendix A provides a detailed assessment on The Washington Post, one of the polling methodologies used by prominent sources, including sampling approaches, weighting, and non-response handling strategies to ensure robust data quality.
+By prioritizing higher-quality polls and focusing on data collected after Harris's campaign announcement, the model seeks to mitigate biases and improve forecast reliability by using a polls-of-polls method over individual pollster data. This approach not only clarifies voter sentiment amid competing forecasts but also demonstrates the value of weighting variables such as pollster rating and sample size in enhancing prediction accuracy. While some states lack sufficient polling data---introducing potential limitations that could be improved with more data and model complexity---the overall findings provide strategic insights for decision-makers and reinforce public confidence in an election where no candidate holds a decisive lead. Appendix A provides a detailed assessment on The Washington Post, one of the polling methodologies used by prominent sources, including sampling approaches, weighting, and non-response handling strategies to ensure robust data quality.
 
-The rest of this paper is structured as follows:  @sec-mydatasection presents the data sources and methodology, @sec-mymodel presents the forecasting model, then  @sec-myresults followed by  @sec-mydisc, which discusses the results and their implications.  @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research, followed by @sec-appenx with The Washington Post’s pollster methodology and a budgeted idealized methodology.
+The rest of this paper is structured as follows: @sec-mydatasection presents the data sources and methodology, @sec-mymodel presents the forecasting model, then @sec-myresults followed by @sec-mydisc, which discusses the results and their implications. @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research, followed by @sec-appenx with The Washington Post's pollster methodology and a budgeted idealized methodology.
 
-
-# Data {#sec-mydatasection}
-
-TODO: PROPER FORMATTING FOR DATA SEC, ADD FINAL DETAILS AND FIGURES
-
-## Overview
-Our study uses state-level polling data from Donald Trump and Kamala Harris to predict the 2024 US presidential election. The polls used were sourced from FiveThirtyEight’s 2024 Presidential Election Forecast Database (FiveThirtyEight 2024), which compiles polling data from multiple organizations and rates each poll’s quality. These ratings assist in identifying and weighing the most reliable polls. The dataset used for this analysis spans polls starting from July 21, 2024, when Kamala Harris announced her reelection bid. 
-
-Our analysis focuses on the following variables: 
-Polling rating (Pollscore): A numerical score reflecting the historical reliability of polling organizations used to weight polls by accuracy. 
-Sample size: The number of respondents per poll, influencing the poll’s margin of error and its weight in the forecast. 
-Percentage support (pct): The proportion of respondents who express support for each candidate. 
-State: The US state where the poll was conducted OR labeled “National” for nationwide polls. 
-Pollster: The organization that conducted the poll, influencing the credibility and weight of our analysis. 
-
-Table X - Sample of the cleaned dataset, highlighting key variables crucial in the analysis. 
-[Table] 
-
-### Measurement and Limitations
-We applied several measurement and limitations considerations to ensure the validity of our dataset:
-Poll Quality: 
-Temporal Dynamics:
-Geographic Coverage:
-Response Bias:
-
-### Outcome Variables
-The Percentage of support (pct) for Donald Trump and Kamala Harris is the main outcome variable. We forecast which candidate is leading by aggregating these results across states. Figure X represents the distribution of support percentages for the two candidates, showing clusters ranging from 40% to 60%, indicating the election’s competitive nature. 
-
-[Figure X: Distribution of Candidate Support]
-
-
-### Predictor Variables
-The following predictor variables were used to build the logistic regression model and refine our prediction:
-Pollscore: Historical reliability score for pollster (range: )
-Numeric Grade: (scale: 0-4) 
-Transparency Score: (scale: 0-10) 
-Sample Size: Number of respondents in each poll (typically between 500-3000) 
-Methodology: Survey method (eg. phone interviews, online panels) 
-State: State-level indicators that capture regional variations in support. 
-
-These selected variables are based on their relevance to polling accuracy and availability across the dataset. The analysis regarding their relationships with the outcome variables (percentage support) is further explored. 
-
-### Cleaning Process and Analysis
-The data cleaning process involved the following steps:
-Filtering for High-Quality Polls: We included only polls with a numeric grade of X or higher to reduce the impact of unreliable data. 
-Standardizing Dates and Locations: 
-Variable Transformation:
-Converted percentages into absolute numbers using sample size 
-Created binary indicators for candidates (Trump = 0, Harris = 1)
-
-Some of our data is of marriage license (@fig-marriage), from @TorontoOpenData
+# Data Analysis {#sec-mydatasection}
 
 ```{r}
-#| label: fig-marriage
-#| fig-cap: Marriage License
-#| echo: false
+#| include: false
+#| warning: false
+#| message: false
 
+# Read Cleaned Dataset
+clean_president_polls <- read_parquet("/Users/cristinasulam/Forecasting-the-2024-US-Presidential-Elections/data/02-analysis_data/clean_president_polls.parquet")
 ```
+
+## Overview
+
+To forecast the 2024 U.S. presidential election, this analysis uses state-level polling data for candidates Kamala Harris and Donald Trump. Our primary data source is FiveThirtyEight's 2024 Presidential Election Forecast Database [@FiveThirtyEight], which aggregates polling data from multiple organizations and provides quality ratings for each poll, helping to identify and weigh the most reliable sources. The dataset covers polls conducted from July 21, 2024—when Kamala Harris announced her reelection bid—through to November 3, 2024.
+
+Data cleaning was conducted in R [@citeR] using several packages: tidyverse [@tidyverse], janitor [@janitor], and lubridate [@lubridate]. Duplicate rows were removed, and the dataset was filtered to include only polls for Harris and Trump. Observations with missing values in key variables such as 'sample size,' 'numeric grade,' and 'state' were excluded. A binary variable, 'Chosen Candidate' (1 for Harris, 0 for Trump), was created to indicate support for each candidate. After these adjustments, the dataset was refined from its original 17,765 entries to 2,367 observations. The primary variables of interest include pollster, numeric grade, state, sample size, percentage, and chosen candidate. A sample of the cleaned dataset is displayed in [@tbl-presidentpolls].
+
+For visualization and analysis, the knitr (Xie 2014), kableExtra (Zhu 2024), and ggplot2 (Wickham 2016) packages were utilized to generate tables, graphs, and maps, presenting the data clearly and effectively. [[[UPDATE THIS LATER]]]
+
+```{r}
+#| label: tbl-presidentpolls
+#| tbl-cap: Sample of President Polls Dataset
+#| echo: false
+#| warning: false
+#| fig-align: center
+clean_president_polls |>   
+  select(pollster, numeric_grade, state, sample_size, pct, candidate_chosen) |> 
+  head(5) |> 
+  kable(
+    col.names = c("Pollster", "Numeric Grade", "State", "Sample Size", "Percentage", "Chosen Candidate"),
+    booktabs = TRUE
+  )
+```
+
+[@tbl-summary] presents summary statistics of the three numerical variables used. The **Percentage Support** variable, representing the proportion of respondents supporting a candidate, has a mean of 47.25% with a standard deviation of 4.41%, ranging from a minimum of 25% to a maximum of 70%. This spread reflects varying levels of support for each candidate across different polls.
+
+The **Sample Size** variable, indicating the number of respondents in each poll, has a mean of 930.92 with a substantial standard deviation of 550.61, indicating variability in poll sizes. The minimum sample size is 301, while the maximum reaches 6,526, highlighting the range in poll reliability, as larger samples tend to yield more accurate reflections of public sentiment.
+
+Lastly, the **Numeric Grade** variable, which rates pollster quality, shows an average score of 2.28 with a standard deviation of 0.63, spanning from 0.5 to 3. This distribution suggests that the dataset includes a mix of polls with varying reliability, with higher-rated polls contributing more heavily to the overall forecast due to weighted adjustments (further discussed in @sec-mymodel).
+```{r}
+#| label: tbl-summary
+#| tbl-cap: Summary Statistics
+#| echo: false
+#| warning: false
+#| fig-align: center
+# Summary statistics for pct, sample_size, and numeric_grade
+summary_stats <- clean_president_polls %>%
+  summarize(
+    mean_pct = mean(pct, na.rm = TRUE),
+    sd_pct = sd(pct, na.rm = TRUE),
+    min_pct = min(pct, na.rm = TRUE),
+    max_pct = max(pct, na.rm = TRUE),
+    mean_sample_size = mean(sample_size, na.rm = TRUE),
+    sd_sample_size = sd(sample_size, na.rm = TRUE),
+    min_sample_size = min(sample_size, na.rm = TRUE),
+    max_sample_size = max(sample_size, na.rm = TRUE),
+    mean_numeric_grade = mean(numeric_grade, na.rm = TRUE),
+    sd_numeric_grade = sd(numeric_grade, na.rm = TRUE),
+    min_numeric_grade = min(numeric_grade, na.rm = TRUE),
+    max_numeric_grade = max(numeric_grade, na.rm = TRUE)
+  )
+
+# Create a summary table in the desired format
+summary_table <- data.frame(
+  `Statistic` = c("Percentage Support", "Sample Size", "Numeric Grade"),
+  `Mean` = c(
+    format(round(summary_stats$mean_pct, 2), big.mark = ",", scientific = FALSE),
+    format(round(summary_stats$mean_sample_size, 2), big.mark = ",", scientific = FALSE),
+    format(round(summary_stats$mean_numeric_grade, 2), big.mark = ",", scientific = FALSE)
+  ),
+  `SD` = c(
+    format(round(summary_stats$sd_pct, 2), big.mark = ",", scientific = FALSE),
+    format(round(summary_stats$sd_sample_size, 2), big.mark = ",", scientific = FALSE),
+    format(round(summary_stats$sd_numeric_grade, 2), big.mark = ",", scientific = FALSE)
+  ),
+  `Min` = c(
+    format(summary_stats$min_pct, big.mark = ",", scientific = FALSE),
+    format(summary_stats$min_sample_size, big.mark = ",", scientific = FALSE),
+    format(summary_stats$min_numeric_grade, big.mark = ",", scientific = FALSE)
+  ),
+  `Max` = c(
+    format(summary_stats$max_pct, big.mark = ",", scientific = FALSE),
+    format(summary_stats$max_sample_size, big.mark = ",", scientific = FALSE),
+    format(summary_stats$max_numeric_grade, big.mark = ",", scientific = FALSE)
+  )
+)
+
+kable(summary_table, format = "pipe")
+```
+
+
+## Measurement and Limitations
+
+The Numeric Grade variable in the dataset, ranging from 0 ("Poor or not done") to 4 ("Exceptional"), serves as an indicator of poll quality, reflecting the reliability of each poll in capturing true public sentiment on candidate support. Based on FiveThirtyEight’s methodology [@ABCNews2024_Methodology], this grading system allows the model to prioritize data from more rigorous and representative polls, enhancing forecast accuracy.
+
+The transformation from real-world public opinion into a poll entry involves several steps. Polling agencies survey segments of the population to gauge support for candidates such as Donald Trump and Kamala Harris, with the ultimate goal of turning these sentiments into quantifiable data points that represent broader public opinion. Polls employ various sampling techniques—including random digit dialing, online panels, and text-to-web surveys—to capture a representative cross-section of voters. However, the process faces inherent challenges, including sampling bias, survey design limitations, and non-response bias, each of which can affect the accuracy of the data collected.
+
+Sampling Bias: Accurate representation requires careful respondent selection. If certain demographics (e.g., younger people, rural residents) are underrepresented, the poll may not reflect overall public opinion accurately.
+
+Survey Design: Question framing and order can influence responses. Leading questions or lack of clarity may skew results, affecting the validity of the data collected.
+
+Non-Response Bias: When certain individuals do not participate, it can lead to unrepresentative data. Polling agencies attempt to mitigate this through weighting adjustments that account for demographics less likely to respond, such as younger or politically disengaged individuals.
+
+To address these challenges, FiveThirtyEight assigns a Numeric Grade to each poll based on factors such as sampling method, sample size, methodological transparency, and historical pollster accuracy. Higher grades (closer to 4) are given to polls with rigorous data collection practices, large representative samples, and transparent methodologies, indicating a high likelihood of reliability. Lower grades (closer to 0) suggest methodological concerns that may compromise accuracy, thus marking the poll as less reliable.
+
+In this dataset, each poll’s Numeric Grade directly influences its weight in the forecast model. Polls rated higher contribute more significantly to the forecast, while those rated lower have reduced impact. By applying weighted adjustments according to poll quality, the model mitigates the influence of less reliable data, ultimately improving the robustness of the prediction. This weighting approach helps ensure that the forecast reflects an accurate picture of public sentiment, especially in a high-stakes election where competition is tight and reliable data is crucial.
+
+## Outcome Variable
+### Distribution of Chosen Candidate
+The Percentage of support (pct) for Donald Trump and Kamala Harris is the main outcome variable. We forecast which candidate is leading by aggregating these results across states. Figure X represents the distribution of support percentages for the two candidates, showing clusters ranging from 40% to 60%, indicating the election's competitive nature.
+
+```{r}
+#| label: fig-candidate
+#| tbl-cap: Distribution of Chosen Candidate
+#| echo: false
+#| warning: false
+#| fig-align: center
+ggplot(clean_president_polls, aes(x = factor(candidate_chosen), fill = factor(candidate_chosen))) +
+  geom_bar(alpha = 0.7) +
+  labs(title = "Distribution of Polls by Harris vs Trump", 
+       x = "Chosen Candidate", 
+       y = "Number of Polls",
+       fill = "Chosen Candidate") +  # This sets the legend title
+  scale_x_discrete(labels = c("0" = "Trump", "1" = "Harris")) +
+  scale_fill_manual(values = c("0" = "red", "1" = "blue"), labels = c("Trump", "Harris")) +
+  geom_text(stat = "count", aes(label = scales::percent(..count../sum(..count..), 
+                                                        accuracy = 0.2)), vjust = -0.5) +
+  theme_classic()
+```
+
+```{r}
+#| label: fig-candbystate
+#| tbl-cap: Distribution of Candidate Preference by State
+#| echo: false
+#| warning: false
+#| fig-align: center
+ggplot(clean_president_polls, aes(x = state, fill = factor(candidate_chosen, labels = c("Trump", "Harris")))) +
+  geom_bar(position = "fill") +
+  labs(title = "Candidate Preference by State", x = "State", y = "Proportion", fill = "Chosen Candidate") +
+  scale_fill_manual(values = c("red", "blue")) +
+  theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, margin = margin(t = 5), size = 8)
+  )
+```
+
+## Predictor Variables
+### Distribution of Pollsters
+```{r}
+#| label: fig-pollsters
+#| tbl-cap: Pollsters by Count and Numeric Grade
+#| echo: false
+#| warning: false
+#| fig-align: center
+# Calculate the number of polls for each pollster with more than 20 polls
+pollsters_over_20 <- clean_president_polls %>%
+  group_by(pollster) %>%
+  filter(n() > 20) %>%
+  summarize(
+    num_polls = n(),
+    avg_numeric_grade = mean(numeric_grade, na.rm = TRUE)
+  )
+
+# Plot 
+ggplot(pollsters_over_20, aes(x = reorder(pollster, -num_polls), y = num_polls)) +
+  geom_bar(stat = "identity", aes(fill = avg_numeric_grade), alpha = 0.7) +
+  scale_fill_gradient(low = "lightblue", high = "darkblue", name = "Numeric Grade") +
+  labs(title = "Distribution of Polls by Pollster", x = "Pollster", y = "Number of Polls") +
+  geom_text(aes(label = round(avg_numeric_grade, 2)), vjust = -0.5, size = 2.5) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+```
+
+### Distribution of Numeric Grades
+```{r}
+ggplot(clean_president_polls, aes(x = numeric_grade)) +
+  geom_histogram(binwidth = 0.5, fill = "darkblue", alpha = 0.7) +
+  labs(title = "Distribution of Pollster Grades", x = "Numeric Grade", y = "Frequency") +
+  theme_classic()
+```
+
+
+
+
+
+
+The following predictor variables were used to build the logistic regression model and refine our prediction: Pollscore: Historical reliability score for pollster (range: ) Numeric Grade: (scale: 0-4) Transparency Score: (scale: 0-10) Sample Size: Number of respondents in each poll (typically between 500-3000) Methodology: Survey method (eg. phone interviews, online panels) State: State-level indicators that capture regional variations in support.
+
+These selected variables are based on their relevance to polling accuracy and availability across the dataset. The analysis regarding their relationships with the outcome variables (percentage support) is further explored.
+
+
 # Model {#sec-mymodel}
 
-TODO: FINALIZE MODEL SECTION
-- VALIDATION
-- ALTERNATIVES
-- JUSTIFICATION
-- UPDATE MODEL BELOW
+TODO: FINALIZE MODEL SECTION - VALIDATION - ALTERNATIVES - JUSTIFICATION - UPDATE MODEL BELOW
 
 $$
 \begin{aligned}
 \text{logit}(\mu_i) &= \beta_0 + \beta_1 \times \text{Pollster}_i + \beta_2 \times \text{State}_i + \beta_3 \times \text{Sample Size}_i + \beta_4 \times \text{Pct}_i
 \end{aligned}
-$$
-- $y_i$ is the dependent variable, representing the count of respondents who support Harris in a given poll, modeled as a binomial outcome.
-- $\beta_0$ is the intercept term, indicating the baseline log-odds of Harris support when all predictors are zero.
-- $\beta_1$, $\beta_2$, $\beta_3$, and $\beta_4$ are the coefficients for the predictor variables **Pollster**, **State**, **Sample Size**, and **Pct** (the percentage of support for Harris in a poll), respectively:
-  - $\beta_1$ represents the adjustment in log-odds based on the specific pollster conducting the survey.
-  - $\beta_2$ accounts for the impact of the state in which the poll is conducted.
-  - $\beta_3$ adjusts for the influence of the poll's sample size.
-  - $\beta_4$ represents the effect of the poll's percentage support for Harris on the log-odds.
-- The function $\text{logit}(\mu_i)$ transforms the linear combination of predictors into probabilities, providing the estimated probability of support for Harris.
-
-
+$$ - $y_i$ is the dependent variable, representing the count of respondents who support Harris in a given poll, modeled as a binomial outcome. - $\beta_0$ is the intercept term, indicating the baseline log-odds of Harris support when all predictors are zero. - $\beta_1$, $\beta_2$, $\beta_3$, and $\beta_4$ are the coefficients for the predictor variables **Pollster**, **State**, **Sample Size**, and **Pct** (the percentage of support for Harris in a poll), respectively: - $\beta_1$ represents the adjustment in log-odds based on the specific pollster conducting the survey. - $\beta_2$ accounts for the impact of the state in which the poll is conducted. - $\beta_3$ adjusts for the influence of the poll's sample size. - $\beta_4$ represents the effect of the poll's percentage support for Harris on the log-odds. - The function $\text{logit}(\mu_i)$ transforms the linear combination of predictors into probabilities, providing the estimated probability of support for Harris.
 
 # Results {#sec-myresults}
 
 TODO: FINISH RESULTS INCLUDING GRAPHS, TABLES, SUMMARY STATS
 
-Overall Percentage for Kamala Harris: 49.72895 %
-Overall Percentage for Donald Trump: 50.27105 %
-...
-  state_winner     n
-  <chr>        <int>
-1 Harris          19
-2 Trump           23
-
+Overall Percentage for Kamala Harris: 49.72895 % Overall Percentage for Donald Trump: 50.27105 % ... state_winner n <chr> <int> 1 Harris 19 2 Trump 23
 
 # Discussion {#sec-mydisc}
 
@@ -143,63 +252,62 @@ FINISH DISCUSSION, EDIT CURRENT BITS
 
 ## First discussion point {#sec-first-point}
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this.
 
 ## Second discussion point
 
 ## Third discussion point
 
-## Weaknesses and next steps 
+## Weaknesses and next steps
 
-What are some weaknesses of what was done? + implications 
+What are some weaknesses of what was done? + implications
 
-Environmental and Societal Factors in Surveys, contributing to the – bias 
+Environmental and Societal Factors in Surveys, contributing to the -- bias
 
-Recent envoronmental disasters have disruoted life in major swing states 
+Recent envoronmental disasters have disruoted life in major swing states
 
-Didnt account for partisian pollsters and the potential bias , 
+Didnt account for partisian pollsters and the potential bias ,
 
-Weaknesses in  forecasting itself, 
-How trump could lose despite pollster estimates
+Weaknesses in forecasting itself, How trump could lose despite pollster estimates
 
-Lack of data, could introduce bias, not entirely representative, uncertainty due to declaration for Kamala, 
-This can cause
+Lack of data, could introduce bias, not entirely representative, uncertainty due to declaration for Kamala, This can cause
 
 # Limitations {#sec-mylimits}
 
 What is left to learn or how should we proceed in the future?
 
-Future models could benefit from more complex models which account for other potentially influential factors such as poll methodology (i.e. online vs in-person surveying) and partisanship or respondents’ political affiliations [@cambridge_polling_factors_2024]. Models using polls-of-polls approaches which use multi-level regression and post stratification tend to do particularly well in forecasting elections (REF tab 2), and increasing complexity to account for more influential factors like those mentioned above. They historically perform /…. Better estimation .  and accounts for uncertainty propagation, which is particularly relevant in this quarter’s election. (Reference in tab)
-Furthermore, using training data based on historical polls regarding democratic and republican election results and polling data would allow for a more robust model. This is especially because of Biden’s late declaration for Harris, thus substituting fot prior state poll behaviour will help account for a lack of polling data. Although many forecasting models aim to estimate the national popular vote, 
-Our model similarly could benefit from estimations for electoral vote 
-
+Future models could benefit from more complex models which account for other potentially influential factors such as poll methodology (i.e. online vs in-person surveying) and partisanship or respondents' political affiliations [@cambridge_polling_factors_2024]. Models using polls-of-polls approaches which use multi-level regression and post stratification tend to do particularly well in forecasting elections (REF tab 2), and increasing complexity to account for more influential factors like those mentioned above. They historically perform /.... Better estimation . and accounts for uncertainty propagation, which is particularly relevant in this quarter's election. (Reference in tab) Furthermore, using training data based on historical polls regarding democratic and republican election results and polling data would allow for a more robust model. This is especially because of Biden's late declaration for Harris, thus substituting fot prior state poll behaviour will help account for a lack of polling data. Although many forecasting models aim to estimate the national popular vote, Our model similarly could benefit from estimations for electoral vote
 
 \newpage
 
 \appendix
 
-# Appendix {#sec-appenx} {-}
-
+# Appendix {#sec-appenx} {.unnumbered}
 
 # Methodology Analysis of The Washington Post Polling
-With an evaluation of sampling methodology, recruitment, handling non-response, and questionnaire design, this appendix offers an analysis of the polling methodology used by The Washington Post in collaboration with ABC News. The objective is to analyze these approaches’ strengths and weaknesses and determine how they affect polling accuracy. 
+
+With an evaluation of sampling methodology, recruitment, handling non-response, and questionnaire design, this appendix offers an analysis of the polling methodology used by The Washington Post in collaboration with ABC News. The objective is to analyze these approaches' strengths and weaknesses and determine how they affect polling accuracy.
 
 ## Population, Frame, and Sample
-The Washington Post, in partnership with ABC News, employs a combination of text-to-web polls and random digit dialing (RDD) for landlines and mobile phones to reach a large and representative sample of American adults and registered voters [@WashPost2024_ABCMethodology]. 
+
+The Washington Post, in partnership with ABC News, employs a combination of text-to-web polls and random digit dialing (RDD) for landlines and mobile phones to reach a large and representative sample of American adults and registered voters [@WashPost2024_ABCMethodology].
 
 The Washington Post's polling averages use only national and state-level polls that comply with strict quality and transparency criteria. These surveys were chosen because they employ suitable stratification and weighting strategies in addition to random sample approaches [@WashPost2024_PollingAverages]. To represent critical demographics such as age, race, gender, and education, the samples are meticulously weighted [@WashPost2024_ABCMethodology] [@WashPost2024_PollingAverages].
 
 ## Sample Recruitment
-Live phone interviews and text-to-web surveys collect samples for The Washington Post polls, focusing on ensuring comprehensive demographic coverage. In a typical 2024 poll, text-to-web invites reached 21% of respondents, landlines reached 15%, and mobile phones reached 64% of respondents [@WashPost2024_ABCMethodology]. Younger and minority voters, who might not be well represented in conventional landline-based surveys, can be efficiently reached by pollsters using this technique. 
 
-By using address-based sampling from the Delivery Sequence File of the US Postal Service, ABC News also leverages probability-based recruiting through the Ipos KnowledgePanel. Since internet connections and equipment are offered at no cost, this guarantees that even households without internet connections or digital devices are involved [@ABCNews2024_Methodology]. 
+Live phone interviews and text-to-web surveys collect samples for The Washington Post polls, focusing on ensuring comprehensive demographic coverage. In a typical 2024 poll, text-to-web invites reached 21% of respondents, landlines reached 15%, and mobile phones reached 64% of respondents [@WashPost2024_ABCMethodology]. Younger and minority voters, who might not be well represented in conventional landline-based surveys, can be efficiently reached by pollsters using this technique.
+
+By using address-based sampling from the Delivery Sequence File of the US Postal Service, ABC News also leverages probability-based recruiting through the Ipos KnowledgePanel. Since internet connections and equipment are offered at no cost, this guarantees that even households without internet connections or digital devices are involved [@ABCNews2024_Methodology].
 
 ## Sampling Approaches and Trade-offs
+
 Using stratified random sampling, The Washington Post ensures that important demographic groups are represented proportionately to their voter base. By using stratified sampling, the polls are more likely to represent the diversity of the voting population accurately. To account for over- or under-representation of particular groups, samples are further weighted [@WashPost2024_ABCMethodology] [@WashPost2024_PollingAverages].
 
-Particularly in situations where state-level polling data is scarce, The Washington Post’s polling averages consider the state’s voting record in the last two presidential elections [@WashPost2024_PollingAverages]. This adjustment offers a more accurate representation of voters' preferences in states with fewer high-quality polls. However, there may be a trade-off since, depending solely on historical data, we may miss recent shifts in voter sentiment [@WashPost2024_ABCMethodology].
+Particularly in situations where state-level polling data is scarce, The Washington Post's polling averages consider the state's voting record in the last two presidential elections [@WashPost2024_PollingAverages]. This adjustment offers a more accurate representation of voters' preferences in states with fewer high-quality polls. However, there may be a trade-off since, depending solely on historical data, we may miss recent shifts in voter sentiment [@WashPost2024_ABCMethodology].
 
 ## Non-response Handling
+
 The Washington Post uses response weighting, which modifies the results according to demographic variables such as age, race, and education, in order to address non-response bias. In spite of variations in response rates among demographic groupings, this ensures that the final sample more accurately represents the population [@WashPost2023_Standards].
 
 ABC News also addressed non-response bias by applying post-stratification adjustments and sending email reminders to non-respondents. In addition, The Washington Post and ABC News both ensure that their samples are weighted to account for any anomalies in non-response [@ABCNews2024_Methodology] [@WashPost2023_Standards].
@@ -207,149 +315,159 @@ ABC News also addressed non-response bias by applying post-stratification adjust
 Despite these initiatives, non-response bias is still a concern, especially for populations that are less inclined to take part in surveys, including younger or less politically active people [@WashPost2023_Standards].
 
 ## Questionnaire Design
-To prevent respondents from being guided toward predetermined responses, The Washington Post creates its surveys with neutrality and clarity in mind. The questions are randomized, and respondents are given multiple choices, including “No Opinion,” to avoid pressuring answers [@WashPost2024_ABCMethodology]. Question order bias can affect how respondents understand and respond to follow-up questions. Therefore, rotation helps mitigate this effect [@WashPost2023_Standards].
+
+To prevent respondents from being guided toward predetermined responses, The Washington Post creates its surveys with neutrality and clarity in mind. The questions are randomized, and respondents are given multiple choices, including "No Opinion," to avoid pressuring answers [@WashPost2024_ABCMethodology]. Question order bias can affect how respondents understand and respond to follow-up questions. Therefore, rotation helps mitigate this effect [@WashPost2023_Standards].
 
 Similar ideas are utilized by ABC News, which offers surveys in both Spanish and English to reach a more representative sample of the general public. Leading questions are purposefully omitted from the questionnaires to ensure that the information gathered accurately reflects public opinion [@ABCNews2024_Methodology].
 
 ## Strengths and Weaknesses of the Methodology
-**Strength:** \
+
+**Strength:**\
 **Comprehensive Sampling Method:** The Washington Post can reach a broad demographic, including younger and more difficult-to-reach voters, by combining RDD, text-to-web polls, and live phone interviews [@WashPost2024_ABCMethodology] [@WashPost2023_Standards].\
 **Post-stratification Weighting:** To account for demographic imbalances and increase the accuracy of their polls, The Washington Post and ABC News both use strong post-stratification weighting [@WashPost2024_ABCMethodology] [@ABCNews2024_Methodology].\
-**Transparent Approach:** The Washington Post’s polling data is more credible since they only employ high-quality polls in their averages and is transparent about their methodology [@WashPost2023_Standards] [@WashPost2024_PollingAverages]. \
+**Transparent Approach:** The Washington Post's polling data is more credible since they only employ high-quality polls in their averages and is transparent about their methodology [@WashPost2023_Standards] [@WashPost2024_PollingAverages].\
 
-**Weaknesses:** \
-**Non-response Bias:** Even if both organizations use weighting adjustments, non-response bias still remains a challenge, particularly when it comes to groups that are less likely to respond to surveys [@WashPost2023_Standards] [@WashPost2024_ABCMethodology]. \
-**Dependency on Historical Data:** In states with fewer polls, The Washington Post relies on historical data (the last two presidential elections), which raises the possibility that the polling averages might not accurately reflect current changes in voters preferences [@WashPost2024_PollingAverages]. \
+**Weaknesses:**\
+**Non-response Bias:** Even if both organizations use weighting adjustments, non-response bias still remains a challenge, particularly when it comes to groups that are less likely to respond to surveys [@WashPost2023_Standards] [@WashPost2024_ABCMethodology].\
+**Dependency on Historical Data:** In states with fewer polls, The Washington Post relies on historical data (the last two presidential elections), which raises the possibility that the polling averages might not accurately reflect current changes in voters preferences [@WashPost2024_PollingAverages].\
 
 ## Conclusion
-The polling methodologies used by The Washington Post and ABC News offer a strict framework for gauging popular sentiment in the 2024 US presidential election. Their surveys often represent the electorate since they employ various sampling strategies, stratification, and weighting methodologies. However, obstacles such as non-response bias and the use of historical data in some states must be addressed appropriately to protect the accuracy and reliability of their polling averages. 
 
-# Idealized Survey & Methodology - $100K Budget
+The polling methodologies used by The Washington Post and ABC News offer a strict framework for gauging popular sentiment in the 2024 US presidential election. Their surveys often represent the electorate since they employ various sampling strategies, stratification, and weighting methodologies. However, obstacles such as non-response bias and the use of historical data in some states must be addressed appropriately to protect the accuracy and reliability of their polling averages.
+
+# Idealized Survey & Methodology - \$100K Budget
 
 ## Overview
-Using a $100K budget, this appendix outlines a carefully designed survey methodology for predicting the 2024 US Presidential Election. The objective is to collect representative, high-quality data using recruiting, poll aggregation, and selective sample methods. Through rigorous validation, this approach ensures data accuracy and reduces common survey research errors. 
+
+Using a \$100K budget, this appendix outlines a carefully designed survey methodology for predicting the 2024 US Presidential Election. The objective is to collect representative, high-quality data using recruiting, poll aggregation, and selective sample methods. Through rigorous validation, this approach ensures data accuracy and reduces common survey research errors.
 
 ## Sampling Approach
-We will implement stratified random sampling to ensure that key demographic and geographic subgroups are fairly represented. This approach reduces bias and offers more reliable insights into voter preference. 
 
-**Stratification Criteria:**  
-- Age Groups  
-- Gender  
-- Education Levels  
-- Geographic Representation  
+We will implement stratified random sampling to ensure that key demographic and geographic subgroups are fairly represented. This approach reduces bias and offers more reliable insights into voter preference.
+
+**Stratification Criteria:**\
+- Age Groups\
+- Gender\
+- Education Levels\
+- Geographic Representation\
 - Political Affiliation
 
 **Sample Size Goal:** 10,000 respondents across states and demographics to achieve **high statistical power** with a margin of error below ±1%
 
-**Trade-offs:**  
-- Although stratified sampling increases representativeness, it necessitates accurate demographic information and may raise operating expenses.  
-- **Missing Data:** It’s possible that some demographics (e.g. men) may be less likely to respond. Post-stratification weighting and data imputation will be used to address this issue. 
+**Trade-offs:**\
+- Although stratified sampling increases representativeness, it necessitates accurate demographic information and may raise operating expenses.\
+- **Missing Data:** It's possible that some demographics (e.g. men) may be less likely to respond. Post-stratification weighting and data imputation will be used to address this issue.
 
 ## Recruitment Strategy
-Outline outreach and telephone surveys will be combined in our recruitment strategy to ensure widespread participation from various demographic groups. 
 
-**Online Recruitment:**  
-- Target ads on Google, Facebook, and Twitter to engage younger voters and urban populations.  
-- Budget Allocation: $25,000
+Outline outreach and telephone surveys will be combined in our recruitment strategy to ensure widespread participation from various demographic groups.
 
-**Random-Digit Dialing (RDD):**  
-- Phone outreach to reach older, rural voters with poor internet connection. 
-- Budget Allocation: $30,000
+**Online Recruitment:**\
+- Target ads on Google, Facebook, and Twitter to engage younger voters and urban populations.\
+- Budget Allocation: \$25,000
 
-**Incentives:**  
-- Participants are offered $5 gift cards to increase response rates. 
-- Budget Allocation: $20,000
+**Random-Digit Dialing (RDD):**\
+- Phone outreach to reach older, rural voters with poor internet connection. - Budget Allocation: \$30,000
 
-**Non-Response Handling:**  
-- Increase recruitment incentives for underrepresented groups and use numerous follow-up reminders. 
+**Incentives:**\
+- Participants are offered \$5 gift cards to increase response rates. - Budget Allocation: \$20,000
+
+**Non-Response Handling:**\
+- Increase recruitment incentives for underrepresented groups and use numerous follow-up reminders.
 
 ## Data Validation
-To ensure the accuracy and reliability of responses, we will implement several data validation techniques: 
 
-**Survey Logic Check:**  
-- Recognize and flag responses contradicting one another (e.g., reporting under 18 but registered to vote).  
-**Attention Check:**  
-- Utilize questions to confirm respondents are actively engaged (e.g., “Select ‘Confirm’ to start questionnaire”)  
-**Post-Stratification Weighting: **  
-- Adjusting for over- and under-enumeration and weighting the sample to reflect the demographic of the US population.  
+To ensure the accuracy and reliability of responses, we will implement several data validation techniques:
 
-**Mode and Measurement Errors:**   
-- We mitigate the impact of using mixed modes (online and telephones) by training enumerators and reducing enumerator bias. Misreporting will be reduced through straightforward questions.  
+**Survey Logic Check:**\
+- Recognize and flag responses contradicting one another (e.g., reporting under 18 but registered to vote).\
+**Attention Check:**\
+- Utilize questions to confirm respondents are actively engaged (e.g., "Select 'Confirm' to start questionnaire")\
+**Post-Stratification Weighting:**\
+- Adjusting for over- and under-enumeration and weighting the sample to reflect the demographic of the US population.
+
+**Mode and Measurement Errors:**\
+- We mitigate the impact of using mixed modes (online and telephones) by training enumerators and reducing enumerator bias. Misreporting will be reduced through straightforward questions.
 
 ## Poll Aggregation Methodology
-We will employ a poll-of-polls aggregation method to reduce bias and smooth fluctuation across individual polls. 
 
-**Weighting Criteria:**  
-**Sample Size:** larger samples receive more weight to mirror greater reliability. 
+We will employ a poll-of-polls aggregation method to reduce bias and smooth fluctuation across individual polls.
 
-**Recency:** More recent polls are given higher weight to capture modern voter sentiment. 
+**Weighting Criteria:**\
+**Sample Size:** larger samples receive more weight to mirror greater reliability.
 
-**Pollster Rating:** Polls from highly rated pollsters receive higher weights to reduce the impact of bias. 
+**Recency:** More recent polls are given higher weight to capture modern voter sentiment.
 
-## Survey Implementation 
-Google Forms was used to create and implement the survey, allowing for efficient data collection and safe storage. The main section and sample questions are listed below. 
+**Pollster Rating:** Polls from highly rated pollsters receive higher weights to reduce the impact of bias.
+
+## Survey Implementation
+
+Google Forms was used to create and implement the survey, allowing for efficient data collection and safe storage. The main section and sample questions are listed below.
 
 Access the survey: [Google Form](https://forms.gle/F1v3gswDjra8YLP79)
 
-**Survey Overview** \
-**Title:** 2024 US Presidential Election Poll \
-**Purpose:** To gather public sentiment and predict election outcomes. \
-**Estimated Time:** Less than 5 minutes \
-**Confidentiality:** All responses are anonymous and used only for research purposes. 
+**Survey Overview**\
+**Title:** 2024 US Presidential Election Poll\
+**Purpose:** To gather public sentiment and predict election outcomes.\
+**Estimated Time:** Less than 5 minutes\
+**Confidentiality:** All responses are anonymous and used only for research purposes.
 
-1. What is your age?
-- Under 18
-- 18-24
-- 25-34
-- 35-44
-- 45-54
-- 55-64
-- 65+
+1.  What is your age?
 
-2. What is your gender?
-- Male
-- Female
-- Non-binary / Prefer not to say
+-   Under 18
+-   18-24
+-   25-34
+-   35-44
+-   45-54
+-   55-64
+-   65+
 
-3. What is the highest level of education you have completed?
-- Less than high school
-- High school diploma or GED
-- Some college
-- Bachelor’s degree
-- Master’s degree or higher
+2.  What is your gender?
 
-4. Are you registered to vote?
-- Yes
-- No
+-   Male
+-   Female
+-   Non-binary / Prefer not to say
 
-5. Who do you intend to vote for in the upcoming presidential election?
-- Donald Trump (Republican)
-- Kamala Harris (Democrat)
-- Other
-- Undecided
+3.  What is the highest level of education you have completed?
 
-6. How likely are you to vote in the upcoming election?
-- Very Likely
-- Somewhat Likely
-- Not Likely
+-   Less than high school
+-   High school diploma or GED
+-   Some college
+-   Bachelor's degree
+-   Master's degree or higher
+
+4.  Are you registered to vote?
+
+-   Yes
+-   No
+
+5.  Who do you intend to vote for in the upcoming presidential election?
+
+-   Donald Trump (Republican)
+-   Kamala Harris (Democrat)
+-   Other
+-   Undecided
+
+6.  How likely are you to vote in the upcoming election?
+
+-   Very Likely
+-   Somewhat Likely
+-   Not Likely
 
 ## Budget Breakdown
-- **Online Recruitment** : $25,000
-- **RDD Recruitment**: $30,000
-- **Incentives for Participants**: $20,000
-- **Data Processing & Validation**: $15,000
-- **Miscellaneous Expenses**: $10,000
 
-**Total**: $100,000
+-   **Online Recruitment** : \$25,000
+-   **RDD Recruitment**: \$30,000
+-   **Incentives for Participants**: \$20,000
+-   **Data Processing & Validation**: \$15,000
+-   **Miscellaneous Expenses**: \$10,000
+
+**Total**: \$100,000
 
 ## Conclusion
-This survey methodology uses stratified sampling, multi-channel recruitment, and rigorous data validation procedures to ensure accurate forecasting of the 2024 US Presidential Election. We provide a more stable and reliable prediction through poll-polls aggregation, smoothing out fluctuations across polls. This design balances accuracy, inclusivity, and efficiency with a carefully considered $100K budget, ensuring the poll gathers meaningful insights into voter sentiment and behavior. 
 
-
+This survey methodology uses stratified sampling, multi-channel recruitment, and rigorous data validation procedures to ensure accurate forecasting of the 2024 US Presidential Election. We provide a more stable and reliable prediction through poll-polls aggregation, smoothing out fluctuations across polls. This design balances accuracy, inclusivity, and efficiency with a carefully considered \$100K budget, ensuring the poll gathers meaningful insights into voter sentiment and behavior.
 
 \newpage
 
-
 # References
-
-
