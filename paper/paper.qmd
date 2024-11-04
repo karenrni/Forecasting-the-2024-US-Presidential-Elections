@@ -324,11 +324,11 @@ To conduct this analysis, the R packages rstanarm [@citeArm] and MLmetrics [@MLm
 ## Model Structure
 
 * Mathematical Representation
-$$
+
 \begin{align}
 \text{logit}(y_i) &= \beta_0 + \beta_1 \times \text{Pct}_i + u_{\text{pollster}} + u_{\text{state}} \\
 \end{align}
-$$
+
 
 * Component Explanation
 - $y_i$: Binary outcome variable indicating whether a respondent supports Harris (1) or not (0). \\
@@ -346,19 +346,19 @@ In constructing the Bayesian model, careful consideration was given to the selec
 
 ## Weights and Priors
 The weights in this model are calculated using the formula:
-$$
+
 \begin{equation}
 \text{weights} = \text{Numeric Grade} \times \left(\frac{\text{Sample Size}}{\text{Mean(Sample Size)}}\right)
 \end{equation}
-$$
+
 This approach ensures that more reliable polls—indicated by a higher Numeric Grade—carry greater influence in the analysis. By incorporating the sample size relative to the average sample size, this weighting system acknowledges that larger, more representative samples tend to yield more accurate reflections of public sentiment. This method effectively balances the impact of various polls based on their reliability and representation, leading to a more robust estimation of voter support.
 
 Regarding the priors, we define them as follows:
-$$
+
 \begin{equation}
 \text{priors} \sim \text{Normal}(0.5, 0.1)
 \end{equation}
-$$
+
 This prior is centered at 0.5 with a standard deviation of 0.1, reflecting the belief that, in the absence of strong data, the probabilities of support for both candidates are expected to be balanced. This choice of prior is particularly advantageous in situations where data is limited or when there is uncertainty regarding the expected distribution of voter support. By employing a normal prior, we establish a baseline assumption that allows the model to remain flexible and effectively integrate new data as it becomes available.
 
 ## Model Validation and Justification
@@ -645,6 +645,7 @@ In the 7 swing states– Arizona, Wisconsin, North Carolina, Pennsylvania, Georg
 The results are can additionally be hard to anticipate due to various unaccounted biases and inaccurate model adjustments. Trump may simply overturn his polls despite Harris’ slight forecasted leads due to shy voters, where people don’t publicly identify as conservative due to the negative social stigmas around it. What is more likely is an overturn due to the non-response bias. Republicans tend to be less responsive when it comes to polls which can lead to an unrepresentative dataset despite reweighed models altered to account for poor levels of distributed surveys. As there is no guarantee that the altered models work, it is not a confident show of prediction. Harris may also experience a large overturn due to similar inaccurately adjusted estimates in attempts to mitigate seemingly nonrepresentative data to an accurate prediction. However there the election may face incorrect election results due to small surveying or sampling errors, which can be devastating due to the tightness of the race [@NYT_ElectionPollsOpinion].
 
 # Limitations and Next Steps {#sec-mylimits}
+## Limitations
 This analysis identifies several limitations that may impact the reliability of the predictions. First, the logistic model shows high levels of multicollinearity between state and pollster variables. This multicollinearity may inflate standard errors, complicating the interpretation of coefficients and impacting the model's accuracy. Addressing this issue in future analyses could enhance interpretability and offer a clearer comparison to the Bayesian and other models.
 
 Additionally, environmental disruptions, such as recent hurricanes in key swing states, may introduce biases. These events affect both public sentiment and access to polling, potentially skewing results. While the state-level margin of error partially reflects this uncertainty, it also shows the model’s sensitivity to external societal influences that are challenging to control.
@@ -655,8 +656,10 @@ The model is fairly simple in comparison to other forecasts and does not current
 Another simplification in this analysis is the treatment of Maine and Nebraska, where data were aggregated at the state level instead of by congressional district. While this approach provides an overall view of candidate support in these states, it overlooks district-specific dynamics that could impact electoral vote allocation. This simplification streamlines the model but may underrepresent nuanced trends within these states.
 
 Our method of weighting the polls does not have any constraints and could lead to the overweighting of certain data groups. If one sample size was much bigger than the majority, its weight would be extreme as well, potentially overcompensating for its affects. 
+
 Finally, data gaps remain a significant factor, as polling data for several states were unavailable. Although these states are not swing states, the lack of data introduces uncertainty and potentially limits the model’s representativeness. This sparsity in effect with Harris’ recent campaign declaration, contributes to an overall margin of error. 
-Future Directions
+
+## Next Steps
 Future models could benefit from greater complexity to address these limitations. Incorporating additional influential factors, such as poll methodology (e.g., online versus in-person surveys), and pollster partisanship, would add depth to the analysis. Multi-level regression and post-stratification approaches, commonly used in polls-of-polls models, have shown to be effective in forecasting elections by capturing uncertainty more comprehensively [@citeTS]. Increasing model complexity with these factors could improve forecast reliability, particularly in an election as competitive as this one.
 Integrating historical state-level polling data from previous elections could help fill data gaps and provide stronger context for recent trends. This is especially relevant given Biden’s late endorsement of Harris, where past polling data could help address the deficit of recent, state-level Democratic polling information. While this model focuses on the national popular vote, future work could benefit from projections of electoral votes, as these hold greater relevance in determining the election outcome.
 In practice, reducing the influence of large polls is essential to avoid disproportionately weighting them. Implementing a cap on sample sizes, along with winsorizing extreme values, would prevent larger surveys from skewing results. Similarly, adjusting the weights of pollsters that release multiple polls in a short time frame would balance their impact, ensuring no single pollster overwhelms the dataset’s representation [@FiveThirtyEight_Poll_Avg ].
