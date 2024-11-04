@@ -8,7 +8,7 @@ author:
 thanks: "Code and data are available at: https://github.com/karenrni/Forecasting-the-2024-US-Presidential-Elections"
 date: today
 date-format: long
-abstract: "We forecast the 2024 U.S. presidential winner using state-level poll averages for Kamala Harris and Donald Trump, weighted by poll quality and sample size. Applying a logistic regression model, we find a slight 0.8% lead for Harris over Trump, using polls taken since the reelection bid on July 21, 2024. We weigh the polls with aims to increase the influence of the most reliable data in shaping the forecast—limiting biased results and showing a clearer voter sentiment amidst a particularly competitive election. These results show who may be leading the elections via polls, giving campaigns the insights they need and reinforcing public trust in the election process, especially as the outcome likely hinges on key swing states."
+abstract: "We forecast the 2024 U.S. presidential winner using state-level poll averages for Kamala Harris and Donald Trump, weighted by poll quality and sample size. Applying a Bayesian regression model, we find a slight 0.8% overall lead for Harris over Trump and Harris leading in all 7 swing states. We weigh the polls with aims to increase the influence of the most reliable data in shaping the forecast—limiting biased results and showing a clearer voter sentiment amidst a particularly competitive election. These results show who may be leading the elections via polls, giving campaigns the estimations they need and reinforcing public trust in the election process, especially as the outcome likely hinges on key swing states."
 toc: true
 fig_caption: yes
 number-sections: true
@@ -26,19 +26,21 @@ library(arrow)
 library(kableExtra)
 library(maps) 
 library(knitr)
+library(ggplot2)
+library(modelsummary)
 ```
 
 # Introduction
 
-Amid the chaotic, high-stakes 2024 U.S. presidential election, forecasting models offer crucial insights into voter sentiment as Americans face a tight race between top candidates Donald Trump and Kamala Harris. With the attempted assassination of Trump, Joe Biden's endorsement of Harris, and recent crises such as hurricanes disrupting voter access in swing states, public opinion remains volatile [@ABCNews2024_HurricaneImpact]. Key events like Trump's policy proposals on social security and public safety, Harris's advocacy for reproductive rights, and other rising debates on gun control have further polarized the electorate, making forecasting models essential in offering clarity amid this competitive landscape [@CBSNews2024_CampaignPromises; @HRW2022_RoeVWade].
+Amid the chaotic, high-stakes 2024 U.S. presidential election, forecasting models offer useful evaluations into voter sentiment as Americans face a tight race between top candidates Donald Trump and Kamala Harris. With the attempted assassination of Trump, Joe Biden’s endorsement of Harris, and recent crises such as hurricanes disrupting voter access in swing states, public opinion remains volatile [ @ABCNews2024_HurricaneImpact]. Key events like Trump’s policy proposals on social security and public safety, Harris’s advocacy for reproductive rights, and other rising debates on gun control have further polarized the electorate, making forecasting models essential in offering clarity amid this competitive landscape [@CBSNews2024_CampaignPromises; @HRW2022_RoeVWade].
 
-Using presidential polling data from FiveThirtyEight, our Bayesian model's estimand is the probability of support for Kamala Harris, weighted by pollster rating and sample size to improve the reliability of aggregated polling data. By refining the aggregation of polls through logistic regression, weighted by sample size and pollster rating, this study contributes to the growing body of forecast models---including media outlets' own polls-of-polls and various Bayesian methods. Our model estimates only a slim 0.8% lead for Harris over Trump in the overall popular vote---a close margin that highlights the high uncertainty in public sentiment. In line with other forecasts that struggle to declare a clear frontrunner, this narrow lead reflects the volatility of the race and the importance of updated, representative polling data [@NYTimes2024_ElectionPolls].
+Using presidential polling data from FiveThirtyEight, our Bayesian model’s estimand is the probability of support for Kamala Harris, weighted by pollster rating and sample size to improve the reliability of aggregated polling data. By refining the aggregation of polls through Bayesian regression, filtered from the reelection day past July 21st, 2024 and weighted by sample size and pollster rating, this study contributes to the growing body of forecast models—including media outlets’ own polls-of-polls and various Bayesian methods. Our model estimates only a slim 0.8% lead for Harris over Trump in the overall popular vote—a close margin that highlights the high uncertainty in public sentiment. In line with other forecasts that struggle to declare a clear frontrunner, this narrow lead reflects the volatility of the race and the importance of updated, representative polling data [@NYTimes2024_ElectionPolls].
 
-This uncertainty emphasizes the significance of swing states in election forecasts---particularly states with nearly equal support for each party and a history of alternating between Democratic and Republican candidates in recent elections [@Bloomberg2024_KeyStates]. Existing research identifies seven critical swing states, with Pennsylvania standing out as a tipping point in more than 1 in 5 simulations [@AP2024_ElectionForecasts]. With 19 electoral votes, Pennsylvania could prove decisive in the event of a close race. The competitive nature of these swing states shows the need for continued data updates to maintain forecast accuracy in a closely contested race.
+This uncertainty emphasizes the significance of swing states in election forecasts—particularly states with nearly equal support for each party and a history of alternating between Democratic and Republican candidates in recent elections [@Bloomberg2024_KeyStates]. Existing research identifies seven critical swing states, with Pennsylvania standing out as a tipping point in more than 1 in 5 simulations [@AP2024_ElectionForecasts]. With 19 electoral votes, Pennsylvania could prove decisive in the event of a close race. Our estimates reveal Harris’ lead in each swing state, however they are slim leads. The competitive nature of these swing states shows the need for continued data updates to maintain forecast accuracy in a closely contested race.
 
-By prioritizing higher-quality polls and focusing on data collected after Harris's campaign announcement, the model seeks to mitigate biases and improve forecast reliability by using a polls-of-polls method over individual pollster data. This approach not only clarifies voter sentiment amid competing forecasts but also demonstrates the value of weighting variables such as pollster rating and sample size in enhancing prediction accuracy. While some states lack sufficient polling data---introducing potential limitations that could be improved with more data and model complexity---the overall findings provide strategic insights for decision-makers and reinforce public confidence in an election where no candidate holds a decisive lead. Appendix A provides a detailed assessment on The Washington Post, one of the polling methodologies used by prominent sources, including sampling approaches, weighting, and non-response handling strategies to ensure robust data quality.
+By prioritizing higher-quality polls and focusing on data collected after Harris’s campaign announcement, the model seeks to mitigate biases and improve forecast reliability by using a polls-of-polls method over individual pollster data. This approach not only clarifies voter sentiment amid competing forecasts but also demonstrates the value of weighting variables such as pollster rating and sample size in enhancing prediction accuracy. While some states lack sufficient polling data—introducing potential limitations that could be improved with more data and model complexity—the overall findings provide strategic forecasts for decision-makers and reinforce public confidence in an election where no candidate holds a decisive lead. Appendix A provides a detailed assessment on The Washington Post, one of the polling methodologies used by prominent sources, including sampling approaches, weighting, and non-response handling strategies to ensure robust data quality.
 
-The rest of this paper is structured as follows: @sec-mydatasection presents the data sources and methodology, @sec-mymodel presents the forecasting model, then @sec-myresults followed by @sec-mydisc, which discusses the results and their implications. @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research, followed by an Appendix in @sec-appenx with The Washington Post's pollster methodology and a budgeted idealized methodology.
+The rest of this paper is structured as follows:  @sec-mydatasection presents the data sources and methodology, @sec-mymodel presents the forecasting model, then  @sec-myresults followed by  @sec-mydisc, which discusses the results and their implications.  @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research, followed by @sec-appenx with The Washington Post’s pollster methodology and a budgeted idealized methodology.
 
 # Data Analysis {#sec-mydatasection}
 
@@ -393,7 +395,35 @@ The choice of the Bayesian model is justified by its capacity to account for the
 
 # Results {#sec-myresults}
 
+Figure X shows the national predicted popular vote percentages for Harris (50.42%) and Trump (49.58%), calculated by averaging the mean predictions across all states. This aggregation reveals a very narrow 0.84% lead for Harris, highlighting a highly competitive race. This reveals a lack of dominance in candidacy and general uncertainty of pollster outcomes, suggesting that even this slight lead may not be substantial.
+
+Additionally, Figure Y presents a heat map of Harris's predicted probability by state, illustrating her lead over the majority of states but revealing that this advantage is generally weak, with most not peaking over a 1% advantage. Most states show only a slight preference for Harris over Trump, with the margin of error spanning both candidates in many cases. Specifically, out of the 43 states with available data, 25 states lean toward Harris, yet none of these states show lead of greater than XX over Trump. This pattern additionally shows the substantial closeness of the race, as evidenced by the margin of error, where overlapping intervals highlight the slim advantage and limited certainty in Harris's predicted support.
+
+Figure Z zooms in on the seven swing states, each of which shows a slight lean toward Harris. The graph includes a red dashed line at the 50% threshold, and although Harris is estimated to lead in these swing states, the margin is extremely tight, with most probabilities hovering just above 50%. Only Michigan and North Carolina show a slight lead of just over 1%, reinforcing the sensitivity of these predictions. This pattern suggests that even small shifts in voter sentiment could tip these critical states in either direction.
+
+Looking closer at the margin of error, in figure X we can see Harris’s predicted probabilities by state. States to the right of the dashed line (above 0.5) lean towards Harris, while those to the left lean towards Trump. In swing states like North Carolina, Michigan, and Pennsylvania, Harris’s minimal lead is coupled with error bars that overlap this threshold. This suggests a high level of uncertainty—small shifts could easily change the lead in these states. Harris has a slight edge, but in many states, this lead is within the margin of error, thus showing that the election remains too close to call.
+
+Figure W provides a summary of the model’s coefficients and fit statistics, capturing key model parameters like the intercepts, predictor estimates, and evaluation metrics. The negative intercept of -2.07 represents the baseline log odds for Harris, establishing the prediction's starting point in the absence of other predictors. With all intercepts being equal, there is initially a lower probability for Harris’s support without accounting for additional factors of percentage (pct) of support or pollster influence. The non-significant coefficient for sample size indicates that it does not directly affect prediction but serves as part of the poll weighting. In contrast, the pct coefficient of 0.04 suggests a slight positive effect on the odds for Harris, meaning an increase in her polling percentage slightly raises her predicted support odds. Low variance estimates for pollster and state effects imply limited inter-group variability, indicating that neither adds substantial random variation to the results.
+
+Regarding model evaluation, the WAIC of 7072.4 and log likelihood of -3518.4 do not offer much information alone however a higher likelihood and a lower WAIC is preferred. The RMSE of 0.5 points to moderate accuracy, which aligns with the close and uncertain nature of the election. Additionally, a low ICC value suggests limited random variance contributed by pollster and state, furthermore showing the model’s constrained precision in forecasting a definitive winner.
+
 ```{r}
+#| label: fig-summary-mod
+#| tbl-cap: "Distribution of Sample Size"
+#| echo: false
+#| warning: false
+#| fig-align: center
+
+# Display model summary
+modelsummary(bayesian_model, output = "kableExtra")
+```
+
+```{r}
+```
+
+```{r}
+#| label: fig-national-vote
+#| fig-cap: "National Popular Vote Prediction"
 
 # Calculate overall percentage for Harris and Trump
 overall_percentages <- data.frame(
@@ -408,6 +438,7 @@ ggplot(overall_percentages, aes(x = Candidate, y = Percentage, fill = Candidate)
   labs(title = "National Popular Vote Prediction", y = "Percentage", x = "Candidate") +
   scale_fill_manual(values = c("blue", "red")) +
   theme_classic()
+
 ```
 
 ```{r}
@@ -475,37 +506,31 @@ ggplot(state_margins, aes(x = reorder(state, avg_predicted_prob_harris), y = avg
 
 # Discussion {#sec-mydisc}
 
-TO DO:
+In a highly competitive election, accurately forecasting outcomes requires more than just raw polling data—it demands careful aggregation and weighting to capture true voter sentiment. 
+With this in mind, our model estimates a narrow 0.8% lead for Kamala Harris in the national popular vote, resulting in an aggregated support of approximately 50.4% across states. 
 
-FINISH DISCUSSION, EDIT CURRENT BITS
+While this suggests a slight edge for Harris, the lead easily falls within a \pm 3\% margin that reflects substantial uncertainty [@PewResearch_MarginOfError]. When a candidate’s lead is within this margin, the difference may not be statistically significant, meaning the true preference could feasibly favor either candidate. In this context, a 0.8% lead falls well within this range and could be due to sampling noise rather than a clear voter preference. In close races, even minor shifts in voter sentiment or turnout in key states could alter the outcome, showing the need for monitoring closely divided swing states and precise state-level analysis. 
 
-## First discussion point {#sec-first-point}
+Our model, through poll aggregation, weighted by pollster reliability and sample size, refines polling data into a more realistic prediction, helping offset biases in individual polls. This is because the weighting higher-quality polls reduces the influence of less reliable data seen in unweighted or individual poll estimates, providing a clearer view of voter sentiment. This approach, especially in closely contested swing states, increased the model’s sensitivity to shifts in these pivotal regions, reflecting on their power to overturn the elections while having a historically uncertain favourable candidate. 
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this.
+In the 7 swing states– Arizona, Wisconsin, North Carolina, Pennsylvania, Georgia, Michigan and Nevada, our model shows Harris leading in each, with only 2 swing states showing a lead greater than 1%. Furthermore, the small margins seen in FUGURENARGIN show swing state leads ithin their respective margin of errors, pushing the uncertainty of the estimated lead. Other forecasts like FiveThirtyEight’s and The NYTimes’ offer similar leads for Harris [@FiveThirtyEight; nytimes2024_estimate]. When independent models using varied methodologies predict a similar outcome, it can suggest a trend that might hold under different sampling assumptions or adjustments. This convergence across forecasts further emphasizes the tightness of the race however, they can enhance confidence in a potential Harris lead, although it remains small.
 
-## Second discussion point
+The results are can additionally be hard to anticipate due to various unaccounted biases and inaccurate model adjustments. Trump may simply overturn his polls despite Harris’ slight forecasted leads due to shy voters, where people don’t publicly identify as conservative due to the negative social stigmas around it. What is more likely is an overturn due to the non-response bias. Republicans tend to be less responsive when it comes to polls which can lead to an unrepresentative dataset despite reweighed models altered to account for poor levels of distributed surveys. As there is no guarantee that the altered models work, it is not a confident show of prediction. Harris may also experience a large overturn due to similar inaccurately adjusted estimates in attempts to mitigate seemingly nonrepresentative data to an accurate prediction. However there the election may face incorrect election results due to small surveying or sampling errors, which can be devastating due to the tightness of the race [@NYT_ElectionPollsOpinion].
 
-## Third discussion point
+# Limitations and Next Steps {#sec-mylimits}
+This analysis identifies several limitations that may impact the reliability of the predictions. First, the logistic model shows high levels of multicollinearity between state and pollster variables. This multicollinearity may inflate standard errors, complicating the interpretation of coefficients and impacting the model's accuracy. Addressing this issue in future analyses could enhance interpretability and offer a clearer comparison to the Bayesian and other models.
+Additionally, environmental disruptions, such as recent hurricanes in key swing states, may introduce biases. These events affect both public sentiment and access to polling, potentially skewing results. While the state-level margin of error partially reflects this uncertainty, it also shows the model’s sensitivity to external societal influences that are challenging to control.
+Maine and Nebraska, which allocate some electoral votes by congressional district, are simplified in this analysis by grouping each state into a single unit. While this approach captures broader state trends, it could underrepresent district-specific voting patterns, and future studies could address district-level data.
+The model is fairly simple in comparison to other forecasts and does not currently adjust for other traditional variables or bias (i.e. partisianship) as polling sources, which could lead to an unbalanced or less accurate view of candidate support [@cambridge_polling_factors_2024]. Incorporating adjustments for pollster partisanship would improve accuracy by reflecting a more comprehensive cross-section of public opinion.
+Another simplification in this analysis is the treatment of Maine and Nebraska, where data were aggregated at the state level instead of by congressional district. While this approach provides an overall view of candidate support in these states, it overlooks district-specific dynamics that could impact electoral vote allocation. This simplification streamlines the model but may underrepresent nuanced trends within these states.
+Our method of weighting the polls does not have any constraints and could lead to the overweighting of certain data groups. If one sample size was much bigger than the majority, its weight would be extreme as well, potentially overcompensating for its affects. 
+Finally, data gaps remain a significant factor, as polling data for several states were unavailable. Although these states are not swing states, the lack of data introduces uncertainty and potentially limits the model’s representativeness. This sparsity in effect with Harris’ recent campaign declaration, contributes to an overall margin of error. 
+Future Directions
+Future models could benefit from greater complexity to address these limitations. Incorporating additional influential factors, such as poll methodology (e.g., online versus in-person surveys), and pollster partisanship, would add depth to the analysis. Multi-level regression and post-stratification approaches, commonly used in polls-of-polls models, have shown to be effective in forecasting elections by capturing uncertainty more comprehensively [@citeTS]. Increasing model complexity with these factors could improve forecast reliability, particularly in an election as competitive as this one.
+Integrating historical state-level polling data from previous elections could help fill data gaps and provide stronger context for recent trends. This is especially relevant given Biden’s late endorsement of Harris, where past polling data could help address the deficit of recent, state-level Democratic polling information. While this model focuses on the national popular vote, future work could benefit from projections of electoral votes, as these hold greater relevance in determining the election outcome.
+In practice, reducing the influence of large polls is essential to avoid disproportionately weighting them. Implementing a cap on sample sizes, along with winsorizing extreme values, would prevent larger surveys from skewing results. Similarly, adjusting the weights of pollsters that release multiple polls in a short time frame would balance their impact, ensuring no single pollster overwhelms the dataset’s representation [@FiveThirtyEight_Poll_Avg ].
 
-## Weaknesses and next steps
 
-What are some weaknesses of what was done? + implications
-
-Environmental and Societal Factors in Surveys, contributing to the -- bias
-
-Recent envoronmental disasters have disruoted life in major swing states
-
-Didnt account for partisian pollsters and the potential bias ,
-
-Weaknesses in forecasting itself, How trump could lose despite pollster estimates
-
-Lack of data, could introduce bias, not entirely representative, uncertainty due to declaration for Kamala, This can cause
-
-# Limitations {#sec-mylimits}
-
-What is left to learn or how should we proceed in the future?
-
-Future models could benefit from more complex models which account for other potentially influential factors such as poll methodology (i.e. online vs in-person surveying) and partisanship or respondents' political affiliations [@cambridge_polling_factors_2024]. Models using polls-of-polls approaches which use multi-level regression and post stratification tend to do particularly well in forecasting elections (REF tab 2), and increasing complexity to account for more influential factors like those mentioned above. They historically perform /.... Better estimation . and accounts for uncertainty propagation, which is particularly relevant in this quarter's election. (Reference in tab) Furthermore, using training data based on historical polls regarding democratic and republican election results and polling data would allow for a more robust model. This is especially because of Biden's late declaration for Harris, thus substituting fot prior state poll behaviour will help account for a lack of polling data. Although many forecasting models aim to estimate the national popular vote, Our model similarly could benefit from estimations for electoral vote
 
 \newpage
 
