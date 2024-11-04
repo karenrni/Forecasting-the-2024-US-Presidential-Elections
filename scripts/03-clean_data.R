@@ -80,6 +80,5 @@ message("Number of duplicate observations: ", num_duplicates)
 clean_president_polls <- clean_president_polls[!duplicated(clean_president_polls), ]
 message("Number of rows after removing duplicates: ", nrow(clean_president_polls))
 
-
 #### Save data ####
 write_parquet(clean_president_polls, "data/02-analysis_data/clean_president_polls.parquet")
