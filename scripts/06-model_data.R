@@ -37,6 +37,7 @@ clean_president_polls <- clean_president_polls %>%
 priors <- normal(0.5, 0.1, autoscale = TRUE)
 
 # Fit model with complete dataset
+set.seed(123)
 bayesian_model <- stan_glmer(
   formula = is_harris ~ pct + (1 | pollster) + (1 | state),
   data = clean_president_polls,
@@ -50,14 +51,13 @@ bayesian_model <- stan_glmer(
 )
 
 # Predict probabilities for Harris winning 
-bayesian_predicted <- clean_president_polls |> 
-  select(pollster, state, start_date, end_date, is_harris, pct) |> 
+clean_president_polls <- clean_president_polls |> 
   mutate(
     predicted_prob_harris = posterior_predict(bayesian_model, newdata = clean_president_polls, type = "response") |> colMeans(),
     winner_harris = ifelse(predicted_prob_harris > 0.500, 1, 0)
   )
 # Calculate the unweighted average predicted probability for Kamala Harris
-overall_predicted_prob_harris <- mean(bayesian_predicted$predicted_prob_harris)
+overall_predicted_prob_harris <- mean(clean_president_polls$predicted_prob_harris)
 
 # Convert to percentage
 overall_percentage_harris <- overall_predicted_prob_harris * 100
@@ -68,7 +68,7 @@ cat("Overall Percentage for Kamala Harris:", overall_percentage_harris, "%\n")
 cat("Overall Percentage for Donald Trump:", overall_percentage_trump, "%\n")
 
 # Calculate the average predicted probability by state for Harris
-state_predictions <- bayesian_predicted %>%
+state_predictions <- clean_president_polls %>%
   group_by(state) %>%
   summarize(
     avg_predicted_prob_harris = mean(predicted_prob_harris)
