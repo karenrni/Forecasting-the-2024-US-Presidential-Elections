@@ -395,15 +395,15 @@ The choice of the Bayesian model is justified by its capacity to account for the
 
 # Results {#sec-myresults}
 
-Figure X shows the national predicted popular vote percentages for Harris (50.42%) and Trump (49.58%), calculated by averaging the mean predictions across all states. This aggregation reveals a very narrow 0.84% lead for Harris, highlighting a highly competitive race. This reveals a lack of dominance in candidacy and general uncertainty of pollster outcomes, suggesting that even this slight lead may not be substantial.
+[@fig-national-vote] shows the national predicted popular vote percentages for Harris (50.42%) and Trump (49.58%), calculated by averaging the mean predictions across all states. This aggregation reveals a very narrow 0.84% lead for Harris, highlighting a highly competitive race. This reveals a lack of dominance in candidacy and general uncertainty of pollster outcomes, suggesting that even this slight lead may not be substantial.
 
-Additionally, Figure Y presents a heat map of Harris's predicted probability by state, illustrating her lead over the majority of states but revealing that this advantage is generally weak, with most not peaking over a 1% advantage. Most states show only a slight preference for Harris over Trump, with the margin of error spanning both candidates in many cases. Specifically, out of the 43 states with available data, 25 states lean toward Harris, yet none of these states show lead of greater than XX over Trump. This pattern additionally shows the substantial closeness of the race, as evidenced by the margin of error, where overlapping intervals highlight the slim advantage and limited certainty in Harris's predicted support.
+Additionally, [@fig-heatmap] presents a heat map of Harris's predicted probability by state, illustrating her lead over the majority of states but revealing that this advantage is generally weak, with most not peaking over a 1% advantage. Most states show only a slight preference for Harris over Trump, with the margin of error spanning both candidates in many cases. Specifically, out of the 43 states with available data, 25 states lean toward Harris, yet none of these states shows a substantial lead over more than a few percent over Trump. This pattern additionally shows the substantial closeness of the race, as evidenced by the margin of error, where overlapping intervals highlight the slim advantage and limited certainty in Harris's predicted support.
 
-Figure Z zooms in on the seven swing states, each of which shows a slight lean toward Harris. The graph includes a red dashed line at the 50% threshold, and although Harris is estimated to lead in these swing states, the margin is extremely tight, with most probabilities hovering just above 50%. Only Michigan and North Carolina show a slight lead of just over 1%, reinforcing the sensitivity of these predictions. This pattern suggests that even small shifts in voter sentiment could tip these critical states in either direction.
+[@fig-swing-states] zooms in on the seven swing states, each of which shows a slight lean toward Harris. The graph includes a red dashed line at the 50% threshold, and although Harris is estimated to lead in these swing states, the margin is extremely tight, with most probabilities hovering just above 50%. Only Michigan and North Carolina show a slight lead of just over 1%, reinforcing the sensitivity of these predictions. This pattern suggests that even small shifts in voter sentiment could tip these critical states in either direction.
 
-Looking closer at the margin of error, in figure X we can see Harris’s predicted probabilities by state. States to the right of the dashed line (above 0.5) lean towards Harris, while those to the left lean towards Trump. In swing states like North Carolina, Michigan, and Pennsylvania, Harris’s minimal lead is coupled with error bars that overlap this threshold. This suggests a high level of uncertainty—small shifts could easily change the lead in these states. Harris has a slight edge, but in many states, this lead is within the margin of error, thus showing that the election remains too close to call.
+Looking closer at the margin of error, in [@fig-margin] we can see Harris’s predicted probabilities by state. States to the right of the dashed line (above 0.5) lean towards Harris, while those to the left lean towards Trump. In swing states like North Carolina, Michigan, and Pennsylvania, Harris’s minimal lead is coupled with error bars that overlap this threshold. This suggests a high level of uncertainty—small shifts could easily change the lead in these states. Harris has a slight edge, but in many states, this lead is within the margin of error, thus showing that the election remains too close to call.
 
-Figure W provides a summary of the model’s coefficients and fit statistics, capturing key model parameters like the intercepts, predictor estimates, and evaluation metrics. The negative intercept of -2.07 represents the baseline log odds for Harris, establishing the prediction's starting point in the absence of other predictors. With all intercepts being equal, there is initially a lower probability for Harris’s support without accounting for additional factors of percentage (pct) of support or pollster influence. The non-significant coefficient for sample size indicates that it does not directly affect prediction but serves as part of the poll weighting. In contrast, the pct coefficient of 0.04 suggests a slight positive effect on the odds for Harris, meaning an increase in her polling percentage slightly raises her predicted support odds. Low variance estimates for pollster and state effects imply limited inter-group variability, indicating that neither adds substantial random variation to the results.
+[@fig-summary-mod] provides a summary of the model’s coefficients and fit statistics, capturing key model parameters like the intercepts, predictor estimates, and evaluation metrics. The negative intercept of -2.07 represents the baseline log odds for Harris, establishing the prediction's starting point in the absence of other predictors. With all intercepts being equal, there is initially a lower probability for Harris’s support without accounting for additional factors of percentage (pct) of support or pollster influence. The non-significant coefficient for sample size indicates that it does not directly affect prediction but serves as part of the poll weighting. In contrast, the pct coefficient of 0.04 suggests a slight positive effect on the odds for Harris, meaning an increase in her polling percentage slightly raises her predicted support odds. Low variance estimates for pollster and state effects imply limited inter-group variability, indicating that neither adds substantial random variation to the results.
 
 Regarding model evaluation, the WAIC of 7072.4 and log likelihood of -3518.4 do not offer much information alone however a higher likelihood and a lower WAIC is preferred. The RMSE of 0.5 points to moderate accuracy, which aligns with the close and uncertain nature of the election. Additionally, a low ICC value suggests limited random variance contributed by pollster and state, furthermore showing the model’s constrained precision in forecasting a definitive winner.
 
@@ -418,12 +418,13 @@ Regarding model evaluation, the WAIC of 7072.4 and log likelihood of -3518.4 do 
 modelsummary(bayesian_model, output = "kableExtra")
 ```
 
-```{r}
-```
 
 ```{r}
 #| label: fig-national-vote
 #| fig-cap: "National Popular Vote Prediction"
+#| echo: false
+#| warning: false
+#| fig-align: center
 
 # Calculate overall percentage for Harris and Trump
 overall_percentages <- data.frame(
@@ -439,43 +440,17 @@ ggplot(overall_percentages, aes(x = Candidate, y = Percentage, fill = Candidate)
   scale_fill_manual(values = c("blue", "red")) +
   theme_classic()
 
+
 ```
 
 ```{r}
-# Plot state-level predictions for Harris and Trump
-ggplot(state_predictions, aes(x = reorder(state, avg_predicted_prob_harris), y = avg_predicted_prob_harris, fill = state_winner)) +
-  geom_bar(stat = "identity") +
-  labs(title = "State-Level Predicted Support for Harris and Trump", x = "State", y = "Average Predicted Probability for Harris") +
-  scale_fill_manual(values = c("blue", "red")) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-```{r}
-# Modify your state predictions dataframe to label swing states
-swing_states <- c("Michigan", "Pennsylvania", "Wisconsin", "Arizona", "Georgia", "North Carolina", "Nevada")
-state_predictions <- state_predictions %>%
-  mutate(swing_state = ifelse(state %in% swing_states, "Swing State", "Non-Swing State"))
+#| label: fig-margin
+#| fig-cap: "State-Level Predicted Probability for Harris with Margin of Error"
+#| echo: false
+#| warning: false
+#| fig-align: center
 
-# Plot with enhancements
-ggplot(state_predictions, aes(x = reorder(state, avg_predicted_prob_harris), y = avg_predicted_prob_harris, fill = swing_state)) +
-  geom_bar(stat = "identity", color = "black", alpha = 0.8) +
-  scale_fill_manual(values = c("Swing State" = "darkblue", "Non-Swing State" = "lightgrey")) +
-  geom_hline(yintercept = 0.5, linetype = "dashed", color = "red", size = 0.8) +
-  labs(
-    title = "Predicted Probability of Harris Winning by State",
-    x = "State",
-    y = "Predicted Probability for Harris",
-    fill = "State Type"
-  ) +
-  annotate("text", x = 1, y = 0.51, label = "0.5 Threshold (Neutral)", color = "red", hjust = 0) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  coord_flip()
-
-
-```
-```{r}
-# Calculate the standard error and margin of error for Harris's predicted probability in each state
+# Calculate margin of error for each state
 state_margins <- clean_president_polls %>%
   group_by(state) %>%
   summarize(
@@ -487,6 +462,8 @@ state_margins <- clean_president_polls %>%
     lower_bound = avg_predicted_prob_harris - margin_of_error,
     upper_bound = avg_predicted_prob_harris + margin_of_error
   )
+
+# Plot with error bars
 ggplot(state_margins, aes(x = reorder(state, avg_predicted_prob_harris), y = avg_predicted_prob_harris)) +
   geom_point(color = "blue") +
   geom_errorbar(aes(ymin = lower_bound, ymax = upper_bound), width = 0.2, color = "blue") +
@@ -500,10 +477,74 @@ ggplot(state_margins, aes(x = reorder(state, avg_predicted_prob_harris), y = avg
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", color = "red") +
   labs(subtitle = "Dashed line represents a 50% threshold")
+```
 
+```{r}
+#| label: fig-swing-states
+#| fig-cap: "Predicted Probability of Harris Winning by State with Swing State Highlight and 50% Threshold"
+#| echo: false
+#| warning: false
+#| fig-align: center
+
+# Define swing states and highlight in state_predictions
+swing_states <- c("Michigan", "Pennsylvania", "Wisconsin", "Arizona", "Georgia", "North Carolina", "Nevada")
+state_predictions <- state_predictions %>%
+  mutate(swing_state = ifelse(state %in% swing_states, "Swing State", "Non-Swing State"))
+
+# Plot with threshold line at 0.5
+ggplot(state_predictions, aes(x = reorder(state, avg_predicted_prob_harris), y = avg_predicted_prob_harris, fill = swing_state)) +
+  geom_bar(stat = "identity", color = "black", alpha = 0.8) +
+  scale_fill_manual(values = c("Swing State" = "darkblue", "Non-Swing State" = "lightgrey")) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "red", size = 0.8) +
+  labs(
+    title = "Predicted Probability of Harris Winning by Swing State",
+    x = "State",
+    y = "Predicted Probability for Harris",
+    fill = "State Type"
+  ) +
+  annotate("text", x = 1, y = 0.51, label = "0.5 Threshold (Neutral)", color = "red", hjust = 0) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_flip()
 
 ```
 
+```{r}
+#| label: fig-heatmap
+#| fig-cap: "Heatmap of Predicted Support for Harris by State"
+#| echo: false
+#| warning: false
+#| fig-align: center
+
+# Ensure `state_predictions` has the necessary data
+state_predictions <- clean_president_polls %>%
+  group_by(state) %>%
+  summarize(avg_predicted_prob_harris = mean(predicted_prob_harris)) %>%
+  mutate(state_winner = ifelse(avg_predicted_prob_harris > 0.5, "Harris", "Trump"))
+
+# Convert state names to lowercase for matching with `maps` package data
+state_predictions$state <- tolower(state_predictions$state)
+
+# Load USA state map data and merge with predictions
+usa_states <- map_data("state")
+merged_data <- merge(usa_states, state_predictions, by.x = "region", by.y = "state", sort = FALSE, all.x = TRUE)
+merged_data <- merged_data[order(merged_data$group, merged_data$order), ]
+
+# Plot heatmap for Harris's support by state, with NA values as dark grey
+ggplot(merged_data, aes(x = long, y = lat, group = group, fill = avg_predicted_prob_harris)) +
+  geom_polygon(color = "black", size = 0.3) + 
+  scale_fill_gradient(low = "lightblue", high = "darkblue", na.value = "darkgrey", name = "Predicted Support") +
+  coord_fixed(1.3) + 
+  labs(
+    title = "Predicted Support for Harris by State",
+    x = NULL,
+    y = NULL
+  ) +
+  theme_void() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 16, face = "bold")
+  )
+```
 # Discussion {#sec-mydisc}
 
 In a highly competitive election, accurately forecasting outcomes requires more than just raw polling data—it demands careful aggregation and weighting to capture true voter sentiment. 
@@ -513,7 +554,7 @@ While this suggests a slight edge for Harris, the lead easily falls within a \pm
 
 Our model, through poll aggregation, weighted by pollster reliability and sample size, refines polling data into a more realistic prediction, helping offset biases in individual polls. This is because the weighting higher-quality polls reduces the influence of less reliable data seen in unweighted or individual poll estimates, providing a clearer view of voter sentiment. This approach, especially in closely contested swing states, increased the model’s sensitivity to shifts in these pivotal regions, reflecting on their power to overturn the elections while having a historically uncertain favourable candidate. 
 
-In the 7 swing states– Arizona, Wisconsin, North Carolina, Pennsylvania, Georgia, Michigan and Nevada, our model shows Harris leading in each, with only 2 swing states showing a lead greater than 1%. Furthermore, the small margins seen in FUGURENARGIN show swing state leads ithin their respective margin of errors, pushing the uncertainty of the estimated lead. Other forecasts like FiveThirtyEight’s and The NYTimes’ offer similar leads for Harris [@FiveThirtyEight; nytimes2024_estimate]. When independent models using varied methodologies predict a similar outcome, it can suggest a trend that might hold under different sampling assumptions or adjustments. This convergence across forecasts further emphasizes the tightness of the race however, they can enhance confidence in a potential Harris lead, although it remains small.
+In the 7 swing states– Arizona, Wisconsin, North Carolina, Pennsylvania, Georgia, Michigan and Nevada, our model shows Harris leading in each, with only 2 swing states showing a lead greater than 1%. Furthermore, the small margins seen in @figure-margin show swing state leads ithin their respective margin of errors, pushing the uncertainty of the estimated lead. Other forecasts like FiveThirtyEight’s and The NYTimes’ offer similar leads for Harris [@FiveThirtyEight; nytimes2024_estimate]. When independent models using varied methodologies predict a similar outcome, it can suggest a trend that might hold under different sampling assumptions or adjustments. This convergence across forecasts further emphasizes the tightness of the race however, they can enhance confidence in a potential Harris lead, although it remains small.
 
 The results are can additionally be hard to anticipate due to various unaccounted biases and inaccurate model adjustments. Trump may simply overturn his polls despite Harris’ slight forecasted leads due to shy voters, where people don’t publicly identify as conservative due to the negative social stigmas around it. What is more likely is an overturn due to the non-response bias. Republicans tend to be less responsive when it comes to polls which can lead to an unrepresentative dataset despite reweighed models altered to account for poor levels of distributed surveys. As there is no guarantee that the altered models work, it is not a confident show of prediction. Harris may also experience a large overturn due to similar inaccurately adjusted estimates in attempts to mitigate seemingly nonrepresentative data to an accurate prediction. However there the election may face incorrect election results due to small surveying or sampling errors, which can be devastating due to the tightness of the race [@NYT_ElectionPollsOpinion].
 
@@ -563,7 +604,7 @@ The Washington Post uses stratified random sampling to ensure that important dem
 When state-level polling data is scarce, The Washington Post incorporates historical voting records from the last two presidential elections [@WashPost2024_PollingAverages]. This adjustment helps estimate current preferences but depends on past trends, which may miss recent shifts in voter sentiment [@WashPost2024_ABCMethodology].
 
 ## Non-response Handling  
-Non-response can introduce non-response bias, where the views of non-respondents may differ from respondents, potentially skewing results. The Washington Post addresses this issue using response weighting based on age, race, and education to align the final sample with the overall population distribution [@WashPost2023_Standard].
+Non-response can introduce non-response bias, where the views of non-respondents may differ from respondents, potentially skewing results. The Washington Post addresses this issue using response weighting based on age, race, and education to align the final sample with the overall population distribution [@WashPost2023_Standards].
 
 ABC News also addressed non-response bias by applying post-stratification adjustments and sending email reminders to non-respondents. In addition, The Washington Post and ABC News ensure that their samples are weighted to account for any anomalies in non-response [@ABCNews2024_Methodology] [@WashPost2023_Standards].
 
