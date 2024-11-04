@@ -1,6 +1,6 @@
 ---
-title: "2024 US Presidential Election Forecasting"
-subtitle: "Trump forcasted to win popular vote by state over Harris by 0.8%"
+title: "Forecasting the 2024 Election: Tight Margins and Swing State Uncertainty"
+subtitle: "Harris Leads Trump by 0.8% as Voters Remain Divided%"
 author: 
   - Mariko Lee
   - Karen Riani
@@ -8,7 +8,7 @@ author:
 thanks: "Code and data are available at: https://github.com/karenrni/Forecasting-the-2024-US-Presidential-Elections"
 date: today
 date-format: long
-abstract: "We forecast the 2024 U.S. presidential winner using state-level poll averages for Kamala Harris and Donald Trump, weighted by poll quality and sample size. Applying a Bayesian  model, we find a slight 0.5% lead for Trump over Harris, using polls taken since the reelection bid on July 21, 2024. Weighting the polls increases the influence of the most reliable data in shaping the forecast—limiting skewed results and showing a clearer voter sentiment amidst a particularly competitive election. These results show who may be leading the elections via polls, giving campaigns the insights they need and reinforcing public trust in the election process."
+abstract: "We forecast the 2024 U.S. presidential winner using state-level poll averages for Kamala Harris and Donald Trump, weighted by poll quality and sample size. Applying a logistic regression model, we find a slight 0.8% lead for Harris over Trump, using polls taken since the reelection bid on July 21, 2024. ​​We weigh the polls with aims to increase the influence of the most reliable data in shaping the forecast—limiting biased results and showing a clearer voter sentiment amidst a particularly competitive election. These results show who may be leading the elections via polls, giving campaigns the insights they need and reinforcing public trust in the election process, especially as the outcome likely hinges on key swing states."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -30,13 +30,15 @@ library(arrow)
 
 # Introduction
 
-Amid the chaotic, high-stakes 2024 U.S. presidential election, forecasting models offer crucial insights into voter sentiment as Americans face a tight race between top candidates Kamala Harris and Donald Trump. With the attempted assassination of Trump, Joe Biden’s endorsement of Harris, and recent crises such as hurricanes disrupting voter access in swing states, public opinion remains volatile [@CBSNews2024_CampaignPromises; @ABCNews2024_HurricaneImpact]. Key events like Trump’s policy proposals on social security and public safety, Harris’s advocacy for reproductive rights, and other rising debates on gun control have further polarized the electorate, making forecasting models essential in offering clarity amid this competitive landscape [@HRW2022_RoeVWade].
+Amid the chaotic, high-stakes 2024 U.S. presidential election, forecasting models offer crucial insights into voter sentiment as Americans face a tight race between top candidates Donald Trump and Kamala Harris. With the attempted assassination of Trump, Joe Biden’s endorsement of Harris, and recent crises such as hurricanes disrupting voter access in swing states, public opinion remains volatile [ @ABCNews2024_HurricaneImpact]. Key events like Trump’s policy proposals on social security and public safety, Harris’s advocacy for reproductive rights, and other rising debates on gun control have further polarized the electorate, making forecasting models essential in offering clarity amid this competitive landscape [@CBSNews2024_CampaignPromises; @HRW2022_RoeVWade].
 
-This study joins the growing body of forecast models—including media outlets’ own polls-of-polls approaches and various Bayesian methods—by refining the aggregation of poll data with Bayesian regression, weighted by sample size and pollster rating [@NYTimes2024_ElectionPolls; @AP2024_ElectionForecasts]. In an environment where neither candidate shows a decisive lead, this model aims to add precision by emphasizing out higher-quality polls, improving forecast reliability for strategic decision-making and public confidence in election projections [@Bloomberg2024_KeyStates].
+Using presidential polling data from FiveThirtyEight, our Bayesian model’s estimand is the probability of support for Kamala Harris, weighted by pollster rating and sample size to improve the reliability of aggregated polling data. By refining the aggregation of polls through logistic regression, weighted by sample size and pollster rating, this study contributes to the growing body of forecast models—including media outlets’ own polls-of-polls and various Bayesian methods. Our model estimates only a slim 0.8% lead for Harris over Trump in the overall popular vote—a close margin that highlights the high uncertainty in public sentiment. In line with other forecasts that struggle to declare a clear frontrunner, this narrow lead reflects the volatility of the race and the importance of updated, representative polling data [@NYTimes2024_ElectionPolls].
 
-We estimate a slim 0.5% lead for Trump over Harris in the overall popular vote by aggregating state-level polling data, a close margin that highlights the importance of updated, representative data amidst competing forecasts and fluctuating polls. By using polls weighted by reliability and focusing on data collected after Harris' campaign declaration, this model maintains transparency, offering a robust perspective on public sentiment and helping to clarify perceptions in a highly competitive election.
+This uncertainty emphasizes the significance of swing states in election forecasts—particularly states with nearly equal support for each party and a history of alternating between Democratic and Republican candidates in recent elections [@Bloomberg2024_KeyStates]. Existing research identifies seven critical swing states, with Pennsylvania standing out as a tipping point in more than 1 in 5 simulations [@AP2024_ElectionForecasts]. With 19 electoral votes, Pennsylvania could prove decisive in the event of a close race. The competitive nature of these swing states shows the need for continued data updates to maintain forecast accuracy in a closely contested race.
 
-The following structure of this paper is as follows:  @sec-mydatasection presents the data sources and methodology, @sec-mymodel presents the forecasting model, then  @sec-myresults followed by  @sec-mydisc, which discusses the results and their implications.  @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research.
+By prioritizing higher-quality polls and focusing on data collected after Harris’s campaign announcement, the model seeks to mitigate biases and improve forecast reliability by using a polls-of-polls method over individual pollster data. This approach not only clarifies voter sentiment amid competing forecasts but also demonstrates the value of weighting variables such as pollster rating and sample size in enhancing prediction accuracy. While some states lack sufficient polling data—introducing potential limitations that could be improved with more data and model complexity—the overall findings provide strategic insights for decision-makers and reinforce public confidence in an election where no candidate holds a decisive lead. Appendix A provides a detailed assessment on The Washington Post, one of the polling methodologies used by prominent sources, including sampling approaches, weighting, and non-response handling strategies to ensure robust data quality.
+
+The rest of this paper is structured as follows:  @sec-mydatasection presents the data sources and methodology, @sec-mymodel presents the forecasting model, then  @sec-myresults followed by  @sec-mydisc, which discusses the results and their implications.  @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research, followed by @sec-appenx with The Washington Post’s pollster methodology and a budgeted idealized methodology.
 
 
 # Data {#sec-mydatasection}
@@ -176,7 +178,7 @@ Our model similarly could benefit from estimations for electoral vote
 
 \appendix
 
-# Appendix {-}
+# Appendix {#sec-appenx} {-}
 
 
 # Methodology Analysis of The Washington Post Polling
