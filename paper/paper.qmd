@@ -241,9 +241,84 @@ $$ - $y_i$ is the dependent variable, representing the count of respondents who 
 
 # Results {#sec-myresults}
 
-TODO: FINISH RESULTS INCLUDING GRAPHS, TABLES, SUMMARY STATS
+```{r}
 
-Overall Percentage for Kamala Harris: 49.72895 % Overall Percentage for Donald Trump: 50.27105 % ... state_winner n <chr> <int> 1 Harris 19 2 Trump 23
+# Calculate overall percentage for Harris and Trump
+overall_percentages <- data.frame(
+  Candidate = c("Harris", "Trump"),
+  Percentage = c(overall_percentage_harris, overall_percentage_trump)
+)
+
+# Plot national popular vote prediction
+ggplot(overall_percentages, aes(x = Candidate, y = Percentage, fill = Candidate)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = sprintf("%.2f%%", Percentage)), vjust = -0.5) +
+  labs(title = "National Popular Vote Prediction", y = "Percentage", x = "Candidate") +
+  scale_fill_manual(values = c("blue", "red")) +
+  theme_classic()
+```
+```{r}
+# Plot state-level predictions for Harris and Trump
+ggplot(state_predictions, aes(x = reorder(state, avg_predicted_prob_harris), y = avg_predicted_prob_harris, fill = state_winner)) +
+  geom_bar(stat = "identity") +
+  labs(title = "State-Level Predicted Support for Harris and Trump", x = "State", y = "Average Predicted Probability for Harris") +
+  scale_fill_manual(values = c("blue", "red")) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+```{r}
+# Modify your state predictions dataframe to label swing states
+swing_states <- c("Michigan", "Pennsylvania", "Wisconsin", "Arizona", "Georgia", "North Carolina", "Nevada")
+state_predictions <- state_predictions %>%
+  mutate(swing_state = ifelse(state %in% swing_states, "Swing State", "Non-Swing State"))
+
+# Plot with enhancements
+ggplot(state_predictions, aes(x = reorder(state, avg_predicted_prob_harris), y = avg_predicted_prob_harris, fill = swing_state)) +
+  geom_bar(stat = "identity", color = "black", alpha = 0.8) +
+  scale_fill_manual(values = c("Swing State" = "darkblue", "Non-Swing State" = "lightgrey")) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "red", size = 0.8) +
+  labs(
+    title = "Predicted Probability of Harris Winning by State",
+    x = "State",
+    y = "Predicted Probability for Harris",
+    fill = "State Type"
+  ) +
+  annotate("text", x = 1, y = 0.51, label = "0.5 Threshold (Neutral)", color = "red", hjust = 0) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_flip()
+
+
+```
+```{r}
+# Calculate the standard error and margin of error for Harris's predicted probability in each state
+state_margins <- clean_president_polls %>%
+  group_by(state) %>%
+  summarize(
+    avg_predicted_prob_harris = mean(predicted_prob_harris),
+    se_predicted_prob_harris = sd(predicted_prob_harris) / sqrt(n()),
+    margin_of_error = 1.96 * se_predicted_prob_harris
+  ) %>%
+  mutate(
+    lower_bound = avg_predicted_prob_harris - margin_of_error,
+    upper_bound = avg_predicted_prob_harris + margin_of_error
+  )
+ggplot(state_margins, aes(x = reorder(state, avg_predicted_prob_harris), y = avg_predicted_prob_harris)) +
+  geom_point(color = "blue") +
+  geom_errorbar(aes(ymin = lower_bound, ymax = upper_bound), width = 0.2, color = "blue") +
+  labs(
+    title = "State-Level Predicted Probability for Harris with Margin of Error",
+    x = "State",
+    y = "Predicted Probability for Harris"
+  ) +
+  coord_flip() +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "red") +
+  labs(subtitle = "Dashed line represents a 50% threshold")
+
+
+```
 
 # Discussion {#sec-mydisc}
 
@@ -329,7 +404,7 @@ The Washington Post uses stratified random sampling to ensure that important dem
 When state-level polling data is scarce, The Washington Post incorporates historical voting records from the last two presidential elections [@WashPost2024_PollingAverages]. This adjustment helps estimate current preferences but depends on past trends, which may miss recent shifts in voter sentiment [@WashPost2024_ABCMethodology].
 
 ## Non-response Handling
-Non-response can introduce non-response bias, where the views of non-respondents may differ from respondents, potentially skewing results. The Washington Post addresses this issue using response weighting based on age, race, and education to align the final sample with the overall population distribution [@WashPost2023_Standard].
+Non-response can introduce non-response bias, where the views of non-respondents may differ from respondents, potentially skewing results. The Washington Post addresses this issue using response weighting based on age, race, and education to align the final sample with the overall population distribution [@WashPost2023_Standards].
 >>>>>>> 67873571794ae718c7b91a58090aa8fa3f8e1c75
 
 ABC News also addressed non-response bias by applying post-stratification adjustments and sending email reminders to non-respondents. In addition, The Washington Post and ABC News ensure that their samples are weighted to account for any anomalies in non-response [@ABCNews2024_Methodology] [@WashPost2023_Standards].
