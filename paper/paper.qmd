@@ -25,6 +25,7 @@ library(tidyverse)
 library(arrow)
 library(kableExtra)
 library(maps) 
+library(knitr)
 ```
 
 # Introduction
@@ -57,8 +58,7 @@ To forecast the 2024 U.S. presidential election, this analysis uses state-level 
 
 Data cleaning was conducted in R [@citeR] using several packages: tidyverse [@tidyverse], janitor [@janitor], and lubridate [@lubridate]. Duplicate rows were removed, and the dataset was filtered to include only polls for Harris and Trump. Observations with missing values in key variables such as 'sample size,' 'numeric grade,' and 'state' were excluded. A binary variable, 'Chosen Candidate' (1 for Harris, 0 for Trump), was created to indicate support for each candidate. After these adjustments, the dataset was refined from its original 17,765 entries to 2,367 observations. The primary variables of interest include pollster, numeric grade, state, sample size, percentage, and chosen candidate. A sample of the cleaned dataset is displayed in [@tbl-presidentpolls].
 
-For visualization and analysis, the knitr (Xie 2014), kableExtra (Zhu 2024), and ggplot2 (Wickham 2016) packages were utilized to generate tables, graphs, and maps, presenting the data clearly and effectively. [[[UPDATE THIS LATER]]]
-
+For visualization and analysis, the knitr [@knitr], ggplot2 [@ggplot2_wickham_2016], kableExtra [@kableExtra], map [@maps] packages were utilized to generate tables, graphs, and maps, presenting the data clearly and effectively. 
 ```{r}
 #| label: tbl-presidentpolls
 #| tbl-cap: Sample of President Polls Dataset
