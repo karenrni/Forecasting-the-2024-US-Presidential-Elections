@@ -139,24 +139,22 @@ After polling concludes, the dataset undergoes thorough cleaning and processing 
 
 To determine these Numeric Grades, FiveThirtyEight assesses factors like sampling methods, sample sizes, methodological transparency, and historical pollster accuracy. Polls with robust data collection practices and larger representative samples receive higher ratings, reflecting a greater likelihood of reliability. Conversely, lower ratings signify methodological concerns that could affect accuracy.
 
-In conclusion, this dataset transforms complex voter opinions into structured data, assigning reliability metrics through the Numeric Grade to facilitate systematic analysis of public sentiment trends. This methodology aids in making more precise predictions about election outcomes. However, challenges such as sampling bias, survey design limitations, and non-response bias must be acknowledged, as they can impact data accuracy and emphasize the importance of careful interpretation of polling results.
+The dataset transforms complex voter opinions into structured data, assigning reliability metrics through the Numeric Grade to facilitate systematic analysis of public sentiment trends. This methodology aids in making more precise predictions about election outcomes. However, challenges such as sampling bias, survey design limitations, and non-response bias must be acknowledged, as they can impact data accuracy and emphasize the importance of careful interpretation of polling results.
 
 ## Outcome Variable
 ### Distribution of Polls and State-Level Candidate Preference
 The chosen candidate—whether a poll favors Harris or Trump—serves as the outcome variable in this analysis. [@fig-candidate] shows the distribution of polls between the two candidates, Harris and Trump, revealing a nearly equal split in support, with 49.8% favoring Trump and 50.2% favoring Harris. This close distribution highlights a competitive polling landscape, suggesting that public opinion is almost evenly divided between the candidates.
 
 In [@fig-candbystate], the state-level distribution of support further emphasizes this balance, with only slight variations in candidate preference across states. For instance, states like Maryland, Montana, Nevada, Ohio, and Utah show a marginally higher level of support for Harris, representing the Democratic party. Conversely, in states such as Florida, Minnesota, and Pennsylvania, there is slightly greater support for Trump, representing the Republican party. These minor differences indicate regional trends but reinforce the overall theme of a closely contested race.
-
 ```{r}
 #| label: fig-candidate
-#| tbl-cap: Distribution of Chosen Candidate
+#| fig-cap: Distribution of Polls by Harris vs Trump
 #| echo: false
 #| warning: false
 #| fig-align: center
 ggplot(clean_president_polls, aes(x = factor(candidate_chosen), fill = factor(candidate_chosen))) +
   geom_bar(alpha = 0.7) +
-  labs(title = "Distribution of Polls by Harris vs Trump", 
-       x = "Chosen Candidate", 
+  labs(x = "Chosen Candidate", 
        y = "Number of Polls",
        fill = "Chosen Candidate") +  # This sets the legend title
   scale_x_discrete(labels = c("0" = "Trump", "1" = "Harris")) +
@@ -174,7 +172,7 @@ ggplot(clean_president_polls, aes(x = factor(candidate_chosen), fill = factor(ca
 #| fig-align: center
 ggplot(clean_president_polls, aes(x = state, fill = factor(candidate_chosen, labels = c("Trump", "Harris")))) +
   geom_bar(position = "fill") +
-  labs(title = "Candidate Preference by State", x = "State", y = "Proportion", fill = "Chosen Candidate") +
+  labs(x = "State", y = "Proportion", fill = "Chosen Candidate") +
   scale_fill_manual(values = c("red", "blue")) +
   theme_classic() +
   theme(
@@ -189,13 +187,13 @@ ggplot(clean_president_polls, aes(x = state, fill = factor(candidate_chosen, lab
 The prevalence of smaller sample sizes suggests greater variability in the precision of poll estimates, as smaller samples generally introduce more uncertainty. In contrast, larger sample sizes provide more stable and reliable reflections of public sentiment. This distribution emphasizes the need to account for sample size in the analysis to ensure that more reliable, larger polls are given appropriate weight, thus enhancing the accuracy of public opinion estimates.
 ```{r}
 #| label: fig-sample
-#| tbl-cap: Distribution of Sample Size
+#| fig-cap: Distribution of Sample Size
 #| echo: false
 #| warning: false
 #| fig-align: center
 ggplot(clean_president_polls, aes(x = sample_size)) +
   geom_histogram(binwidth = 200, fill = "darkred", color = "black", alpha = 0.7) +
-  labs(title = "Distribution of Sample Size", x = "Sample Size", y = "Frequency") +
+  labs(x = "Sample Size", y = "Frequency") +
   theme_classic()
 ```
 
@@ -211,7 +209,7 @@ A few outliers in both distributions show support above 60% or below 40%, repres
 #| fig-align: center
 ggplot(clean_president_polls, aes(x = pct, fill = candidate_name)) +
   geom_density(alpha = 0.5) +
-  labs(title = "Candidate Support Distribution", x = "Percentage Support", y = "Density") +
+  labs(x = "Percentage Support", y = "Density") +
   scale_fill_manual(values = c("blue", "red"), name = "Candidate") +
   theme_classic()
 ```
@@ -221,25 +219,25 @@ ggplot(clean_president_polls, aes(x = pct, fill = candidate_name)) +
 
 The chart reveals that most polls come from higher-rated pollsters, with the highest concentrations at grades 2.0 (298 polls) and 3.0 (386 polls). This distribution suggests that the dataset primarily comprises data from pollsters with moderate to high reliability, while lower-quality sources, such as those with grades 0.5 and 1.0, are less common.
 
-Complementing this, [@fig-pollsters] shows the distribution of polls by individual pollsters, with bar colors indicating each pollster's Numeric Grade. Darker shades of blue represent higher reliability scores. Notably, pollsters such as Siena/NYT and Marquette Law School have the highest Numeric Grade of 3.0, marking them as highly reliable sources. In contrast, pollsters like Trafalgar Group and Patriot Polling, with scores of 0.7 and 1.1, respectively, are represented as lower-quality sources.
+Complementing this, [@fig-pollsters] shows the distribution of polls by individual pollsters, including only those with more than 20 counts. In this graph, bar colors indicate each pollster's Numeric Grade, with darker shades of blue representing higher reliability scores. Notably, pollsters such as Siena/NYT and Marquette Law School have the highest Numeric Grade of 3.0, marking them as highly reliable sources. In contrast, pollsters like Trafalgar Group and Patriot Polling, with scores of 0.7 and 1.1, respectively, are represented as lower-quality sources.
 
 These insights are crucial, as they enable the model to assign weights based on pollster reliability, improving the accuracy of the analysis. By prioritizing data from higher-grade pollsters, the model can more effectively capture public sentiment, minimizing the impact of potential biases or inaccuracies from less reliable sources.
 ```{r}
 #| label: fig-numeric
-#| tbl-cap: Pollsters by Count and Numeric Grade
+#| fig-cap: Distribution of Numeric Grade
 #| echo: false
 #| warning: false
 #| fig-align: center
 ggplot(clean_president_polls, aes(x = numeric_grade)) +
   geom_bar(fill = "darkred", alpha = 0.7) +
   geom_text(stat = "count", aes(label = ..count..), vjust = -0.5, size = 3) +
-  labs(title = "Distribution of Numeric Grades", x = "Numeric Grade", y = "Frequency") +
+  labs(x = "Numeric Grade", y = "Frequency") +
   theme_classic()
 ```
 
 ```{r}
 #| label: fig-pollsters
-#| tbl-cap: Pollsters by Count and Numeric Grade
+#| fig-cap: Distribution of Pollsters by Numeric Grade 
 #| echo: false
 #| warning: false
 #| fig-align: center
@@ -256,7 +254,7 @@ pollsters_over_20 <- clean_president_polls %>%
 ggplot(pollsters_over_20, aes(x = reorder(pollster, -num_polls), y = num_polls)) +
   geom_bar(stat = "identity", aes(fill = avg_numeric_grade), alpha = 0.7) +
   scale_fill_gradient(low = "lightblue", high = "darkblue", name = "Numeric Grade") +
-  labs(title = "Distribution of Polls by Pollster", x = "Pollster", y = "Number of Polls") +
+  labs(x = "Pollster", y = "Number of Polls") +
   geom_text(aes(label = round(avg_numeric_grade, 2)), vjust = -0.5, size = 2.5) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
@@ -268,13 +266,13 @@ ggplot(pollsters_over_20, aes(x = reorder(pollster, -num_polls), y = num_polls))
 [@fig-support] presents a map indicating the leading candidate by state, with blue for Kamala Harris, red for Donald Trump, and gray for states with insufficient polling data. The map reveals a geographic divide, with Trump leading in many central and southern states, while Harris is favored in parts of the Northeast and West. This distribution aligns with typical U.S. regional political trends, where certain areas have a historical leaning toward one party. The map provides a visual summary of these regional preferences, highlighting how candidate support varies across the country.
 ```{r}
 #| label: fig-numberstate
-#| tbl-cap: Number of Pollsters by State
+#| fig-cap: Number of Pollsters by State
 #| echo: false
 #| warning: false
 #| fig-align: center
 ggplot(clean_president_polls, aes(x = reorder(state, -table(state)[state]))) +
   geom_bar(fill = "darkblue") +
-  labs(title = "Number of Polls by State", x = "State", y = "Count") +
+  labs(x = "State", y = "Count") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
@@ -342,9 +340,9 @@ $$
 ## Variable Selection 
 In constructing the Bayesian model, careful consideration was given to the selection of predictor variables to ensure that the analysis accurately reflects the complexities of voter support.
 
-* Percentage Support (Pct): This continuous variable is integral to the model as it captures the nuanced impact of varying levels of support for Kamala Harris. By utilizing percentage support as a continuous measure, the model allows for a more detailed examination of how incremental changes in support influence the likelihood of selecting Harris over Trump. This approach provides a richer understanding of voter behavior compared to categorizing support into discrete groups, which could obscure critical trends and insights.
+* Percentage Support (Pct): This variable is integral to the model as it captures the nuanced impact of varying levels of support for the candidates. By utilizing percentage support as a continuous measure, the model facilitates a more detailed examination of how incremental changes in support influence the likelihood of selecting Harris over Trump. This approach enhances the understanding of voter behavior compared to categorizing support into discrete groups, which could obscure critical trends and insights. 
 
-* Random Effects: The decision to treat pollster and state effects as random variables recognizes the potential for unobserved heterogeneity in the data. Different pollsters may employ varied methodologies, which can lead to fluctuations in reported support levels that are not adequately accounted for by fixed effects alone. Similarly, geographical differences can impact voter preferences, making it essential to model state-level variability. By incorporating random effects for both pollster and state, the model effectively captures this variability, enhancing its robustness and validity. This approach acknowledges that the influences on voter support can differ significantly based on the context in which polling is conducted.
+* Random Effects: Treating pollster and state effects as random variables accounts for unobserved heterogeneity in the data. Different pollsters may use varied methodologies, resulting in fluctuations in reported support levels that fixed effects alone cannot capture. Additionally, geographical differences can influence voter preferences, highlighting the need to model state-level variability. By incorporating random effects for both pollster and state, the model effectively addresses this variability, enhancing its robustness and validity. This approach recognizes that the factors influencing voter support can differ significantly depending on the polling context.
 
 ## Weights and Priors
 The weights in this model are calculated using the formula:
@@ -357,17 +355,17 @@ Regarding the priors, we define them as follows:
 $$
 \text{priors} \sim \text{Normal}(0.5, 0.1)
 $$
-This prior is centered around 0.5 with a standard deviation of 0.1, reflecting the belief that the probabilities of support for both candidates should be approximately 50% in the absence of data. This choice of prior is particularly useful in situations where there is prior knowledge or belief about the expected voter support distribution. By using a normal prior, we allow for flexibility in the model, enabling the incorporation of prior information while avoiding overly restrictive assumptions.
+This prior is centered at 0.5 with a standard deviation of 0.1, reflecting the belief that, in the absence of strong data, the probabilities of support for both candidates are expected to be balanced. This choice of prior is particularly advantageous in situations where data is limited or when there is uncertainty regarding the expected distribution of voter support. By employing a normal prior, we establish a baseline assumption that allows the model to remain flexible and effectively integrate new data as it becomes available.
 
 ## Model Validation and Justification
 ### Model Validation Methods
-The model validation process involved out-of-sample testing, where the dataset was split into training and testing sets in a 70-30 ratio. Both the Bayesian and logistic models utilized the same features, with the key difference being that the logistic model did not include random effects for pollster and state. As seen in [@tbl-comparison]. The performance of each model was evaluated using three key metrics: F1 Score, Area Under the Curve (AUC), and Root Mean Square Error (RMSE). 
+The model validation process involved out-of-sample testing, where the dataset was split into training and testing sets in a 70-30 ratio. Both the Bayesian and Logistic models utilized the same features, with the key difference being that the logistic model did not include random effects for pollster and state. As seen in [@tbl-comparison]. The performance of each model was evaluated using three key metrics: F1 Score, Area Under the Curve (AUC), and Root Mean Square Error (RMSE). 
 ```{r}
 #| label: tbl-comparison
 #| tbl-cap: Comparison of Model Performance Metrics
 #| echo: false
 #| warning: false
-#| fig-align: center
+#| tbl-align: center
 # Create a data frame with the comparison data
 comparison_data <- data.frame(
   Model = c("Logistic Model", "Bayesian Model"),
@@ -381,18 +379,15 @@ comparison_data <- data.frame(
 kable(comparison_data)
 ```
 
-Although the Bayesian model still shows room for improvement—evidenced by F1 Score and AUC values not close to 1 and a RMSE that indicates some prediction error—it outperforms the logistic model across all metrics. This suggests that the Bayesian model, which incorporates random effects to account for variability from different pollsters and states, offers a more nuanced understanding of voter support.
+Although the Bayesian model still shows room for improvement—evidenced by F1 Score and AUC values not close to 1 and a RMSE indicating some prediction error—it outperforms the logistic model across all metrics. This suggests that the approach, which incorporates random effects to account for variability from different pollsters and states, offers a more nuanced understanding of voter support.
 
 ### Diagnostics
-To validate the Bayesian model, several diagnostic checks were conducted to assess its robustness and ensure that underlying assumptions were satisfied. Key among these were model convergence assessments and posterior predictive checks. The posterior predictive checks provided a visual representation of how well the model's predictions align with the observed data.
-
-The graph reveals a close overlap between the observed outcomes (\(y\)) and the replicated predictions (\(y_{\text{rep}}\)), demonstrating that the model effectively captures the distribution of voter support for Harris. This strong alignment suggests that the model not only fits the training data well but also generalizes effectively to new observations. The flexibility of the Bayesian framework further allows for the incorporation of prior information and consideration of variability due to pollster and state effects, enhancing the overall robustness of the model (Refer to the Appendix for a visual illustration).
+To validate the Bayesian framework, several diagnostic checks were conducted to assess robustness and ensure that underlying assumptions were satisfied. Key among these were convergence assessments and posterior predictive checks. These checks provided a visual representation of how well the predictions align with the observed data. The graph reveals a close overlap between the observed outcomes (\(y\)) and the replicated predictions (\(y_{\text{rep}}\)), demonstrating effective capture of the distribution of voter support for Harris. This strong alignment suggests that the approach not only fits the training data well but also generalizes effectively to new observations. The flexibility of this framework allows for the incorporation of prior information and consideration of variability due to pollster and state effects, enhancing overall robustness (Refer to the Appendix C, [@tbl-pp] for a visual illustration).
 
 ### Model Justification
 The choice of the Bayesian model is justified by its capacity to account for the random effects of pollsters and states, providing a richer understanding of public sentiment. This model allows for nuanced insights that a simpler logistic regression might miss, particularly in a context where polling data is subject to variation due to different survey methods and demographic factors. Ultimately, while both models exhibit imperfections, the Bayesian model’s superior performance metrics support its selection as the final model for predicting voter support in the 2024 U.S. presidential election.
 
 # Results {#sec-myresults}
-
 ```{r}
 
 # Calculate overall percentage for Harris and Trump
@@ -419,6 +414,7 @@ ggplot(state_predictions, aes(x = reorder(state, avg_predicted_prob_harris), y =
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+
 ```{r}
 # Modify your state predictions dataframe to label swing states
 swing_states <- c("Michigan", "Pennsylvania", "Wisconsin", "Arizona", "Georgia", "North Carolina", "Nevada")
@@ -513,7 +509,7 @@ Future models could benefit from more complex models which account for other pot
 
 # Appendix {#sec-appenx}
 
-# Methodology Analysis of The Washington Post Polling  
+# Appendix A: Methodology Analysis of The Washington Post Polling  
 With an evaluation of sampling methodology, recruitment, handling non-response, and questionnaire design, this appendix offers an analysis of the polling methodology used by The Washington Post in collaboration with ABC News. The objective is to analyze these approaches' strengths and weaknesses and determine how they affect polling accuracy.
 
 ## Population, Frame, and Sample  
@@ -563,7 +559,7 @@ ABC News follows similar principles, offering surveys in both Spanish and Englis
 ## Conclusion  
 The Washington Post and ABC News polling methodologies offer a framework for measuring public opinion in the 2024 U.S. presidential election. Employing various sampling strategies, stratification, and weighting improves sample representation. However, challenges such as non-response bias and reliance on historical data in under-polled states need continued adjustments to maintain polling reliability. 
 
-# Idealized Survey & Methodology - $100K Budget
+# Appendix B: Idealized Survey & Methodology - $100K Budget
 
 ## Overview
 With a budget of $100K, this appendix outlines the survey methodology designed to predict the 2024 U.S. Presidential Election. The goal is to collect representative, high-quality data using recruiting, poll aggregation, and selective sample methods. This approach aims to minimize errors commonly encountered in survey research and to produce reliable insights. 
@@ -712,6 +708,19 @@ Consent to Participate
 ## Conclusion
 
 This survey methodology uses stratified sampling, multi-channel recruitment, and data validation procedures to ensure accurate forecasting of the 2024 US Presidential Election. Through poll-of-polls aggregation, it offers a stable and reliable prediction by mitigating fluctuations in individual polls. The design aims to balance accuracy, inclusivity, and efficiency within a $100K budget, offering meaningful insights into voter behavior and sentiment. 
+
+# Apendix C
+```{r}
+#| label: tbl-pp
+#| tbl-cap: Posterior Predictive Check: Model Fit Assessment
+#| echo: false
+#| warning: false
+#| tbl-align: center
+# Posterior predictive check
+pp_check(model_validation_train)
+```
+
+
 
 \newpage
 
