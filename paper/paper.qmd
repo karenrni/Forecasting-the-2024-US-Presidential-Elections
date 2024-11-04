@@ -1,6 +1,6 @@
 ---
 title: "Forecasting the 2024 Election: Tight Margins and Swing State Uncertainty"
-subtitle: "Harris Leads Trump by 0.8% as Voters Remain Divided%"
+subtitle: "Harris Leads Trump by 0.8% as Voters Remain Divided"
 author: 
   - Mariko Lee
   - Karen Riani
@@ -8,7 +8,7 @@ author:
 thanks: "Code and data are available at: https://github.com/karenrni/Forecasting-the-2024-US-Presidential-Elections"
 date: today
 date-format: long
-abstract: "We forecast the 2024 U.S. presidential winner using state-level poll averages for Kamala Harris and Donald Trump, weighted by poll quality and sample size. Applying a logistic regression model, we find a slight 0.8% lead for Harris over Trump, using polls taken since the reelection bid on July 21, 2024. ​​We weigh the polls with aims to increase the influence of the most reliable data in shaping the forecast—limiting biased results and showing a clearer voter sentiment amidst a particularly competitive election. These results show who may be leading the elections via polls, giving campaigns the insights they need and reinforcing public trust in the election process, especially as the outcome likely hinges on key swing states."
+abstract: "We forecast the 2024 U.S. presidential winner using state-level poll averages for Kamala Harris and Donald Trump, weighted by poll quality and sample size. Applying a logistic regression model, we find a slight 0.8% lead for Harris over Trump, using polls taken since the reelection bid on July 21, 2024. We weigh the polls with aims to increase the influence of the most reliable data in shaping the forecast—limiting biased results and showing a clearer voter sentiment amidst a particularly competitive election. These results show who may be leading the elections via polls, giving campaigns the insights they need and reinforcing public trust in the election process, especially as the outcome likely hinges on key swing states."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -21,7 +21,6 @@ bibliography: references.bib
 
 library(tidyverse)
 library(arrow)
-library(dplyr)
 library(kableExtra)
 library(maps) 
 ```
@@ -36,7 +35,7 @@ This uncertainty emphasizes the significance of swing states in election forecas
 
 By prioritizing higher-quality polls and focusing on data collected after Harris's campaign announcement, the model seeks to mitigate biases and improve forecast reliability by using a polls-of-polls method over individual pollster data. This approach not only clarifies voter sentiment amid competing forecasts but also demonstrates the value of weighting variables such as pollster rating and sample size in enhancing prediction accuracy. While some states lack sufficient polling data---introducing potential limitations that could be improved with more data and model complexity---the overall findings provide strategic insights for decision-makers and reinforce public confidence in an election where no candidate holds a decisive lead. Appendix A provides a detailed assessment on The Washington Post, one of the polling methodologies used by prominent sources, including sampling approaches, weighting, and non-response handling strategies to ensure robust data quality.
 
-The rest of this paper is structured as follows: @sec-mydatasection presents the data sources and methodology, @sec-mymodel presents the forecasting model, then @sec-myresults followed by @sec-mydisc, which discusses the results and their implications. @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research, followed by @sec-appenx with The Washington Post's pollster methodology and a budgeted idealized methodology.
+The rest of this paper is structured as follows: @sec-mydatasection presents the data sources and methodology, @sec-mymodel presents the forecasting model, then @sec-myresults followed by @sec-mydisc, which discusses the results and their implications. @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research, followed by an Appendix in @sec-appenx with The Washington Post's pollster methodology and a budgeted idealized methodology.
 
 # Data Analysis {#sec-mydatasection}
 
@@ -45,8 +44,10 @@ The rest of this paper is structured as follows: @sec-mydatasection presents the
 #| warning: false
 #| message: false
 
-# Read Cleaned Dataset
-clean_president_polls <- read_parquet("/Users/cristinasulam/Forecasting-the-2024-US-Presidential-Elections/data/02-analysis_data/clean_president_polls.parquet")
+# Load Parquet file and model
+clean_president_polls <- read_parquet("../data/02-analysis_data/clean_president_polls.parquet")
+bayesian_model <- readRDS("../models/first_model.rds")
+
 ```
 
 ## Overview
@@ -325,9 +326,84 @@ $$ - $y_i$ is the dependent variable, representing the count of respondents who 
 
 # Results {#sec-myresults}
 
-TODO: FINISH RESULTS INCLUDING GRAPHS, TABLES, SUMMARY STATS
+```{r}
 
-Overall Percentage for Kamala Harris: 49.72895 % Overall Percentage for Donald Trump: 50.27105 % ... state_winner n <chr> <int> 1 Harris 19 2 Trump 23
+# Calculate overall percentage for Harris and Trump
+overall_percentages <- data.frame(
+  Candidate = c("Harris", "Trump"),
+  Percentage = c(overall_percentage_harris, overall_percentage_trump)
+)
+
+# Plot national popular vote prediction
+ggplot(overall_percentages, aes(x = Candidate, y = Percentage, fill = Candidate)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = sprintf("%.2f%%", Percentage)), vjust = -0.5) +
+  labs(title = "National Popular Vote Prediction", y = "Percentage", x = "Candidate") +
+  scale_fill_manual(values = c("blue", "red")) +
+  theme_classic()
+```
+```{r}
+# Plot state-level predictions for Harris and Trump
+ggplot(state_predictions, aes(x = reorder(state, avg_predicted_prob_harris), y = avg_predicted_prob_harris, fill = state_winner)) +
+  geom_bar(stat = "identity") +
+  labs(title = "State-Level Predicted Support for Harris and Trump", x = "State", y = "Average Predicted Probability for Harris") +
+  scale_fill_manual(values = c("blue", "red")) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+```{r}
+# Modify your state predictions dataframe to label swing states
+swing_states <- c("Michigan", "Pennsylvania", "Wisconsin", "Arizona", "Georgia", "North Carolina", "Nevada")
+state_predictions <- state_predictions %>%
+  mutate(swing_state = ifelse(state %in% swing_states, "Swing State", "Non-Swing State"))
+
+# Plot with enhancements
+ggplot(state_predictions, aes(x = reorder(state, avg_predicted_prob_harris), y = avg_predicted_prob_harris, fill = swing_state)) +
+  geom_bar(stat = "identity", color = "black", alpha = 0.8) +
+  scale_fill_manual(values = c("Swing State" = "darkblue", "Non-Swing State" = "lightgrey")) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "red", size = 0.8) +
+  labs(
+    title = "Predicted Probability of Harris Winning by State",
+    x = "State",
+    y = "Predicted Probability for Harris",
+    fill = "State Type"
+  ) +
+  annotate("text", x = 1, y = 0.51, label = "0.5 Threshold (Neutral)", color = "red", hjust = 0) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  coord_flip()
+
+
+```
+```{r}
+# Calculate the standard error and margin of error for Harris's predicted probability in each state
+state_margins <- clean_president_polls %>%
+  group_by(state) %>%
+  summarize(
+    avg_predicted_prob_harris = mean(predicted_prob_harris),
+    se_predicted_prob_harris = sd(predicted_prob_harris) / sqrt(n()),
+    margin_of_error = 1.96 * se_predicted_prob_harris
+  ) %>%
+  mutate(
+    lower_bound = avg_predicted_prob_harris - margin_of_error,
+    upper_bound = avg_predicted_prob_harris + margin_of_error
+  )
+ggplot(state_margins, aes(x = reorder(state, avg_predicted_prob_harris), y = avg_predicted_prob_harris)) +
+  geom_point(color = "blue") +
+  geom_errorbar(aes(ymin = lower_bound, ymax = upper_bound), width = 0.2, color = "blue") +
+  labs(
+    title = "State-Level Predicted Probability for Harris with Margin of Error",
+    x = "State",
+    y = "Predicted Probability for Harris"
+  ) +
+  coord_flip() +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", color = "red") +
+  labs(subtitle = "Dashed line represents a 50% threshold")
+
+
+```
 
 # Discussion {#sec-mydisc}
 
@@ -367,7 +443,7 @@ Future models could benefit from more complex models which account for other pot
 
 \appendix
 
-# Appendix {#sec-appenx} {.unnumbered}
+# Appendix {#sec-appenx}
 
 # Methodology Analysis of The Washington Post Polling
 <<<<<<< HEAD
@@ -413,7 +489,7 @@ The Washington Post uses stratified random sampling to ensure that important dem
 When state-level polling data is scarce, The Washington Post incorporates historical voting records from the last two presidential elections [@WashPost2024_PollingAverages]. This adjustment helps estimate current preferences but depends on past trends, which may miss recent shifts in voter sentiment [@WashPost2024_ABCMethodology].
 
 ## Non-response Handling
-Non-response can introduce non-response bias, where the views of non-respondents may differ from respondents, potentially skewing results. The Washington Post addresses this issue using response weighting based on age, race, and education to align the final sample with the overall population distribution [@WashPost2023_Standard].
+Non-response can introduce non-response bias, where the views of non-respondents may differ from respondents, potentially skewing results. The Washington Post addresses this issue using response weighting based on age, race, and education to align the final sample with the overall population distribution [@WashPost2023_Standards].
 >>>>>>> 67873571794ae718c7b91a58090aa8fa3f8e1c75
 
 ABC News also addressed non-response bias by applying post-stratification adjustments and sending email reminders to non-respondents. In addition, The Washington Post and ABC News ensure that their samples are weighted to account for any anomalies in non-response [@ABCNews2024_Methodology] [@WashPost2023_Standards].
