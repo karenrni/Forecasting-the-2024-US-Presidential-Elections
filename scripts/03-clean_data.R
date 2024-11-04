@@ -16,6 +16,7 @@ library(tidyverse)
 library(arrow)
 library(janitor)
 library(lubridate)
+library(dplyr)
 
 
 #### Clean data ####
@@ -49,7 +50,7 @@ clean_president_polls <- read_csv("data/01-raw_data/raw_president_polls.csv",
                                                    answer = col_skip(), candidate_id = col_skip())) |>
   clean_names()
 
-# Create binary variable for state or national polls
+# Create binary variable, drop missing values
 clean_president_polls <- clean_president_polls %>%
   mutate(
     state = str_replace(state, "Maine CD-[12]", "Maine"),
@@ -58,7 +59,7 @@ clean_president_polls <- clean_president_polls %>%
     state = str_replace(state, "Nebraska CD-3", "Nebraska"),
     end_date = mdy(end_date),
     start_date = mdy(start_date),
-    is_harris = ifelse(candidate_name == "Kamala Harris", 1, 0)) %>%
+    candidate_chosen = ifelse(candidate_name == "Kamala Harris", 1, 0)) %>%
   drop_na(sample_size) %>% 
   drop_na(numeric_grade) %>%
   drop_na(state)

@@ -39,7 +39,7 @@ priors <- normal(0.5, 0.1, autoscale = TRUE)
 # Fit model with complete dataset
 set.seed(123)
 bayesian_model <- stan_glmer(
-  formula = is_harris ~ pct + (1 | pollster) + (1 | state),
+  formula = candidate_chosen ~ pct + (1 | pollster) + (1 | state),
   data = clean_president_polls,
   family = binomial(link = "logit"),
   prior = priors,
@@ -54,7 +54,7 @@ bayesian_model <- stan_glmer(
 clean_president_polls <- clean_president_polls |> 
   mutate(
     predicted_prob_harris = posterior_predict(bayesian_model, newdata = clean_president_polls, type = "response") |> colMeans(),
-    winner_harris = ifelse(predicted_prob_harris > 0.500, 1, 0)
+    winner_harris = ifelse(predicted_prob_harris > 0.5 & candidate_chosen == 1, 1, 0)
   )
 # Calculate the unweighted average predicted probability for Kamala Harris
 overall_predicted_prob_harris <- mean(clean_president_polls$predicted_prob_harris)
@@ -105,7 +105,7 @@ testing_data <- testing_data |>
 
 # Fit `Bayesian model` with training dataset
 model_validation_train <- stan_glmer(
-  formula = is_harris ~ pct + (1 | pollster) + (1 | state),
+  formula = candidate_chosen ~ pct + (1 | pollster) + (1 | state),
   data = training_data,
   family = binomial(link = "logit"),
   prior = priors,
@@ -122,22 +122,22 @@ pp_check(model_validation_train)
 # Make predictions on the test set for the Bayesian model
 set.seed(123)
 bayesian_predicted_data <- testing_data |> 
-  select(pollster, state, start_date, end_date, is_harris, pct) |> 
+  select(pollster, state, start_date, end_date, candidate_chosen, pct) |> 
   mutate(
     predicted_prob_harris = posterior_predict(model_validation_train, newdata = testing_data, type = "response") |> colMeans(),
     winner_harris = ifelse(predicted_prob_harris > 0.500, 1, 0)
   )
 
 # Model evaluation metrics for Bayesian model
-f1_score_b <- F1_Score(bayesian_predicted_data$is_harris, bayesian_predicted_data$winner_harris)
-auc_value_b <- AUC(bayesian_predicted_data$is_harris, bayesian_predicted_data$winner_harris)
-rmse_value_b <- RMSE(bayesian_predicted_data$is_harris, bayesian_predicted_data$predicted_prob_harris)
+f1_score_b <- F1_Score(bayesian_predicted_data$candidate_chosen, bayesian_predicted_data$winner_harris)
+auc_value_b <- AUC(bayesian_predicted_data$candidate_chosen, bayesian_predicted_data$winner_harris)
+rmse_value_b <- RMSE(bayesian_predicted_data$candidate_chosen, bayesian_predicted_data$predicted_prob_harris)
 
 cat("Bayesian Model - F1 Score:", f1_score_b, "AUC:", auc_value_b, "RMSE:", rmse_value_b, "\n")
 
 # Fit `Logistic Regression` model with training dataset
 model_logistic_train <- glm(
-  is_harris ~ pollster + state + pct,
+  candidate_chosen ~ pollster + state + pct,
   data = training_data,
   family = binomial(link = "logit"),
   weights = weight
@@ -148,16 +148,16 @@ check_collinearity(model_logistic_train)
 # Make predictions on the test set for the logistic model
 set.seed(123)
 logistic_predicted_data <- testing_data |> 
-  select(pollster, state, start_date, end_date, is_harris, pct) |> 
+  select(pollster, state, start_date, end_date, candidate_chosen, pct) |> 
   mutate(
     predicted_prob_harris = predict(model_logistic_train, newdata = testing_data, type = "response"),
     winner_harris = ifelse(predicted_prob_harris > 0.500, 1, 0)
   )
 
 # Model evaluation metrics for Logistic model
-f1_score_l <- F1_Score(logistic_predicted_data$is_harris, logistic_predicted_data$winner_harris)
-auc_value_l <- AUC(logistic_predicted_data$is_harris, logistic_predicted_data$winner_harris)
-rmse_value_l <- RMSE(logistic_predicted_data$is_harris, logistic_predicted_data$predicted_prob_harris)
+f1_score_l <- F1_Score(logistic_predicted_data$candidate_chosen, logistic_predicted_data$winner_harris)
+auc_value_l <- AUC(logistic_predicted_data$candidate_chosen, logistic_predicted_data$winner_harris)
+rmse_value_l <- RMSE(logistic_predicted_data$candidate_chosen, logistic_predicted_data$predicted_prob_harris)
 
 cat("Logistic Model - F1 Score:", f1_score_l, "AUC:", auc_value_l, "RMSE:", rmse_value_l, "\n")
 

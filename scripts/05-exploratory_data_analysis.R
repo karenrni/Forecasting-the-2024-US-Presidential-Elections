@@ -18,7 +18,7 @@ library(maps)
 #### Read upcoming presidential election forecast data ####
 clean_president_polls <- read_parquet("data/02-analysis_data/clean_president_polls.parquet")
 
-# Summary statistics for pct and sample_size
+# Summary statistics for pct, sample_size, and numeric_grade
 summary_stats <- clean_president_polls %>%
   summarize(
     mean_pct = mean(pct, na.rm = TRUE),
@@ -28,21 +28,39 @@ summary_stats <- clean_president_polls %>%
     mean_sample_size = mean(sample_size, na.rm = TRUE),
     sd_sample_size = sd(sample_size, na.rm = TRUE),
     min_sample_size = min(sample_size, na.rm = TRUE),
-    max_sample_size = max(sample_size, na.rm = TRUE)
+    max_sample_size = max(sample_size, na.rm = TRUE),
+    mean_numeric_grade = mean(numeric_grade, na.rm = TRUE),
+    sd_numeric_grade = sd(numeric_grade, na.rm = TRUE),
+    min_numeric_grade = min(numeric_grade, na.rm = TRUE),
+    max_numeric_grade = max(numeric_grade, na.rm = TRUE)
   )
 
 # Create a summary table in the desired format
 summary_table <- data.frame(
-  `Statistic` = c("Percentage Support", "Sample Size"),
-  `Mean` = c(format(round(summary_stats$mean_pct, 2), big.mark = ",", scientific = FALSE),
-             format(round(summary_stats$mean_sample_size, 2), big.mark = ",", scientific = FALSE)),
-  `SD` = c(format(round(summary_stats$sd_pct, 2), big.mark = ",", scientific = FALSE),
-           format(round(summary_stats$sd_sample_size, 2), big.mark = ",", scientific = FALSE)),
-  `Min` = c(format(summary_stats$min_pct, big.mark = ",", scientific = FALSE),
-            format(summary_stats$min_sample_size, big.mark = ",", scientific = FALSE)),
-  `Max` = c(format(summary_stats$max_pct, big.mark = ",", scientific = FALSE),
-            format(summary_stats$max_sample_size, big.mark = ",", scientific = FALSE))
+  `Statistic` = c("Percentage Support", "Sample Size", "Numeric Grade"),
+  `Mean` = c(
+    format(round(summary_stats$mean_pct, 2), big.mark = ",", scientific = FALSE),
+    format(round(summary_stats$mean_sample_size, 2), big.mark = ",", scientific = FALSE),
+    format(round(summary_stats$mean_numeric_grade, 2), big.mark = ",", scientific = FALSE)
+  ),
+  `SD` = c(
+    format(round(summary_stats$sd_pct, 2), big.mark = ",", scientific = FALSE),
+    format(round(summary_stats$sd_sample_size, 2), big.mark = ",", scientific = FALSE),
+    format(round(summary_stats$sd_numeric_grade, 2), big.mark = ",", scientific = FALSE)
+  ),
+  `Min` = c(
+    format(summary_stats$min_pct, big.mark = ",", scientific = FALSE),
+    format(summary_stats$min_sample_size, big.mark = ",", scientific = FALSE),
+    format(summary_stats$min_numeric_grade, big.mark = ",", scientific = FALSE)
+  ),
+  `Max` = c(
+    format(summary_stats$max_pct, big.mark = ",", scientific = FALSE),
+    format(summary_stats$max_sample_size, big.mark = ",", scientific = FALSE),
+    format(summary_stats$max_numeric_grade, big.mark = ",", scientific = FALSE)
+  )
 )
+
+summary_table
 
 # 1. Numeric Grade (Numeric) Distribution
 ggplot(clean_president_polls, aes(x = pct, fill = candidate_name)) +
@@ -50,7 +68,7 @@ ggplot(clean_president_polls, aes(x = pct, fill = candidate_name)) +
   labs(title = "Distribution of Candidate Support Percentages", 
        x = "Percentage", 
        y = "Frequency", 
-       fill = "Candidate Name") +  # Change the legend title here
+       fill = "Candidate Name") +  
   facet_wrap(~ candidate_name)
 
 # 2. Plot the distribution of pollsters 
@@ -79,10 +97,10 @@ ggplot(clean_president_polls, aes(x = sample_size)) +
        y = "Density") +
   scale_x_continuous(labels = scales::comma)
 
-# 5. Plot for is_harris variable
-ggplot(clean_president_polls, aes(x = factor(is_harris))) +
+# 5. Plot for candidate_chosen variable
+ggplot(clean_president_polls, aes(x = factor(candidate_chosen))) +
   geom_bar(fill = "purple", alpha = 0.7) +
-  labs(title = "Distribution of Polls by Harris vs Trump", x = "Is Harris", y = "Number of Polls") +
+  labs(title = "Distribution of Polls by Harris vs Trump", x = "Chosen Candidate", y = "Number of Polls") +
   scale_x_discrete(labels = c("0" = "Trump", "1" = "Harris"))
 
 # 6. Map
