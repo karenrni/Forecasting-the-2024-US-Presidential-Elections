@@ -23,6 +23,7 @@ library(tidyverse)
 library(arrow)
 library(dplyr)
 library(kableExtra)
+library(maps) 
 ```
 
 # Introduction
@@ -213,11 +214,95 @@ ggplot(pollsters_over_20, aes(x = reorder(pollster, -num_polls), y = num_polls))
 ### Distribution of Numeric Grades
 ```{r}
 ggplot(clean_president_polls, aes(x = numeric_grade)) +
-  geom_histogram(binwidth = 0.5, fill = "darkblue", alpha = 0.7) +
+  geom_bar(fill = "darkblue", alpha = 0.7) +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5, size = 3) +
   labs(title = "Distribution of Pollster Grades", x = "Numeric Grade", y = "Frequency") +
   theme_classic()
 ```
 
+### State
+```{r}
+ggplot(clean_president_polls, aes(x = reorder(state, -table(state)[state]))) +
+  geom_bar(fill = "darkblue") +
+  labs(title = "Number of Polls by State", x = "State", y = "Count") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| include: false
+
+# Load USA state map data
+us_states <- map_data("state")
+
+# Prepare the dataset for mapping support
+support_by_state <- clean_president_polls %>%
+  # Filter for only Kamala Harris and Donald Trump
+  filter(candidate_name %in% c("Kamala Harris", "Donald Trump")) %>%
+  # Group by state and candidate
+  group_by(state, candidate_name) %>%
+  # Calculate the mean support percentage for each candidate in each state
+  summarize(mean_support = mean(pct, na.rm = TRUE)) %>%
+  # Reshape the data so that each state has a column for each candidate's mean support
+  pivot_wider(names_from = candidate_name, values_from = mean_support) %>%
+  # Rename columns for clarity
+  rename(harris_mean_support = `Kamala Harris`, trump_mean_support = `Donald Trump`) %>%
+  # Calculate total mean support for both candidates in each state
+  mutate(total_support = harris_mean_support + trump_mean_support,
+         # Calculate the proportion of support for each candidate
+         harris_proportion = harris_mean_support / total_support,
+         trump_proportion = trump_mean_support / total_support) %>%
+  # Select relevant columns
+  select(state, harris_proportion, trump_proportion)
+
+
+# Join with map data
+map_data <- us_states %>%
+  left_join(support_by_state, by = c("region" = "state")) 
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: fig-map
+#| fig-cap: "Map of U.S. showing proportion of support for Kamala Harris and Donald Trump across states. Blue indicates higher Harris support, red indicates higher Trump support, with color intensity reflecting the support difference."
+# Plot the support proportion for Harris
+ggplot(map_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = harris_proportion * 100), color = "white", size = 0.2) +
+  geom_text(data = map_data %>% group_by(region) %>% summarize(long = mean(long), lat = mean(lat)),
+            aes(label = toupper(region), x = long, y = lat), color = "black", size = 3) +
+  scale_fill_distiller(palette = "RdBu", direction = 1, na.value = "grey",
+                       name = "Harris's Mean Support in Polls (%)") +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    axis.ticks = element_blank(),
+    legend.position = "right"
+  ) +
+  labs(title = "Map Showing the Proportion of Support for Kamala Harris Relative to Donald Trump",
+       subtitle = "Blue indicates higher support for Harris; red indicates higher support for Trump.")
+```
+
+
+### Sample Size
+```{r}
+ggplot(clean_president_polls, aes(x = sample_size)) +
+  geom_histogram(binwidth = 200, fill = "darkblue", color = "black", alpha = 0.7) +
+  labs(title = "Distribution of Sample Sizes", x = "Sample Size", y = "Frequency") +
+  theme_classic()
+```
+### 
+```{r}
+ggplot(clean_president_polls, aes(x = pct)) +
+  geom_density(fill = "cyan", alpha = 0.5) +
+  labs(title = "Distribution of Candidate Support Percentage", x = "Percentage Support", y = "Density")
+```
 
 
 
