@@ -227,111 +227,141 @@ The Washington Post and ABC News polling methodologies offer a framework for mea
 # Idealized Survey & Methodology - $100K Budget
 
 ## Overview
-Using a $100K budget, this appendix outlines a carefully designed survey methodology for predicting the 2024 US Presidential Election. The objective is to collect representative, high-quality data using recruiting, poll aggregation, and selective sample methods. Through rigorous validation, this approach ensures data accuracy and reduces common survey research errors. 
+With a budget of $100K, this appendix outlines the survey methodology designed to predict the 2024 U.S. Presidential Election. The goal is to collect representative, high-quality data using recruiting, poll aggregation, and selective sample methods. This approach aims to minimize errors commonly encountered in survey research and to produce reliable insights. 
 
 ## Sampling Approach
-We will implement stratified random sampling to ensure that key demographic and geographic subgroups are fairly represented. This approach reduces bias and offers more reliable insights into voter preference. 
+We will use stratified random sampling to ensure fair representation across key demographic and geographic subgroups. This approach reduces bias and provides a more accurate view of voter preferences.
 
 **Stratification Criteria:**  
 - Age Groups  
 - Gender  
 - Education Levels  
-- Geographic Representation  
+- Geographic Regions  
 - Political Affiliation
 
-**Sample Size Goal:** 10,000 respondents across states and demographics to achieve **high statistical power** with a margin of error below ±1%
+**Sample Size Goal:**   
+- 10,000 respondents across states and demographics to achieve **high statistical power** with a margin of error below ±1%
 
 **Trade-offs:**  
-- Although stratified sampling increases representativeness, it necessitates accurate demographic information and may raise operating expenses.  
-- **Missing Data:** It’s possible that some demographics (e.g. men) may be less likely to respond. Post-stratification weighting and data imputation will be used to address this issue. 
+- While stratified sampling improves representativeness, it requires precise demographic data, which can increase costs. 
+
+**Missing Data:**  
+- Specific demographics (e.g., younger males) may have lower response rates. To address this, we will use **post-stratification weighting** and **data imputation**. 
 
 ## Recruitment Strategy
-Outline outreach and telephone surveys will be combined in our recruitment strategy to ensure widespread participation from various demographic groups. 
+To ensure a broad demographic reach, we will combine **online recruitment** and **random-digit dialing (RDD)** for telephone surveys. This approach targets both urban and rural populations, increasing inclusivity. 
 
 **Online Recruitment:**  
 - Target ads on Google, Facebook, and Twitter to engage younger voters and urban populations.  
 - Budget Allocation: $25,000
 
 **Random-Digit Dialing (RDD):**  
-- Phone outreach to reach older, rural voters with poor internet connection. 
+- Phone surveys to engage older and rural voters with limited internet access. 
 - Budget Allocation: $30,000
 
 **Incentives:**  
-- Participants are offered $5 gift cards to increase response rates. 
+- $5 gift cards offered to participants to increase response rates.
 - Budget Allocation: $20,000
 
 **Non-Response Handling:**  
-- Increase recruitment incentives for underrepresented groups and use numerous follow-up reminders. 
+- Increase incentives for underrepresented groups and send multiple follow-up reminders. 
 
 ## Data Validation
-To ensure the accuracy and reliability of responses, we will implement several data validation techniques: 
+To ensure data quality, several validation techniques will be implemented: 
 
 **Survey Logic Check:**  
-- Recognize and flag responses contradicting one another (e.g., reporting under 18 but registered to vote).  
+- Identifies and flags contradictory responses (e.g., respondents under 18 claiming voter registration).   
 **Attention Check:**  
-- Utilize questions to confirm respondents are actively engaged (e.g., “Select ‘Confirm’ to start questionnaire”)  
+- Includes questions to confirm active engagement (e.g., “Select ‘Confirm’ to proceed”) 
 **Post-Stratification Weighting: **  
-- Adjusting for over- and under-enumeration and weighting the sample to reflect the demographic of the US population.  
+- Adjusts the sample for over- and under-enumeration and weighting to reflect the demographic composition of the U.S. population.  
 
 **Mode and Measurement Errors:**   
-- We mitigate the impact of using mixed modes (online and telephones) by training enumerators and reducing enumerator bias. Misreporting will be reduced through straightforward questions.  
+- Enumerators will be trained to reduce inconsistencies between online and phone responses, and survey questions will be straightforward to minimize misreporting.  
 
 ## Poll Aggregation Methodology
-We will employ a poll-of-polls aggregation method to reduce bias and smooth fluctuation across individual polls. 
+A **poll-of-polls aggregation** method will be applied to reduce bias and balance fluctuation between individual polls. 
 
 **Weighting Criteria:**  
-**Sample Size:** larger samples receive more weight to mirror greater reliability. 
+**Sample Size:** larger samples receive higher weight for greater reliability.  
 
 **Recency:** More recent polls are given higher weight to capture modern voter sentiment. 
 
 **Pollster Rating:** Polls from highly rated pollsters receive higher weights to reduce the impact of bias. 
 
 ## Survey Implementation 
-Google Forms was used to create and implement the survey, allowing for efficient data collection and safe storage. The main section and sample questions are listed below. 
+The survey will be created and administered through Google Forms for efficient data collection and secure storage. The main survey sections and example questions are outlined below. 
 
 Access the survey: [Google Form](https://forms.gle/F1v3gswDjra8YLP79)
 
 **Survey Overview** \
 **Title:** 2024 US Presidential Election Poll \
-**Purpose:** To gather public sentiment and predict election outcomes. \
+**Purpose:** To collect public opinions and forecast election outcomes. \
 **Estimated Time:** Less than 5 minutes \
-**Confidentiality:** All responses are anonymous and used only for research purposes. 
+**Confidentiality:** Responses are anonymous and used solely for research 
 
-1. What is your age?
+Consent to Participate
+- I confirm that I understand the purpose of the survey, and I agree to participate.
+
+1. What is your age group?
 - Under 18
 - 18-24
 - 25-34
 - 35-44
 - 45-54
 - 55-64
-- 65+
+- 65-74
+- 75 and older
 
-2. What is your gender?
+2. What is your gender identity?
 - Male
 - Female
-- Non-binary / Prefer not to say
+- Non-binary
+- Prefer not to disclose
 
 3. What is the highest level of education you have completed?
 - Less than high school
 - High school diploma or GED
-- Some college
+- Some college, no degree
+- Associate’s degree
 - Bachelor’s degree
-- Master’s degree or higher
+- Master’s degree
+- Doctorate or professional degree (e.g., MD, JD, PhD)
 
-4. Are you registered to vote?
+4. Are you currently registered to vote in the United States?
 - Yes
-- No
+- No, but I am eligible and plan to register before the election
+- No, and I am not planning to register
+- No, I am not eligible to vote in the United States
 
-5. Who do you intend to vote for in the upcoming presidential election?
+5. What is your current political affiliation?
+- Republican
+- Democrat
+- Independent 
+- Libertarian
+- Green Party
+- Prefer not to disclose
+
+6. How would you describe your political views?
+- Very conservative
+- Somewhat conservative
+- Moderate
+- Somewhat liberal
+- Very liberal
+- Prefer not to disclose
+
+7. Who do you currently support in the 2024 U.S. presidential election?
 - Donald Trump (Republican)
 - Kamala Harris (Democrat)
-- Other
 - Undecided
+- Other
 
-6. How likely are you to vote in the upcoming election?
-- Very Likely
-- Somewhat Likely
-- Not Likely
+8. How likely are you to vote in the 2024 presidential election?
+- Extremely likely 
+- Very likely 
+- Moderately likely 
+- Somewhat likely 
+- Not at all likely 
 
 ## Budget Breakdown
 - **Online Recruitment** : $25,000
@@ -343,8 +373,7 @@ Access the survey: [Google Form](https://forms.gle/F1v3gswDjra8YLP79)
 **Total**: $100,000
 
 ## Conclusion
-This survey methodology uses stratified sampling, multi-channel recruitment, and rigorous data validation procedures to ensure accurate forecasting of the 2024 US Presidential Election. We provide a more stable and reliable prediction through poll-polls aggregation, smoothing out fluctuations across polls. This design balances accuracy, inclusivity, and efficiency with a carefully considered $100K budget, ensuring the poll gathers meaningful insights into voter sentiment and behavior. 
-
+This survey methodology uses stratified sampling, multi-channel recruitment, and data validation procedures to ensure accurate forecasting of the 2024 US Presidential Election. Through poll-of-polls aggregation, it offers a stable and reliable prediction by mitigating fluctuations in individual polls. The design aims to balance accuracy, inclusivity, and efficiency within a $100K budget, offering meaningful insights into voter behavior and sentiment. 
 
 
 \newpage
