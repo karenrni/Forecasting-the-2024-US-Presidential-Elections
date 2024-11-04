@@ -119,6 +119,7 @@ model_validation_train <- stan_glmer(
 # Posterior predictive check
 pp_check(model_validation_train)
 
+
 # Make predictions on the test set for the Bayesian model
 set.seed(123)
 bayesian_predicted_data <- testing_data |> 
