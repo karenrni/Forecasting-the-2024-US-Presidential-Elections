@@ -41,7 +41,7 @@ This uncertainty emphasizes the significance of swing states in election forecas
 
 By prioritizing higher-quality polls and focusing on data collected after Harris’s campaign announcement, the model seeks to mitigate biases and improve forecast reliability by using a polls-of-polls method over individual pollster data. This approach not only clarifies voter sentiment amid competing forecasts but also demonstrates the value of weighting variables such as pollster rating and sample size in enhancing prediction accuracy. While some states lack sufficient polling data—introducing potential limitations that could be improved with more data and model complexity—the overall findings provide strategic forecasts for decision-makers and reinforce public confidence in an election where no candidate holds a decisive lead. Appendix A provides a detailed assessment on The Washington Post, one of the polling methodologies used by prominent sources, including sampling approaches, weighting, and non-response handling strategies to ensure robust data quality.
 
-The rest of this paper is structured as follows:  @sec-mydatasection presents the data sources and methodology, @sec-mymodel presents the forecasting model, then  @sec-myresults followed by  @sec-mydisc, which discusses the results and their implications.  @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research, followed by @sec-appenxA with The Washington Post’s pollster methodology, and @sec-appenxB a budgeted idealized methodology.
+The rest of this paper is structured as follows:  @sec-mydatasection presents the data sources and methodology, @sec-mymodel presents the forecasting model, then  @sec-myresults followed by  @sec-mydisc, which discusses the results and their implications.  @sec-mylimits concludes with a discussion of the limitations of the study and suggestions for future research, followed by Appendix @sec-meth-analysis and @sec-ideal-surv with The Washington Post’s pollster methodology and a budgeted idealized methodology.
 
 # Data Analysis {#sec-mydatasection}
 
@@ -438,7 +438,7 @@ kable(comparison_data)
 Although the Bayesian model still shows room for improvement—evidenced by F1 Score and AUC values not close to 1 and a RMSE indicating some prediction error—it outperforms the logistic model across all metrics. This suggests that the approach, which incorporates random effects to account for variability from different pollsters and states, offers a more nuanced understanding of voter support.
 
 ### Diagnostics
-To validate the Bayesian framework, several diagnostic checks were conducted to assess robustness and ensure that underlying assumptions were satisfied. Key among these were convergence assessments and posterior predictive checks. These checks provided a visual representation of how well the predictions align with the observed data. The graph reveals a close overlap between the observed outcomes \(y\) and the replicated predictions ($y_{\text{rep}}$), demonstrating effective capture of the distribution of voter support for Harris. This strong alignment suggests that the approach not only fits the training data well but also generalizes effectively to new observations. The flexibility of this framework allows for the incorporation of prior information and consideration of variability due to pollster and state effects, enhancing overall robustness (Refer to the @sec-appc, [@tbl-pp] for a visual illustration).
+To validate the Bayesian framework, several diagnostic checks were conducted to assess robustness and ensure that underlying assumptions were satisfied. Key among these were convergence assessments and posterior predictive checks. These checks provided a visual representation of how well the predictions align with the observed data. The graph reveals a close overlap between the observed outcomes \(y\) and the replicated predictions ($y_{\text{rep}}$), demonstrating effective capture of the distribution of voter support for Harris. This strong alignment suggests that the approach not only fits the training data well but also generalizes effectively to new observations. The flexibility of this framework allows for the incorporation of prior information and consideration of variability due to pollster and state effects, enhancing overall robustness (Refer to the @sec-app-pp, [@tbl-pp] for a visual illustration).
 
 ### Model Justification
 The choice of the Bayesian model is justified by its capacity to account for the random effects of pollsters and states, providing a richer understanding of public sentiment. This model allows for nuanced insights that a simpler logistic regression might miss, particularly in a context where polling data is subject to variation due to different survey methods and demographic factors. Ultimately, while both models exhibit imperfections, the Bayesian model’s superior performance metrics support its selection as the final model for predicting voter support in the 2024 U.S. presidential election.
@@ -743,8 +743,10 @@ In practice, reducing the influence of large polls is essential to avoid disprop
 
 \newpage
 
+# Appendix {-}
 
-# Appendix A: Methodology Analysis of The Washington Post Polling  {#sec-appenxA}
+
+# Methodology Analysis of The Washington Post Polling {#sec-meth-analysis}
 With an evaluation of sampling methodology, recruitment, handling non-response, and questionnaire design, this appendix offers an analysis of the polling methodology used by The Washington Post in collaboration with ABC News. The objective is to analyze these approaches' strengths and weaknesses and determine how they affect polling accuracy.
 
 ## Population, Frame, and Sample  
@@ -794,7 +796,7 @@ ABC News follows similar principles, offering surveys in both Spanish and Englis
 ## Conclusion  
 The Washington Post and ABC News polling methodologies offer a framework for measuring public opinion in the 2024 U.S. presidential election. Employing various sampling strategies, stratification, and weighting improves sample representation. However, challenges such as non-response bias and reliance on historical data in under-polled states need continued adjustments to maintain polling reliability. 
 
-# Appendix B: Idealized Survey & Methodology - $100K Budget {#sec-appenxB}
+# Idealized Survey & Methodology - $100K Budget {#sec-ideal-surv}
 
 ## Overview
 With a budget of $100K, this appendix outlines the survey methodology designed to predict the 2024 U.S. Presidential Election. The goal is to collect representative, high-quality data using recruiting, poll aggregation, and selective sample methods. This approach aims to minimize errors commonly encountered in survey research and to produce reliable insights. 
@@ -946,7 +948,7 @@ This survey methodology uses stratified sampling, multi-channel recruitment, and
 \newpage
 
 
-# Appendix C {#sec-appc}
+# Posterior Predictive Check {#sec-app-pp}
 * [@tbl-pp]
 ```{r}
 #| include: false
